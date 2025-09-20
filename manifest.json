@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Pop-up Player",
+  "version": "1.0",
+  "description": "Watch YouTube videos in a pop-up window.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["src/content.js"],
+      "css": ["src/style.css"]
+    }
+  ],
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["images/icon48.png"],
+      "matches": ["*://*.youtube.com/*"]
+    }
+  ]
+}

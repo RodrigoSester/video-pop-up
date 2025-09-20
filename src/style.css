@@ -1,0 +1,17 @@
+/* For the popup.html */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* For the injected button on YouTube */
+.popup-player-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-right: 8px; /* Add some spacing */
+}
+
+.popup-player-btn:hover img {
+    opacity: 0.8;
+}
