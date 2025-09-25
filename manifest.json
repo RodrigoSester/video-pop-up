@@ -3,7 +3,11 @@
   "name": "YouTube Pop-up Player",
   "version": "1.0",
   "description": "Watch YouTube videos in a pop-up window.",
-  "permissions": ["activeTab", "scripting", "storage"],
+  "permissions": ["activeTab", "scripting", "storage", "tabs", "windowManagement", "windows"],
+  "host_permissions": [
+    "*://www.youtube.com/*",
+    "*://youtube.com/*"
+  ],
   "action": {
     "default_popup": "src/popup.html",
     "default_icon": {
@@ -17,7 +21,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.youtube.com/*"],
+      "matches": ["*://www.youtube.com/*", "*://youtube.com/*"],
       "js": ["src/content.js"],
       "css": ["src/style.css"]
     }
