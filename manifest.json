@@ -3,7 +3,7 @@
   "name": "YouTube Pop-up Player",
   "version": "1.0",
   "description": "Watch YouTube videos in a pop-up window.",
-  "permissions": ["activeTab", "scripting", "storage", "tabs", "windowManagement", "windows"],
+  "permissions": ["activeTab", "scripting", "storage", "tabs", "windows"],
   "host_permissions": [
     "*://www.youtube.com/*",
     "*://youtube.com/*"
