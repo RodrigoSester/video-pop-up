@@ -4,31 +4,30 @@ let popupWindowId = null;
 /**
  * Initialize video history storage
  */
-async function initializeVideoHistory() {
-    try {
-        const result = await chrome.storage.local.get('videoHistory');
+function initializeVideoHistory() {
+    chrome.storage.local.get('videoHistory').then(result => {
         console.log('Video history initialized:', result);
         if (!result.videoHistory) {
-            await chrome.storage.local.set({ videoHistory: [] });
-            console.log('Video history storage created.');
+            return chrome.storage.local.set({ videoHistory: [] });
         }
-    } catch (error) {
+    }).then(() => {
+        console.log('Video history storage ready.');
+    }).catch(error => {
         console.error('Failed to initialize video history:', error);
-    }
+    });
 }
 
 /**
  * Get video history from storage
  * @returns {Promise<Array>} Array of video history objects
  */
-async function getVideoHistory() {
-    try {
-        const result = await chrome.storage.local.get('videoHistory');
+function getVideoHistory() {
+    return chrome.storage.local.get('videoHistory').then(result => {
         return result.videoHistory || [];
-    } catch (error) {
+    }).catch(error => {
         console.error('Failed to get video history:', error);
         return [];
-    }
+    });
 }
 
 /**
@@ -38,10 +37,8 @@ async function getVideoHistory() {
  * @param {string} videoData.title - Video title
  * @param {string} videoData.url - Full YouTube URL
  */
-async function addVideoToHistory(videoData) {
-    try {
-        const history = await getVideoHistory();
-        
+function addVideoToHistory(videoData) {
+    getVideoHistory().then(history => {
         // Check if video already exists in history
         const existingIndex = history.findIndex(item => item.videoId === videoData.videoId);
         
@@ -64,11 +61,12 @@ async function addVideoToHistory(videoData) {
         // Keep only last 50 videos to prevent storage bloat
         const trimmedHistory = history.slice(0, 50);
         
-        await chrome.storage.local.set({ videoHistory: trimmedHistory });
-        console.log('Video added to history:', historyEntry);
-    } catch (error) {
+        return chrome.storage.local.set({ videoHistory: trimmedHistory });
+    }).then(() => {
+        console.log('Video added to history:', videoData);
+    }).catch(error => {
         console.error('Failed to add video to history:', error);
-    }
+    });
 }
 
 /**
@@ -76,36 +74,26 @@ async function addVideoToHistory(videoData) {
  * @param {number} tabId - Tab ID to extract title from
  * @returns {Promise<string>} Video title or default fallback
  */
-async function getVideoTitle(tabId) {
-    try {
-        const results = await chrome.scripting.executeScript({
-            target: { tabId },
-            func: () => {
-                // Try multiple selectors for video title
-                const selectors = [
-                    'h1.ytd-watch-metadata yt-formatted-string',
-                    'h1.ytd-video-primary-info-renderer',
-                    'h1[data-test-selector="video-title"]',
-                    'meta[name="title"]'
-                ];
-                
-                for (const selector of selectors) {
-                    const element = document.querySelector(selector);
-                    if (element) {
-                        return element.textContent || element.getAttribute('content') || '';
-                    }
-                }
-                
-                // Fallback to document title
-                return document.title.replace(' - YouTube', '');
+function getVideoTitle(tabId) {
+    return chrome.scripting.executeScript({
+        target: { tabId },
+        func: () => {
+            const element = document.querySelector('h1 yt-formatted-string.ytd-watch-metadata');
+            console.log('Extracted title element:', element);
+            if (element) {
+                return element.textContent || element.getAttribute('content') || '';
             }
-        });
-        
+            
+            // Fallback to document title
+            return document.title.replace(' - YouTube', '');
+        }
+    }).then(results => {
+        console.log('Video title extraction results:', results);
         return results[0]?.result?.trim() || 'Unknown Video';
-    } catch (error) {
+    }).catch(error => {
         console.error('Failed to get video title:', error);
-        return 'Unknown Video';
-    }
+        return error.message || '';
+    });
 }
 
 // Initialize storage when extension starts
@@ -114,28 +102,10 @@ initializeVideoHistory();
 /**
  * A reusable function to either create a new pop-up window or update the existing one.
  * @param {string} url The URL to load in the pop-up.
- * @param {number} sourceTabId Optional tab ID to extract video title from
  */
-async function openOrUpdatePopup(url, sourceTabId = null) {
+function openOrUpdatePopup(url) {
     const windowWidth = 854;
     const windowHeight = 480;
-
-    // Extract video ID from URL
-    const videoId = extractVideoId(url);
-    
-    // Get video title and save to history
-    if (videoId) {
-        let title = 'Unknown Video';
-        if (sourceTabId) {
-            title = await getVideoTitle(sourceTabId);
-        }
-        
-        await addVideoToHistory({
-            videoId: videoId,
-            title: title,
-            url: url
-        });
-    }
 
     // Check if the popup window already exists.
     if (popupWindowId !== null) {
@@ -175,31 +145,75 @@ function extractVideoId(url) {
 }
 
 // Listen for when the user clicks the extension's icon in the toolbar.
-chrome.action.onClicked.addListener(async (tab) => {
+chrome.action.onClicked.addListener((tab) => {
     // Check if the current tab is a YouTube video page.
     if (tab.url && tab.url.includes("youtube.com/watch")) {
-        await openOrUpdatePopup(tab.url, tab.id);
+        const videoId = extractVideoId(tab.url);
+        if (videoId) {
+            // Add video to history directly since we're in the background script
+            const videoData = {
+                videoId: videoId,
+                title: 'Unknown Video',
+                url: tab.url
+            };
+            
+            // Try to get the video title from the current tab
+            getVideoTitle(tab.id).then(title => {
+                videoData.title = title;
+                addVideoToHistory(videoData);
+            }).catch(error => {
+                console.error('Error getting video title:', error);
+                addVideoToHistory(videoData);
+            });
+            
+            // Open the popup
+            openOrUpdatePopup(tab.url);
+        }
     }
     // If it's not a YouTube video page, clicking the icon will do nothing.
 });
 
 // This listener handles messages from the content script (for the in-video button and the badge).
-chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'openPopup') {
         const popupUrl = `https://www.youtube.com/watch?v=${request.videoId}`;
-        await openOrUpdatePopup(popupUrl, sender.tab?.id);
+        openOrUpdatePopup(popupUrl);
+    } else if (request.action === 'addVideoToHistory') {
+        // Handle video history tracking
+        const videoData = {
+            videoId: request.videoId,
+            title: request.title || 'Unknown Video',
+            url: `https://www.youtube.com/watch?v=${request.videoId}`
+        };
+        
+        // If we have a source tab, try to get the video title
+        if (sender.tab?.id && (!request.title || request.title === 'Unknown Video')) {
+            getVideoTitle(sender.tab.id).then(title => {
+                videoData.title = title;
+                addVideoToHistory(videoData);
+            }).catch(error => {
+                console.error('Error getting video title:', error);
+                addVideoToHistory(videoData);
+            });
+        } else {
+            addVideoToHistory(videoData);
+        }
     } else if (request.action === 'updateBadge') {
          // Set badge text from content script message
         chrome.action.setBadgeText({ text: request.count.toString(), tabId: sender.tab.id });
         chrome.action.setBadgeBackgroundColor({ color: '#FF0000' });
     } else if (request.action === 'getVideoHistory') {
         // Handle history requests from popup
-        const history = await getVideoHistory();
-        sendResponse({ history });
+        getVideoHistory().then(history => {
+            sendResponse({ history });
+        }).catch(error => {
+            console.error('Error getting video history:', error);
+            sendResponse({ history: [], error: error.message });
+        });
+        
+        // Return true to indicate we will send a response asynchronously
+        return true;
     }
-    
-    // Return true to indicate we will send a response asynchronously
-    return true;
 });
 
 const css = `
@@ -277,9 +291,6 @@ function createPopupWindow(url, width, height) {
                         chrome.scripting.insertCSS({
                             target: { tabId: tabId },
                             css: css
-                        })
-                        .then(() => {
-                            console.log('CSS injected successfully into popup window.');
                         })
                         .catch((error) => {
                             console.error('Failed to inject CSS into popup window:', error);

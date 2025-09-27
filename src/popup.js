@@ -123,6 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
         listItem.appendChild(videoMeta);
 
         listItem.addEventListener('click', (e) => {
+            // Send addVideoToHistory message first with video title if available
+            chrome.runtime.sendMessage({ 
+                action: 'addVideoToHistory', 
+                videoId: video.videoId,
+                title: video.title
+            });
+            
+            // Then open the popup
             chrome.runtime.sendMessage({ action: 'openPopup', videoId: video.videoId });
             e.preventDefault();
             window.close();

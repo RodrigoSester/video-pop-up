@@ -18,6 +18,13 @@ function addPopupButtonToPlayer() {
         button.addEventListener('click', () => {
             const videoId = new URLSearchParams(window.location.search).get('v');
             if (videoId) {
+                // Send addVideoToHistory message first
+                chrome.runtime.sendMessage({ 
+                    action: 'addVideoToHistory', 
+                    videoId: videoId 
+                });
+                
+                // Then open the popup
                 chrome.runtime.sendMessage({ action: 'openPopup', videoId: videoId });
             }
         });
