@@ -11,10 +11,28 @@
         <img src="../images/icon48.png" alt="Logo" class="w-8 h-8 mr-2">
         <h1 class="text-lg font-bold">YouTube Pop-up Player</h1>
     </div>
-    <p id="message" class="text-gray-400 text-sm mb-4">Click on a video below to open it in a pop-up.</p>
-    <ul id="video-list" class="space-y-2">
-        <!-- Videos will be listed here -->
-    </ul>
+    
+    <!-- Navigation Tabs -->
+    <div class="tab-navigation mb-4">
+        <button id="current-tab" class="tab-button active" data-tab="current">Current Page</button>
+        <button id="history-tab" class="tab-button" data-tab="history">History</button>
+    </div>
+    
+    <!-- Current Videos Section -->
+    <div id="current-section" class="tab-content active">
+        <p id="message" class="text-gray-400 text-sm mb-4">Click on a video below to open it in a pop-up.</p>
+        <ul id="video-list" class="space-y-2">
+            <!-- Current videos will be listed here -->
+        </ul>
+    </div>
+    
+    <!-- History Section -->
+    <div id="history-section" class="tab-content">
+        <p id="history-message" class="text-gray-400 text-sm mb-4">Your recently opened videos will appear here.</p>
+        <ul id="history-list" class="space-y-2">
+            <!-- History videos will be listed here -->
+        </ul>
+    </div>
     <script src="./popup.js"></script>
 </body>
 </html>
