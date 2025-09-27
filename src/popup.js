@@ -105,6 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
         listItem.className = 'video-item';
         listItem.dataset.videoId = video.videoId;
         
+        const videoContent = document.createElement('div');
+        videoContent.className = 'video-content';
+        
         const videoTitle = document.createElement('div');
         videoTitle.className = 'video-title';
         videoTitle.textContent = video.title;
@@ -119,10 +122,42 @@ document.addEventListener('DOMContentLoaded', () => {
             videoMeta.textContent = `Opened: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
         }
         
-        listItem.appendChild(videoTitle);
-        listItem.appendChild(videoMeta);
+        videoContent.appendChild(videoTitle);
+        videoContent.appendChild(videoMeta);
+        listItem.appendChild(videoContent);
 
-        listItem.addEventListener('click', (e) => {
+        // Add delete button for history items only
+        if (type === 'history') {
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'delete-btn';
+            deleteButton.title = 'Delete from history';
+            deleteButton.innerHTML = '🗑️'; // Trash can emoji
+            
+            deleteButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent triggering the video click
+                
+                // Send delete message to background script
+                chrome.runtime.sendMessage({ 
+                    action: 'deleteVideoFromHistory', 
+                    videoId: video.videoId
+                });
+                
+                // Remove the item from UI immediately
+                listItem.remove();
+                
+                // Update the history message if no items left
+                const remainingItems = historyList.querySelectorAll('.video-item').length;
+                if (remainingItems === 0) {
+                    historyMessage.textContent = "No videos in history yet. Open some videos in pop-up to see them here!";
+                } else {
+                    historyMessage.textContent = `${remainingItems} video(s) in your history. Click to reopen in pop-up.`;
+                }
+            });
+            
+            listItem.appendChild(deleteButton);
+        }
+
+        videoContent.addEventListener('click', (e) => {
             // Send addVideoToHistory message first with video title if available
             chrome.runtime.sendMessage({ 
                 action: 'addVideoToHistory', 

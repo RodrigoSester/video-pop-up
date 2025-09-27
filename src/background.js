@@ -19,11 +19,17 @@ function initializeVideoHistory() {
 
 /**
  * Get video history from storage
- * @returns {Promise<Array>} Array of video history objects
+ * @returns {Promise<Array>} Array of video history objects ordered by dateAdded (most recent first)
  */
 function getVideoHistory() {
     return chrome.storage.local.get('videoHistory').then(result => {
-        return result.videoHistory || [];
+        const history = result.videoHistory || [];
+        // Sort by dateAdded in descending order (most recent first)
+        return history.sort((a, b) => {
+            const dateA = new Date(a.dateAdded || a.timestamp || 0);
+            const dateB = new Date(b.dateAdded || b.timestamp || 0);
+            return dateB - dateA;
+        });
     }).catch(error => {
         console.error('Failed to get video history:', error);
         return [];
@@ -66,6 +72,23 @@ function addVideoToHistory(videoData) {
         console.log('Video added to history:', videoData);
     }).catch(error => {
         console.error('Failed to add video to history:', error);
+    });
+}
+
+/**
+ * Delete a video from history
+ * @param {string} videoId - YouTube video ID to delete
+ */
+function deleteVideoFromHistory(videoId) {
+    getVideoHistory().then(history => {
+        // Filter out the video with matching videoId
+        const updatedHistory = history.filter(item => item.videoId !== videoId);
+        
+        return chrome.storage.local.set({ videoHistory: updatedHistory });
+    }).then(() => {
+        console.log('Video deleted from history:', videoId);
+    }).catch(error => {
+        console.error('Failed to delete video from history:', error);
     });
 }
 
@@ -202,6 +225,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
          // Set badge text from content script message
         chrome.action.setBadgeText({ text: request.count.toString(), tabId: sender.tab.id });
         chrome.action.setBadgeBackgroundColor({ color: '#FF0000' });
+    } else if (request.action === 'deleteVideoFromHistory') {
+        // Handle video deletion from history
+        if (request.videoId) {
+            deleteVideoFromHistory(request.videoId);
+        }
     } else if (request.action === 'getVideoHistory') {
         // Handle history requests from popup
         getVideoHistory().then(history => {

@@ -56,7 +56,9 @@ body {
 
 /* Video Items */
 .video-item {
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
     padding: 12px !important;
     margin-bottom: 8px !important;
     background-color: #2a2a2a !important;
@@ -70,6 +72,11 @@ body {
     background-color: #3a3a3a !important;
     border-color: #4a9eff !important;
     transform: translateY(-1px) !important;
+}
+
+.video-content {
+    flex: 1 !important;
+    cursor: pointer !important;
 }
 
 .video-title {
@@ -125,6 +132,34 @@ body {
 
 #video-list::-webkit-scrollbar-thumb:hover, #history-list::-webkit-scrollbar-thumb:hover {
     background: #555 !important;
+}
+
+/* Delete Button */
+.delete-btn {
+    background: none !important;
+    border: none !important;
+    color: #888 !important;
+    cursor: pointer !important;
+    font-size: 16px !important;
+    padding: 8px !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    margin-left: 8px !important;
+}
+
+.delete-btn:hover {
+    background-color: #ff4444 !important;
+    color: #ffffff !important;
+    transform: scale(1.1) !important;
+}
+
+.delete-btn:active {
+    transform: scale(0.95) !important;
 }
 
 /* For the injected button on YouTube */
