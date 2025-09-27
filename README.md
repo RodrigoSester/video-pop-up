@@ -1,53 +1,134 @@
 # YouTube Pop-up Player Extension
-This browser extension allows you to watch YouTube videos in a floating pop-up window.
 
-# Features
-- Extension Popup: Click the extension icon to see a list of all videos on the current YouTube page.
+A Chrome extension that allows you to watch YouTube videos in a dedicated pop-up window for an enhanced viewing experience. Perfect for multitasking while watching videos.
 
-- In-Video Button: A button is added directly to the YouTube player controls to easily pop out the currently playing video.
+## ✨ Features
 
-- Badge Notification: The extension icon shows a badge when you are on a YouTube page with detectable videos.
+### 🎮 Multiple Ways to Open Pop-ups
+- **Extension Popup**: Click the extension icon to browse and select from all videos on the current YouTube page
+- **In-Video Button**: A dedicated button is automatically added to YouTube's video player controls
+- **Toolbar Action**: Click the extension icon directly when on a YouTube video page
 
-Project Structure
-manifest.json: The core configuration file for the extension.
+### 🎯 Smart Pop-up Management
+- **Window Reuse**: Opens new videos in the existing pop-up window instead of creating multiple windows
+- **Centered Positioning**: Pop-up windows are automatically centered relative to your main browser window
+- **Optimized Size**: Default 854x480 resolution for optimal video viewing
 
-popup.html: The HTML for the extension's popup window.
+### 🎨 Enhanced Viewing Experience
+- **Fullscreen-style Layout**: Hides YouTube's header and navigation for distraction-free viewing
+- **Custom Styling**: Clean, minimalist interface optimized for the pop-up experience
+- **Responsive Design**: Video player adapts to the pop-up window dimensions
 
-popup.js: The JavaScript that powers the popup, listing videos.
+### 📱 Visual Indicators
+- **Badge Notification**: Extension icon shows "ON" badge when YouTube videos are detected on the page
+- **Hover Effects**: Interactive buttons with smooth opacity transitions
 
-content.js: This script is injected into YouTube pages to find videos and add the pop-up button to the player.
+## 🏗️ Project Structure
 
-background.js: The service worker that handles creating the pop-up window and managing the badge.
+```
+video-pop-up/
+├── manifest.json           # Extension configuration and permissions
+├── src/
+│   ├── popup.html          # Extension popup interface
+│   ├── popup.js            # Popup functionality and video listing
+│   ├── content.js          # YouTube page integration and button injection
+│   ├── background.js       # Service worker for window management
+│   └── style.css           # Shared styles for popup and injected elements
+├── images/
+│   ├── icon16.png          # 16x16 extension icon
+│   ├── icon48.png          # 48x48 extension icon
+│   └── icon128.png         # 128x128 extension icon
+├── package.json            # Node.js project configuration
+└── README.md              # This file
+```
 
-style.css: Shared styles for the popup and the injected button.
+## 🚀 Installation & Setup
 
-/images: Contains the icons for the extension.
+### For Development
 
-Setup
-Install Yarn: If you don't have Yarn, install it globally: npm install -g yarn
+1. **Clone the Repository**
+   ```bash
+   git clone git@github.com:RodrigoSester/video-pop-up.git
+   cd video-pop-up
+   ```
 
-Initialize Project: Navigate to the project directory and run yarn init -y to create a package.json file. You don't need to install any packages for this simple extension.
+2. **Install Dependencies** (Optional)
+   ```bash
+   yarn install
+   ```
 
-How to Load the Extension in Your Browser
-Google Chrome or Brave
-Open your browser and navigate to chrome://extensions.
+3. **Load Extension in Chrome**
+   - Open Chrome and navigate to `chrome://extensions/`
+   - Enable "Developer mode" using the toggle in the top-right corner
+   - Click "Load unpacked" button
+   - Select the project directory
+   - The extension should now appear in your extensions list
 
-Enable "Developer mode" using the toggle in the top right corner.
+### For Users
 
-Click the "Load unpacked" button.
+The extension will be available on the Chrome Web Store (coming soon).
 
-Select the directory where you saved these files.
+## 🎯 How to Use
 
-The extension should now be active!
+### Method 1: Extension Popup
+1. Navigate to any YouTube page (homepage, channel, search results)
+2. Click the extension icon in your browser toolbar
+3. Browse the list of detected videos with thumbnails and titles
+4. Click any video to open it in a pop-up window
 
-Safari
-Loading extensions in Safari is more complex and requires an Xcode project. This current structure is primarily for Chromium-based browsers. To support Safari, you would need to use Apple's conversion tools.
+### Method 2: In-Video Button
+1. Open any YouTube video
+2. Look for the new pop-up button in the video player controls (right side)
+3. Click the button to open the current video in a pop-up window
 
-Next Steps for Production
-Create Icons: You will need to create icon16.png, icon48.png, and icon128.png and place them in the images folder.
+### Method 3: Direct Action
+1. Navigate to a specific YouTube video page
+2. Click the extension icon directly (no popup menu)
+3. The current video opens immediately in a pop-up window
 
-Testing: Thoroughly test on different YouTube page layouts (homepage, video page, channel page).
+## 🔧 Technical Details
 
-Packaging: For the Chrome Web Store, you'll zip the entire project folder.
+### Permissions Required
+- `activeTab`: Access current tab information
+- `scripting`: Inject CSS and JavaScript into YouTube pages
+- `storage`: Store extension preferences
+- `tabs`: Manage browser tabs
+- `windows`: Create and manage pop-up windows
+- `windowManagement`: Advanced window positioning
 
-Publishing: Follow the Chrome Web Store developer documentation to upload and publish your extension.
+### Host Permissions
+- `*://www.youtube.com/*`: Full access to YouTube pages
+- `*://youtube.com/*`: Support for non-www YouTube URLs
+
+### Browser Compatibility
+- ✅ Chrome (Manifest V3)
+- ✅ Edge (Chromium-based)
+- ✅ Brave
+- ❌ Firefox (requires Manifest V2 adaptation)
+- ❌ Safari (requires native conversion)
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Rodrigo Sesterheim** ([@RodrigoSester](https://github.com/RodrigoSester))
+- Email: rodrigows09@gmail.com
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 🐛 Known Issues
+
+- Pop-up CSS injection requires proper host permissions
+- Some YouTube layout changes may affect button positioning
+- Extension requires page refresh after installation for full functionality
+
+## 🔮 Future Enhancements
+
+- [ ] Keyboard shortcuts for quick pop-up creation
+- [ ] Customizable pop-up window sizes
+- [ ] Picture-in-picture mode support
+- [ ] Multiple video queue management
