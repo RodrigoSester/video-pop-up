@@ -289,9 +289,11 @@ document.addEventListener('DOMContentLoaded', () => {
         videoMeta.className = 'video-meta';
         
         if (type === 'current') {
-            videoMeta.textContent = video.minutes 
-                ? chrome.i18n.getMessage('duration', [video.minutes])
-                : chrome.i18n.getMessage('durationUnknown');
+            if (video.minutes && video.minutes.trim()) {
+                videoMeta.textContent = chrome.i18n.getMessage('duration', [video.minutes]);
+            } else {
+                videoMeta.textContent = chrome.i18n.getMessage('durationUnknown');
+            }
         } else {
             const date = new Date(video.timestamp || video.dateAdded);
             const dateString = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
@@ -353,31 +355,119 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function getVideoData() {
     const videos = [];
-    document.querySelectorAll('ytd-rich-item-renderer').forEach(renderer => {
-        renderer.querySelectorAll('a[href*="watch?v="]').forEach(anchor => {
-            const videoUrl = new URL(anchor.href, location.origin);
-            const videoId = videoUrl.searchParams.get('v');
-            if (videoId) {
-                const titleElement = renderer.querySelector('h3.yt-lockup-metadata-view-model__heading-reset');
-                const title = titleElement ? titleElement.textContent.trim() : 'Untitled Video';
-
-                // Try to get the duration (minutes) from the renderer
-                let minutes = '';
-                const durationElement = renderer.querySelector('span.ytd-thumbnail-overlay-time-status-renderer');
-                if (durationElement) {
-                    minutes = durationElement.textContent.trim();
-                }
-
-                if (!videos.some(v => v.videoId === videoId)) {
-                    videos.push({
-                        videoId,
-                        title,
-                        minutes
-                    });
+    
+    // Helper function to extract duration from a renderer element
+    function extractDuration(renderer) {
+        let duration = '';
+        
+        // Strategy 1: New YouTube badge-shape structure (primary target)
+        const durationBadge = renderer.querySelector('.badge-shape div.yt-badge-shape__text');
+        if (durationBadge) {
+            duration = durationBadge.textContent.trim();
+        }
+        
+        // Strategy 2: Alternative badge selectors with more specific paths
+        if (!duration) {
+            const alternativeBadge = renderer.querySelector('div.yt-badge-shape__text, .ytd-badge-supported-renderer .yt-badge-shape__text, .badge-shape__text');
+            if (alternativeBadge) {
+                duration = alternativeBadge.textContent.trim();
+            }
+        }
+        
+        // Strategy 3: Thumbnail overlay time status (common fallback)
+        if (!duration) {
+            const overlayDuration = renderer.querySelector('span.ytd-thumbnail-overlay-time-status-renderer, .ytd-thumbnail-overlay-time-status-renderer span, .ytd-thumbnail-overlay-time-status-renderer__text');
+            if (overlayDuration) {
+                duration = overlayDuration.textContent.trim();
+            }
+        }
+        
+        // Strategy 4: More generic time/duration indicators
+        if (!duration) {
+            const genericTimeBadge = renderer.querySelector('[aria-label*="minutes"], [aria-label*="seconds"], [title*="duration"], .ytd-thumbnail-overlay-time-status-renderer[aria-label]');
+            if (genericTimeBadge) {
+                duration = genericTimeBadge.textContent.trim() || 
+                          genericTimeBadge.getAttribute('aria-label') || 
+                          genericTimeBadge.getAttribute('title');
+            }
+        }
+        
+        // Strategy 5: Look for any time-like patterns in badges
+        if (!duration) {
+            const timePatternElement = renderer.querySelector('[class*="time"], [class*="duration"], [class*="badge"]');
+            if (timePatternElement) {
+                const text = timePatternElement.textContent.trim();
+                // Check if it looks like a time format (e.g., "10:30", "1:23:45")
+                if (text.match(/^\d{1,2}:\d{2}(:\d{2})?$/)) {
+                    duration = text;
                 }
             }
+        }
+        
+        return duration;
+    }
+
+    // Helper function to extract video title with fallbacks
+    function extractTitle(renderer) {
+        // Try multiple title selectors
+        const titleSelectors = [
+            'h3.yt-lockup-metadata-view-model__heading-reset',
+            '#video-title',
+            '.ytd-rich-grid-media #video-title',
+            'a#video-title',
+            '.ytd-video-meta-block h3',
+            'h3 a[title]'
+        ];
+        
+        for (const selector of titleSelectors) {
+            const titleElement = renderer.querySelector(selector);
+            if (titleElement) {
+                return titleElement.textContent.trim() || titleElement.getAttribute('title') || '';
+            }
+        }
+        
+        return 'Untitled Video';
+    }
+
+    // Process different types of video renderers on YouTube
+    const rendererSelectors = [
+        'ytd-rich-item-renderer',           // Home page grid
+        'ytd-video-renderer',               // Search results, sidebar
+        'ytd-grid-video-renderer',          // Channel videos grid
+        'ytd-compact-video-renderer',       // Sidebar recommendations
+        'ytd-movie-renderer'                // Movie/premium content
+    ];
+
+    rendererSelectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(renderer => {
+            renderer.querySelectorAll('a[href*="watch?v="]').forEach(anchor => {
+                try {
+                    const videoUrl = new URL(anchor.href, location.origin);
+                    const videoId = videoUrl.searchParams.get('v');
+                    
+                    if (videoId && !videos.some(v => v.videoId === videoId)) {
+                        const title = extractTitle(renderer);
+                        const minutes = extractDuration(renderer);
+                        
+                        videos.push({
+                            videoId,
+                            title,
+                            minutes: minutes || '', // Ensure minutes is always a string
+                            url: anchor.href
+                        });
+                        
+                        // Debug logging for duration extraction
+                        if (console && console.log) {
+                            console.log(`Video found: ${title}, Duration: ${minutes || 'Not found'}, ID: ${videoId}`);
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Error processing video link:', error);
+                }
+            });
         });
     });
+
     return videos;
 }
 

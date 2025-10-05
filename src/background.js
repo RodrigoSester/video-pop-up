@@ -210,11 +210,16 @@ function openOrUpdatePopup(url) {
                 popupWindowId = null;
                 createPopupWindow(url, windowWidth, windowHeight);
             } else {
-                // If the window exists, just update its URL and bring it to the front.
+                // If the window exists, update the tab URL and bring window to the front.
                 chrome.windows.update(popupWindowId, {
-                    url: url,
                     focused: true
                 });
+                
+                // Update the URL of the first tab in the window
+                if (existingWindow.tabs && existingWindow.tabs.length > 0) {
+                    const tabId = existingWindow.tabs[0].id;
+                    chrome.tabs.update(tabId, { url: url });
+                }
             }
         });
     } else {
@@ -349,10 +354,14 @@ const css = `
         display: none !important;
     }
 
-    button.ytp-fullscreen-button {
+    /* Hide fullscreen and theater mode buttons in popup */
+    button.ytp-fullscreen-button,
+    button.ytp-size-button {
         display: none !important;
     }
 `;
+
+
 
 /**
  * Creates a new pop-up window and stores its ID.
