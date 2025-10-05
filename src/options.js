@@ -10,6 +10,10 @@ const DEFAULT_SETTINGS = {
     // Theme settings
     themeMode: 'auto', // 'auto', 'light', 'dark'
     
+    // Picture-in-Picture settings
+    enablePiP: true,
+    pipDefaultMode: 'popup', // 'popup', 'pip', 'ask'
+    
     // Advanced settings
     autoFocus: true,
     rememberWindowState: true
@@ -74,6 +78,14 @@ function initializeI18n() {
         'themeLight',
         'themeDark',
         'themeModeHelp',
+        'pipSettingsTitle',
+        'enablePiPLabel',
+        'enablePiPHelp',
+        'pipDefaultModeLabel',
+        'pipModePopup',
+        'pipModePip',
+        'pipModeAsk',
+        'pipDefaultModeHelp',
         'advancedSettingsTitle',
         'autoFocusLabel',
         'autoFocusHelp',
@@ -146,6 +158,10 @@ function populateForm() {
     if (themeSwitchElement) {
         themeSwitchElement.checked = currentSettings.themeMode === 'dark';
     }
+    
+    // Picture-in-Picture settings
+    document.getElementById('enablePiP').checked = currentSettings.enablePiP;
+    document.getElementById('pipDefaultMode').value = currentSettings.pipDefaultMode;
     
     // Advanced settings
     document.getElementById('autoFocus').checked = currentSettings.autoFocus;
@@ -229,6 +245,10 @@ function updateSettingsFromForm() {
     
     // Theme settings
     currentSettings.themeMode = document.getElementById('themeMode').value;
+    
+    // Picture-in-Picture settings
+    currentSettings.enablePiP = document.getElementById('enablePiP').checked;
+    currentSettings.pipDefaultMode = document.getElementById('pipDefaultMode').value;
     
     // Advanced settings
     currentSettings.autoFocus = document.getElementById('autoFocus').checked;

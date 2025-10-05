@@ -202,6 +202,42 @@
     "message": "Choose your preferred color scheme",
     "description": "Help text for theme mode"
   },
+  "pipSettingsTitle": {
+    "message": "Picture-in-Picture",
+    "description": "Section title for Picture-in-Picture settings"
+  },
+  "enablePiPLabel": {
+    "message": "Enable Picture-in-Picture button",
+    "description": "Label for enabling PiP button"
+  },
+  "enablePiPHelp": {
+    "message": "Show Picture-in-Picture button in YouTube player controls",
+    "description": "Help text for PiP enable setting"
+  },
+  "pipDefaultModeLabel": {
+    "message": "Default Action Mode",
+    "description": "Label for PiP default mode setting"
+  },
+  "pipModePopup": {
+    "message": "Pop-up Window",
+    "description": "PiP mode option for popup window"
+  },
+  "pipModePip": {
+    "message": "Picture-in-Picture",
+    "description": "PiP mode option for native PiP"
+  },
+  "pipModeAsk": {
+    "message": "Ask Each Time",
+    "description": "PiP mode option to ask user"
+  },
+  "pipDefaultModeHelp": {
+    "message": "Choose the default behavior when opening videos",
+    "description": "Help text for PiP default mode"
+  },
+  "pipButtonTitle": {
+    "message": "Picture-in-Picture",
+    "description": "Tooltip for PiP button in YouTube player"
+  },
   "advancedSettingsTitle": {
     "message": "Advanced",
     "description": "Section title for advanced settings"

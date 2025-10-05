@@ -14,6 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentSection = document.getElementById('current-section');
     const historySection = document.getElementById('history-section');
 
+    // Extension settings for PiP functionality
+    let extensionSettings = {
+        enablePiP: true,
+        pipDefaultMode: 'popup'
+    };
+
     // Initialize tabs
     initializeTabs();
     
@@ -25,6 +31,67 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Load video history
     loadVideoHistory();
+
+    // Load extension settings
+    loadExtensionSettings();
+
+    async function loadExtensionSettings() {
+        try {
+            const result = await chrome.storage.local.get('extensionSettings');
+            if (result.extensionSettings) {
+                extensionSettings = result.extensionSettings;
+            }
+        } catch (error) {
+            console.error('Failed to load extension settings:', error);
+        }
+    }
+
+    // Picture-in-Picture helper functions
+    function isPiPSupported() {
+        return 'pictureInPictureEnabled' in document && document.pictureInPictureEnabled;
+    }
+
+    async function openVideoWithSettings(videoId, title) {
+        // Send addVideoToHistory message first
+        chrome.runtime.sendMessage({ 
+            action: 'addVideoToHistory', 
+            videoId: videoId,
+            title: title
+        });
+
+        // Handle different modes based on settings
+        if (extensionSettings.pipDefaultMode === 'pip' && isPiPSupported()) {
+            // Request PiP from background script
+            chrome.runtime.sendMessage({ 
+                action: 'openPiP', 
+                videoId: videoId 
+            }, (response) => {
+                if (!response || !response.success) {
+                    // Fallback to popup if PiP fails
+                    chrome.runtime.sendMessage({ action: 'openPopup', videoId: videoId });
+                }
+            });
+        } else if (extensionSettings.pipDefaultMode === 'ask' && isPiPSupported()) {
+            // Ask user which mode to use
+            const usePiP = confirm('Choose viewing mode:\n\nOK = Picture-in-Picture\nCancel = Pop-up Window');
+            if (usePiP) {
+                chrome.runtime.sendMessage({ 
+                    action: 'openPiP', 
+                    videoId: videoId 
+                }, (response) => {
+                    if (!response || !response.success) {
+                        // Fallback to popup if PiP fails
+                        chrome.runtime.sendMessage({ action: 'openPopup', videoId: videoId });
+                    }
+                });
+            } else {
+                chrome.runtime.sendMessage({ action: 'openPopup', videoId: videoId });
+            }
+        } else {
+            // Default to popup window
+            chrome.runtime.sendMessage({ action: 'openPopup', videoId: videoId });
+        }
+    }
 
     async function initializeTheme() {
         try {
@@ -336,15 +403,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         videoContent.addEventListener('click', (e) => {
-            // Send addVideoToHistory message first with video title if available
-            chrome.runtime.sendMessage({ 
-                action: 'addVideoToHistory', 
-                videoId: video.videoId,
-                title: video.title
-            });
-            
-            // Then open the popup
-            chrome.runtime.sendMessage({ action: 'openPopup', videoId: video.videoId });
+            // Open video with user's preferred settings
+            openVideoWithSettings(video.videoId, video.title);
             e.preventDefault();
             window.close();
         });

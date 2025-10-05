@@ -90,6 +90,30 @@
                     </div>
                 </section>
 
+                <!-- Picture-in-Picture Settings Section -->
+                <section class="options-section">
+                    <h2 id="pipSettingsTitle"></h2>
+                    
+                    <div class="setting-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enablePiP" class="checkbox-input" checked>
+                            <span class="checkmark"></span>
+                            <span id="enablePiPLabel"></span>
+                        </label>
+                        <small id="enablePiPHelp"></small>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="pipDefaultMode" id="pipDefaultModeLabel"></label>
+                        <select id="pipDefaultMode" class="select-input">
+                            <option value="popup" id="pipModePopup"></option>
+                            <option value="pip" id="pipModePip"></option>
+                            <option value="ask" id="pipModeAsk"></option>
+                        </select>
+                        <small id="pipDefaultModeHelp"></small>
+                    </div>
+                </section>
+
                 <!-- Advanced Settings Section -->
                 <section class="options-section">
                     <h2 id="advancedSettingsTitle"></h2>

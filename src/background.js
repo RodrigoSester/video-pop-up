@@ -12,6 +12,10 @@ const DEFAULT_SETTINGS = {
     // Theme settings
     themeMode: 'auto', // 'auto', 'light', 'dark'
     
+    // Picture-in-Picture settings
+    enablePiP: true,
+    pipDefaultMode: 'popup', // 'popup', 'pip', 'ask'
+    
     // Advanced settings
     autoFocus: true,
     rememberWindowState: true
@@ -277,6 +281,29 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'openPopup') {
         const popupUrl = `https://www.youtube.com/watch?v=${request.videoId}`;
         openOrUpdatePopup(popupUrl);
+    } else if (request.action === 'openPiP') {
+        // Handle Picture-in-Picture request
+        if (sender.tab?.id) {
+            chrome.scripting.executeScript({
+                target: { tabId: sender.tab.id },
+                func: () => {
+                    const video = document.querySelector('video.html5-main-video');
+                    if (video && 'pictureInPictureEnabled' in document && document.pictureInPictureEnabled) {
+                        return video.requestPictureInPicture().then(() => true).catch(() => false);
+                    }
+                    return false;
+                }
+            }).then(results => {
+                sendResponse({ success: results[0]?.result || false });
+            }).catch(error => {
+                console.error('PiP execution error:', error);
+                sendResponse({ success: false, error: error.message });
+            });
+        }
+        return true; // Indicate async response
+    } else if (request.action === 'getSettings') {
+        // Provide current settings to content script
+        sendResponse({ settings: currentSettings });
     } else if (request.action === 'addVideoToHistory') {
         // Handle video history tracking
         const videoData = {

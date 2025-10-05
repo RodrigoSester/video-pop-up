@@ -202,6 +202,42 @@
     "message": "Escolha seu esquema de cores preferido",
     "description": "Texto de ajuda para modo do tema"
   },
+  "pipSettingsTitle": {
+    "message": "Picture-in-Picture",
+    "description": "Título da seção para configurações de Picture-in-Picture"
+  },
+  "enablePiPLabel": {
+    "message": "Habilitar botão Picture-in-Picture",
+    "description": "Rótulo para habilitar botão PiP"
+  },
+  "enablePiPHelp": {
+    "message": "Mostrar botão Picture-in-Picture nos controles do player do YouTube",
+    "description": "Texto de ajuda para configuração de habilitação do PiP"
+  },
+  "pipDefaultModeLabel": {
+    "message": "Modo de Ação Padrão",
+    "description": "Rótulo para configuração do modo padrão do PiP"
+  },
+  "pipModePopup": {
+    "message": "Janela Pop-up",
+    "description": "Opção do modo PiP para janela pop-up"
+  },
+  "pipModePip": {
+    "message": "Picture-in-Picture",
+    "description": "Opção do modo PiP para PiP nativo"
+  },
+  "pipModeAsk": {
+    "message": "Perguntar Toda Vez",
+    "description": "Opção do modo PiP para perguntar ao usuário"
+  },
+  "pipDefaultModeHelp": {
+    "message": "Escolha o comportamento padrão ao abrir vídeos",
+    "description": "Texto de ajuda para modo padrão do PiP"
+  },
+  "pipButtonTitle": {
+    "message": "Picture-in-Picture",
+    "description": "Dica de ferramenta para botão PiP no player do YouTube"
+  },
   "advancedSettingsTitle": {
     "message": "Avançado",
     "description": "Título da seção para configurações avançadas"
