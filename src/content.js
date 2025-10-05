@@ -5,7 +5,7 @@ function addPopupButtonToPlayer() {
     if (playerControls && !playerControls.querySelector('.popup-player-btn')) {
         const button = document.createElement('button');
         button.className = 'ytp-button popup-player-btn';
-        button.title = 'Open in Pop-up Player';
+        button.title = chrome.i18n.getMessage('popupButtonTitle');
 
         const icon = document.createElement('img');
         icon.src = chrome.runtime.getURL('images/icon48.png');

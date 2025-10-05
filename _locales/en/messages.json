@@ -1,0 +1,96 @@
+{
+  "extensionName": {
+    "message": "YouTube Pop-up Player",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Watch YouTube videos in a pop-up window.",
+    "description": "Description of the extension"
+  },
+  "popupTitle": {
+    "message": "YouTube Pop-up Player",
+    "description": "Title displayed in the popup header"
+  },
+  "currentPageTab": {
+    "message": "Current Page",
+    "description": "Tab label for current page videos"
+  },
+  "historyTab": {
+    "message": "History",
+    "description": "Tab label for video history"
+  },
+  "clickVideoMessage": {
+    "message": "Click on a video below to open it in a pop-up.",
+    "description": "Instructions for current page tab"
+  },
+  "historyMessage": {
+    "message": "Your recently opened videos will appear here.",
+    "description": "Instructions for history tab"
+  },
+  "noVideosFound": {
+    "message": "Couldn't find any videos on this page. Navigate to a YouTube page with videos.",
+    "description": "Error message when no videos are found"
+  },
+  "noVideosOnPage": {
+    "message": "No videos found on this page.",
+    "description": "Message when no videos are detected on current page"
+  },
+  "clickToOpenPopup": {
+    "message": "Click a video to open it in a pop-up.",
+    "description": "Instructions when videos are available"
+  },
+  "navigateToYouTube": {
+    "message": "Please navigate to YouTube to use this extension.",
+    "description": "Message when not on YouTube"
+  },
+  "noHistoryYet": {
+    "message": "No videos in history yet. Open some videos in pop-up to see them here!",
+    "description": "Message when history is empty"
+  },
+  "historyCount": {
+    "message": "$COUNT$ video(s) in your history. Click to reopen in pop-up.",
+    "description": "Message showing number of videos in history",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "deleteFromHistory": {
+    "message": "Delete from history",
+    "description": "Tooltip for delete button"
+  },
+  "duration": {
+    "message": "Duration: $TIME$",
+    "description": "Video duration label",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5:23"
+      }
+    }
+  },
+  "durationUnknown": {
+    "message": "Duration: Unknown",
+    "description": "Label when video duration is unknown"
+  },
+  "opened": {
+    "message": "Opened: $DATE$",
+    "description": "Label showing when video was opened",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "12/25/2023 2:30 PM"
+      }
+    }
+  },
+  "popupButtonTitle": {
+    "message": "Open in Pop-up Player",
+    "description": "Tooltip for the popup button on YouTube video player"
+  },
+  "errorGettingHistory": {
+    "message": "Error loading video history.",
+    "description": "Error message when history fails to load"
+  }
+}

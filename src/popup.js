@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize i18n texts
+    initializeI18n();
+    
     const videoList = document.getElementById('video-list');
     const message = document.getElementById('message');
     const historyList = document.getElementById('history-list');
@@ -18,6 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Load video history
     loadVideoHistory();
+
+    function initializeI18n() {
+        // Set static text elements
+        document.getElementById('popup-title').textContent = chrome.i18n.getMessage('popupTitle');
+        document.getElementById('current-tab').textContent = chrome.i18n.getMessage('currentPageTab');
+        document.getElementById('history-tab').textContent = chrome.i18n.getMessage('historyTab');
+        document.getElementById('message').textContent = chrome.i18n.getMessage('clickVideoMessage');
+        document.getElementById('history-message').textContent = chrome.i18n.getMessage('historyMessage');
+    }
 
     function initializeTabs() {
         currentTab.addEventListener('click', () => switchTab('current'));
@@ -47,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     func: getVideoData,
                 }, (injectionResults) => {
                     if (chrome.runtime.lastError || !injectionResults || !injectionResults[0] || !injectionResults[0].result) {
-                        message.textContent = "Couldn't find any videos on this page. Navigate to a YouTube page with videos.";
+                        message.textContent = chrome.i18n.getMessage('noVideosFound');
                         console.error("Script injection failed or no result:", chrome.runtime.lastError);
                         return;
                     }
@@ -56,16 +68,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     displayCurrentVideos(videos);
                 });
             } else {
-                message.textContent = "Please navigate to YouTube to use this extension.";
+                message.textContent = chrome.i18n.getMessage('navigateToYouTube');
             }
         });
     }
 
     function displayCurrentVideos(videos) {
         if (videos.length === 0) {
-            message.textContent = "No videos found on this page.";
+            message.textContent = chrome.i18n.getMessage('noVideosOnPage');
         } else {
-            message.textContent = "Click a video to open it in a pop-up.";
+            message.textContent = chrome.i18n.getMessage('clickToOpenPopup');
             videos.forEach((video) => {
                 const listItem = createVideoListItem(video, 'current');
                 videoList.appendChild(listItem);
@@ -77,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chrome.runtime.sendMessage({ action: 'getVideoHistory' }, (response) => {
             if (chrome.runtime.lastError) {
                 console.error('Error getting video history:', JSON.stringify(chrome.runtime.lastError));
-                historyMessage.textContent = chrome.runtime.lastError.message;;
+                historyMessage.textContent = chrome.i18n.getMessage('errorGettingHistory');
                 return;
             }
             
@@ -90,9 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
         historyList.innerHTML = ''; // Clear existing items
         
         if (history.length === 0) {
-            historyMessage.textContent = "No videos in history yet. Open some videos in pop-up to see them here!";
+            historyMessage.textContent = chrome.i18n.getMessage('noHistoryYet');
         } else {
-            historyMessage.textContent = `${history.length} video(s) in your history. Click to reopen in pop-up.`;
+            historyMessage.textContent = chrome.i18n.getMessage('historyCount', [history.length.toString()]);
             history.forEach((video) => {
                 const listItem = createVideoListItem(video, 'history');
                 historyList.appendChild(listItem);
@@ -116,10 +128,13 @@ document.addEventListener('DOMContentLoaded', () => {
         videoMeta.className = 'video-meta';
         
         if (type === 'current') {
-            videoMeta.textContent = video.minutes ? `Duration: ${video.minutes}` : 'Duration: Unknown';
+            videoMeta.textContent = video.minutes 
+                ? chrome.i18n.getMessage('duration', [video.minutes])
+                : chrome.i18n.getMessage('durationUnknown');
         } else {
             const date = new Date(video.timestamp || video.dateAdded);
-            videoMeta.textContent = `Opened: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+            const dateString = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+            videoMeta.textContent = chrome.i18n.getMessage('opened', [dateString]);
         }
         
         videoContent.appendChild(videoTitle);
@@ -130,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (type === 'history') {
             const deleteButton = document.createElement('button');
             deleteButton.className = 'delete-btn';
-            deleteButton.title = 'Delete from history';
+            deleteButton.title = chrome.i18n.getMessage('deleteFromHistory');
             deleteButton.innerHTML = '🗑️'; // Trash can emoji
             
             deleteButton.addEventListener('click', (e) => {
@@ -148,9 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Update the history message if no items left
                 const remainingItems = historyList.querySelectorAll('.video-item').length;
                 if (remainingItems === 0) {
-                    historyMessage.textContent = "No videos in history yet. Open some videos in pop-up to see them here!";
+                    historyMessage.textContent = chrome.i18n.getMessage('noHistoryYet');
                 } else {
-                    historyMessage.textContent = `${remainingItems} video(s) in your history. Click to reopen in pop-up.`;
+                    historyMessage.textContent = chrome.i18n.getMessage('historyCount', [remainingItems.toString()]);
                 }
             });
             

@@ -1,0 +1,96 @@
+{
+  "extensionName": {
+    "message": "YouTube Pop-up Player",
+    "description": "Nombre de la extensión"
+  },
+  "extensionDescription": {
+    "message": "Mira videos de YouTube en una ventana emergente.",
+    "description": "Descripción de la extensión"
+  },
+  "popupTitle": {
+    "message": "YouTube Pop-up Player",
+    "description": "Título mostrado en el encabezado del popup"
+  },
+  "currentPageTab": {
+    "message": "Página Actual",
+    "description": "Etiqueta de pestaña para videos de página actual"
+  },
+  "historyTab": {
+    "message": "Historial",
+    "description": "Etiqueta de pestaña para historial de videos"
+  },
+  "clickVideoMessage": {
+    "message": "Haz clic en un video de abajo para abrirlo en pop-up.",
+    "description": "Instrucciones para la pestaña de página actual"
+  },
+  "historyMessage": {
+    "message": "Tus videos abiertos recientemente aparecerán aquí.",
+    "description": "Instrucciones para la pestaña de historial"
+  },
+  "noVideosFound": {
+    "message": "No se pudieron encontrar videos en esta página. Navega a una página de YouTube con videos.",
+    "description": "Mensaje de error cuando no se encuentran videos"
+  },
+  "noVideosOnPage": {
+    "message": "No se encontraron videos en esta página.",
+    "description": "Mensaje cuando no se detectan videos en la página actual"
+  },
+  "clickToOpenPopup": {
+    "message": "Haz clic en un video para abrirlo en pop-up.",
+    "description": "Instrucciones cuando hay videos disponibles"
+  },
+  "navigateToYouTube": {
+    "message": "Por favor navega a YouTube para usar esta extensión.",
+    "description": "Mensaje cuando no está en YouTube"
+  },
+  "noHistoryYet": {
+    "message": "Aún no hay videos en el historial. ¡Abre algunos videos en pop-up para verlos aquí!",
+    "description": "Mensaje cuando el historial está vacío"
+  },
+  "historyCount": {
+    "message": "$COUNT$ video(s) en tu historial. Haz clic para reabrir en pop-up.",
+    "description": "Mensaje mostrando número de videos en historial",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "deleteFromHistory": {
+    "message": "Eliminar del historial",
+    "description": "Tooltip del botón eliminar"
+  },
+  "duration": {
+    "message": "Duración: $TIME$",
+    "description": "Etiqueta de duración del video",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "5:23"
+      }
+    }
+  },
+  "durationUnknown": {
+    "message": "Duración: Desconocida",
+    "description": "Etiqueta cuando la duración del video es desconocida"
+  },
+  "opened": {
+    "message": "Abierto: $DATE$",
+    "description": "Etiqueta mostrando cuándo se abrió el video",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "25/12/2023 14:30"
+      }
+    }
+  },
+  "popupButtonTitle": {
+    "message": "Abrir en Reproductor Pop-up",
+    "description": "Tooltip del botón popup en el reproductor de video de YouTube"
+  },
+  "errorGettingHistory": {
+    "message": "Error al cargar el historial de videos.",
+    "description": "Mensaje de error cuando el historial falla al cargar"
+  }
+}
