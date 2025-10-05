@@ -92,5 +92,233 @@
   "errorGettingHistory": {
     "message": "Error loading video history.",
     "description": "Error message when history fails to load"
+  },
+  "optionsTitle": {
+    "message": "YouTube Pop-up Player - Options",
+    "description": "Title of the options page"
+  },
+  "optionsPageTitle": {
+    "message": "YouTube Pop-up Player Settings",
+    "description": "Main heading of options page"
+  },
+  "themeToggleLabel": {
+    "message": "Dark Mode",
+    "description": "Label for theme toggle switch"
+  },
+  "windowSettingsTitle": {
+    "message": "Window Settings",
+    "description": "Section title for window configuration"
+  },
+  "windowWidthLabel": {
+    "message": "Window Width (px)",
+    "description": "Label for window width setting"
+  },
+  "windowWidthHelp": {
+    "message": "Default: 854px (min: 400px, max: 2000px)",
+    "description": "Help text for window width"
+  },
+  "windowHeightLabel": {
+    "message": "Window Height (px)",
+    "description": "Label for window height setting"
+  },
+  "windowHeightHelp": {
+    "message": "Default: 480px (min: 300px, max: 1500px)",
+    "description": "Help text for window height"
+  },
+  "windowPositionLabel": {
+    "message": "Window Position",
+    "description": "Label for window position setting"
+  },
+  "positionCenter": {
+    "message": "Center of Screen",
+    "description": "Window position option"
+  },
+  "positionTopLeft": {
+    "message": "Top Left",
+    "description": "Window position option"
+  },
+  "positionTopRight": {
+    "message": "Top Right",
+    "description": "Window position option"
+  },
+  "positionBottomLeft": {
+    "message": "Bottom Left",
+    "description": "Window position option"
+  },
+  "positionBottomRight": {
+    "message": "Bottom Right",
+    "description": "Window position option"
+  },
+  "positionCustom": {
+    "message": "Custom Position",
+    "description": "Window position option"
+  },
+  "customXLabel": {
+    "message": "X Position (px)",
+    "description": "Label for custom X position"
+  },
+  "customYLabel": {
+    "message": "Y Position (px)",
+    "description": "Label for custom Y position"
+  },
+  "customPositionHelp": {
+    "message": "Set exact pixel coordinates for window placement",
+    "description": "Help text for custom position"
+  },
+  "alwaysOnTopLabel": {
+    "message": "Always keep pop-up window on top",
+    "description": "Label for always on top setting"
+  },
+  "alwaysOnTopHelp": {
+    "message": "Window will stay above other applications",
+    "description": "Help text for always on top"
+  },
+  "historySettingsTitle": {
+    "message": "History Settings",
+    "description": "Section title for history configuration"
+  },
+  "historyLimitLabel": {
+    "message": "Maximum Videos in History",
+    "description": "Label for history limit setting"
+  },
+  "historyLimitHelp": {
+    "message": "Default: 50 videos (min: 10, max: 200)",
+    "description": "Help text for history limit"
+  },
+  "historyDurationLabel": {
+    "message": "Keep History For",
+    "description": "Label for history duration setting"
+  },
+  "duration7Days": {
+    "message": "7 Days",
+    "description": "History duration option"
+  },
+  "duration30Days": {
+    "message": "30 Days",
+    "description": "History duration option"
+  },
+  "duration90Days": {
+    "message": "90 Days",
+    "description": "History duration option"
+  },
+  "duration180Days": {
+    "message": "6 Months",
+    "description": "History duration option"
+  },
+  "duration365Days": {
+    "message": "1 Year",
+    "description": "History duration option"
+  },
+  "durationForever": {
+    "message": "Keep Forever",
+    "description": "History duration option"
+  },
+  "historyDurationHelp": {
+    "message": "Automatically remove videos older than selected time",
+    "description": "Help text for history duration"
+  },
+  "clearHistoryText": {
+    "message": "Clear All History",
+    "description": "Button text for clearing history"
+  },
+  "clearHistoryHelp": {
+    "message": "Permanently delete all video history",
+    "description": "Help text for clear history button"
+  },
+  "themeSettingsTitle": {
+    "message": "Appearance",
+    "description": "Section title for theme settings"
+  },
+  "themeModeLabel": {
+    "message": "Theme Mode",
+    "description": "Label for theme mode setting"
+  },
+  "themeAuto": {
+    "message": "System Default",
+    "description": "Theme mode option"
+  },
+  "themeLight": {
+    "message": "Light Mode",
+    "description": "Theme mode option"
+  },
+  "themeDark": {
+    "message": "Dark Mode",
+    "description": "Theme mode option"
+  },
+  "themeModeHelp": {
+    "message": "Choose your preferred color scheme",
+    "description": "Help text for theme mode"
+  },
+  "advancedSettingsTitle": {
+    "message": "Advanced",
+    "description": "Section title for advanced settings"
+  },
+  "autoFocusLabel": {
+    "message": "Auto-focus pop-up window when opened",
+    "description": "Label for auto focus setting"
+  },
+  "autoFocusHelp": {
+    "message": "Automatically bring pop-up window to foreground",
+    "description": "Help text for auto focus"
+  },
+  "rememberWindowStateLabel": {
+    "message": "Remember window size and position",
+    "description": "Label for remember window state setting"
+  },
+  "rememberWindowStateHelp": {
+    "message": "Save window changes for next time",
+    "description": "Help text for remember window state"
+  },
+  "saveText": {
+    "message": "Save Settings",
+    "description": "Save button text"
+  },
+  "resetText": {
+    "message": "Reset to Defaults",
+    "description": "Reset button text"
+  },
+  "settingsSaved": {
+    "message": "Settings saved successfully!",
+    "description": "Success message when settings are saved"
+  },
+  "settingsReset": {
+    "message": "Settings reset to defaults",
+    "description": "Message when settings are reset"
+  },
+  "confirmReset": {
+    "message": "Are you sure you want to reset all settings to default values?",
+    "description": "Confirmation dialog for resetting settings"
+  },
+  "confirmClearHistory": {
+    "message": "Are you sure you want to clear all video history? This cannot be undone.",
+    "description": "Confirmation dialog for clearing history"
+  },
+  "historyClearedSuccess": {
+    "message": "Video history cleared successfully",
+    "description": "Success message when history is cleared"
+  },
+  "errorLoadingSettings": {
+    "message": "Error loading settings",
+    "description": "Error message when settings fail to load"
+  },
+  "errorSavingSettings": {
+    "message": "Error saving settings",
+    "description": "Error message when settings fail to save"
+  },
+  "errorClearingHistory": {
+    "message": "Error clearing history",
+    "description": "Error message when history clearing fails"
+  },
+  "invalidWindowWidth": {
+    "message": "Window width must be between 400 and 2000 pixels",
+    "description": "Validation error for window width"
+  },
+  "invalidWindowHeight": {
+    "message": "Window height must be between 300 and 1500 pixels",
+    "description": "Validation error for window height"
+  },
+  "invalidHistoryLimit": {
+    "message": "History limit must be between 10 and 200 videos",
+    "description": "Validation error for history limit"
   }
 }

@@ -1,5 +1,80 @@
 let popupWindowId = null;
 
+// Default configuration settings (shared with options.js)
+const DEFAULT_SETTINGS = {
+    // Window settings
+    windowWidth: 854,
+    windowHeight: 480,
+    windowPosition: 'center',
+    customX: 100,
+    customY: 100,
+    alwaysOnTop: false,
+    
+    // History settings
+    historyLimit: 50,
+    historyDuration: 30, // days, 0 = forever
+    
+    // Theme settings
+    themeMode: 'auto', // 'auto', 'light', 'dark'
+    
+    // Advanced settings
+    autoFocus: true,
+    rememberWindowState: true
+};
+
+let currentSettings = { ...DEFAULT_SETTINGS };
+
+// --- Settings Management ---
+/**
+ * Load settings from chrome storage
+ */
+async function loadSettings() {
+    try {
+        const result = await chrome.storage.local.get('extensionSettings');
+        if (result.extensionSettings) {
+            currentSettings = { ...DEFAULT_SETTINGS, ...result.extensionSettings };
+        }
+        console.log('Settings loaded:', currentSettings);
+    } catch (error) {
+        console.error('Failed to load settings:', error);
+        currentSettings = { ...DEFAULT_SETTINGS };
+    }
+}
+
+/**
+ * Get current settings
+ */
+function getSettings() {
+    return currentSettings;
+}
+
+/**
+ * Clean up old history entries based on settings
+ */
+async function cleanupOldHistory() {
+    if (currentSettings.historyDuration === 0) {
+        return; // Keep forever
+    }
+    
+    try {
+        const history = await getVideoHistory();
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - currentSettings.historyDuration);
+        
+        const filteredHistory = history.filter(item => {
+            const itemDate = new Date(item.dateAdded || item.timestamp || 0);
+            return itemDate > cutoffDate;
+        });
+        
+        if (filteredHistory.length !== history.length) {
+            await chrome.storage.local.set({ videoHistory: filteredHistory });
+            console.log(`Cleaned up ${history.length - filteredHistory.length} old history entries`);
+        }
+    } catch (error) {
+        console.error('Failed to cleanup old history:', error);
+    }
+}
+
 // --- Video History Management ---
 /**
  * Initialize video history storage
@@ -64,8 +139,8 @@ function addVideoToHistory(videoData) {
             history.unshift(historyEntry);
         }
         
-        // Keep only last 50 videos to prevent storage bloat
-        const trimmedHistory = history.slice(0, 50);
+        // Keep only last N videos based on settings
+        const trimmedHistory = history.slice(0, currentSettings.historyLimit);
         
         return chrome.storage.local.set({ videoHistory: trimmedHistory });
     }).then(() => {
@@ -121,14 +196,15 @@ function getVideoTitle(tabId) {
 
 // Initialize storage when extension starts
 initializeVideoHistory();
+loadSettings();
 
 /**
  * A reusable function to either create a new pop-up window or update the existing one.
  * @param {string} url The URL to load in the pop-up.
  */
 function openOrUpdatePopup(url) {
-    const windowWidth = 854;
-    const windowHeight = 480;
+    const windowWidth = currentSettings.windowWidth;
+    const windowHeight = currentSettings.windowHeight;
 
     // Check if the popup window already exists.
     if (popupWindowId !== null) {
@@ -291,18 +367,48 @@ const css = `
  */
 function createPopupWindow(url, width, height) {
     chrome.windows.getLastFocused((lastWindow) => {
-        // Calculate the position to center the new window relative to the last focused window.
-        const top = lastWindow.top + Math.round((lastWindow.height - height) / 2);
-        const left = lastWindow.left + Math.round((lastWindow.width - width) / 2);
+        // Calculate position based on settings
+        let top, left;
+        
+        switch (currentSettings.windowPosition) {
+            case 'top-left':
+                top = lastWindow.top + 50;
+                left = lastWindow.left + 50;
+                break;
+            case 'top-right':
+                top = lastWindow.top + 50;
+                left = lastWindow.left + lastWindow.width - width - 50;
+                break;
+            case 'bottom-left':
+                top = lastWindow.top + lastWindow.height - height - 50;
+                left = lastWindow.left + 50;
+                break;
+            case 'bottom-right':
+                top = lastWindow.top + lastWindow.height - height - 50;
+                left = lastWindow.left + lastWindow.width - width - 50;
+                break;
+            case 'custom':
+                top = currentSettings.customY;
+                left = currentSettings.customX;
+                break;
+            case 'center':
+            default:
+                top = lastWindow.top + Math.round((lastWindow.height - height) / 2);
+                left = lastWindow.left + Math.round((lastWindow.width - width) / 2);
+                break;
+        }
 
-        chrome.windows.create({
+        const windowOptions = {
             url: url,
             type: 'popup',
             width: width,
             height: height,
             top: top,
-            left: left
-        }, (newWindow) => {
+            left: left,
+            focused: currentSettings.autoFocus
+        };
+
+        chrome.windows.create(windowOptions, (newWindow) => {
             popupWindowId = newWindow.id;
 
             // Get the tabId of the first tab in the new popup window
@@ -337,4 +443,22 @@ chrome.windows.onRemoved.addListener((windowId) => {
         popupWindowId = null;
     }
 });
+
+// Listen for settings changes
+chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && changes.extensionSettings) {
+        console.log('Settings changed, reloading...');
+        loadSettings();
+    }
+});
+
+// Periodic cleanup of old history entries (run every hour)
+setInterval(() => {
+    cleanupOldHistory();
+}, 60 * 60 * 1000); // 1 hour in milliseconds
+
+// Initial cleanup on startup
+setTimeout(() => {
+    cleanupOldHistory();
+}, 5000); // Wait 5 seconds after startup
 

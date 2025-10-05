@@ -1,13 +1,53 @@
+/* CSS Variables for Theme Support */
+:root {
+    --popup-bg-color: #1a1a1a;
+    --popup-text-color: #ffffff;
+    --popup-text-muted: #888;
+    --popup-border-color: #333;
+    --popup-hover-bg: #2a2a2a;
+    --popup-active-bg: #1e1e1e;
+    --popup-accent-color: #4a9eff;
+    --popup-surface-color: #2c2c2c;
+    --popup-shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* Light Theme Variables */
+.light-theme {
+    --popup-bg-color: #ffffff;
+    --popup-text-color: #212121;
+    --popup-text-muted: #666;
+    --popup-border-color: #e0e0e0;
+    --popup-hover-bg: #f5f5f5;
+    --popup-active-bg: #f0f0f0;
+    --popup-accent-color: #1976d2;
+    --popup-surface-color: #f9f9f9;
+    --popup-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Theme Variables (explicit) */
+.dark-theme {
+    --popup-bg-color: #1a1a1a;
+    --popup-text-color: #ffffff;
+    --popup-text-muted: #888;
+    --popup-border-color: #333;
+    --popup-hover-bg: #2a2a2a;
+    --popup-active-bg: #1e1e1e;
+    --popup-accent-color: #4a9eff;
+    --popup-surface-color: #2c2c2c;
+    --popup-shadow: rgba(0, 0, 0, 0.5);
+}
+
 /* For the popup.html */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-    background-color: #1a1a1a !important;
-    color: #ffffff !important;
+    background-color: var(--popup-bg-color) !important;
+    color: var(--popup-text-color) !important;
     width: 500px !important;
     min-width: 500px !important;
     border-radius: 8px !important;
     padding: 16px !important;
     margin: 0 !important;
+    transition: background-color 0.3s ease, color 0.3s ease !important;
 }
 
 .items-center {
@@ -18,7 +58,7 @@ body {
 /* Tab Navigation */
 .tab-navigation {
     display: flex !important;
-    border-bottom: 1px solid #333 !important;
+    border-bottom: 1px solid var(--popup-border-color) !important;
     margin-bottom: 16px !important;
 }
 
@@ -27,7 +67,7 @@ body {
     padding: 10px 16px !important;
     background: none !important;
     border: none !important;
-    color: #888 !important;
+    color: var(--popup-text-muted) !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     font-size: 14px !important;
@@ -35,14 +75,14 @@ body {
 }
 
 .tab-button:hover {
-    color: #ffffff !important;
-    background-color: #2a2a2a !important;
+    color: var(--popup-text-color) !important;
+    background-color: var(--popup-hover-bg) !important;
 }
 
 .tab-button.active {
-    color: #4a9eff !important;
-    border-bottom: 2px solid #4a9eff !important;
-    background-color: #1e1e1e !important;
+    color: var(--popup-accent-color) !important;
+    border-bottom: 2px solid var(--popup-accent-color) !important;
+    background-color: var(--popup-active-bg) !important;
 }
 
 /* Tab Content */
@@ -61,7 +101,7 @@ body {
     justify-content: space-between !important;
     padding: 12px !important;
     margin-bottom: 8px !important;
-    background-color: #2a2a2a !important;
+    background-color: var(--popup-surface-color) !important;
     border-radius: 6px !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
@@ -69,8 +109,8 @@ body {
 }
 
 .video-item:hover {
-    background-color: #3a3a3a !important;
-    border-color: #4a9eff !important;
+    background-color: var(--popup-hover-bg) !important;
+    border-color: var(--popup-accent-color) !important;
     transform: translateY(-1px) !important;
 }
 
@@ -80,7 +120,7 @@ body {
 }
 
 .video-title {
-    color: #ffffff !important;
+    color: var(--popup-text-color) !important;
     font-size: 14px !important;
     font-weight: 500 !important;
     margin-bottom: 4px !important;
@@ -93,14 +133,14 @@ body {
 }
 
 .video-meta {
-    color: #888 !important;
+    color: var(--popup-text-muted) !important;
     font-size: 12px !important;
     line-height: 1.3 !important;
 }
 
 /* Messages */
 #message, #history-message {
-    color: #888 !important;
+    color: var(--popup-text-muted) !important;
     font-size: 13px !important;
     margin-bottom: 16px !important;
     text-align: center !important;
@@ -122,23 +162,23 @@ body {
 }
 
 #video-list::-webkit-scrollbar-track, #history-list::-webkit-scrollbar-track {
-    background: #1a1a1a !important;
+    background: var(--popup-bg-color) !important;
 }
 
 #video-list::-webkit-scrollbar-thumb, #history-list::-webkit-scrollbar-thumb {
-    background: #444 !important;
+    background: var(--popup-border-color) !important;
     border-radius: 3px !important;
 }
 
 #video-list::-webkit-scrollbar-thumb:hover, #history-list::-webkit-scrollbar-thumb:hover {
-    background: #555 !important;
+    background: var(--popup-text-muted) !important;
 }
 
 /* Delete Button */
 .delete-btn {
     background: none !important;
     border: none !important;
-    color: #888 !important;
+    color: var(--popup-text-muted) !important;
     cursor: pointer !important;
     font-size: 16px !important;
     padding: 8px !important;

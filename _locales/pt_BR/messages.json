@@ -92,5 +92,233 @@
   "errorGettingHistory": {
     "message": "Erro ao carregar histórico de vídeos.",
     "description": "Mensagem de erro quando o histórico falha ao carregar"
+  },
+  "optionsTitle": {
+    "message": "YouTube Pop-up Player - Opções",
+    "description": "Título da página de opções"
+  },
+  "optionsPageTitle": {
+    "message": "Configurações do YouTube Pop-up Player",
+    "description": "Título principal da página de opções"
+  },
+  "themeToggleLabel": {
+    "message": "Modo Escuro",
+    "description": "Rótulo para o interruptor de tema"
+  },
+  "windowSettingsTitle": {
+    "message": "Configurações da Janela",
+    "description": "Título da seção para configuração da janela"
+  },
+  "windowWidthLabel": {
+    "message": "Largura da Janela (px)",
+    "description": "Rótulo para configuração da largura da janela"
+  },
+  "windowWidthHelp": {
+    "message": "Padrão: 854px (mín: 400px, máx: 2000px)",
+    "description": "Texto de ajuda para largura da janela"
+  },
+  "windowHeightLabel": {
+    "message": "Altura da Janela (px)",
+    "description": "Rótulo para configuração da altura da janela"
+  },
+  "windowHeightHelp": {
+    "message": "Padrão: 480px (mín: 300px, máx: 1500px)",
+    "description": "Texto de ajuda para altura da janela"
+  },
+  "windowPositionLabel": {
+    "message": "Posição da Janela",
+    "description": "Rótulo para configuração da posição da janela"
+  },
+  "positionCenter": {
+    "message": "Centro da Tela",
+    "description": "Opção de posição da janela"
+  },
+  "positionTopLeft": {
+    "message": "Superior Esquerdo",
+    "description": "Opção de posição da janela"
+  },
+  "positionTopRight": {
+    "message": "Superior Direito",
+    "description": "Opção de posição da janela"
+  },
+  "positionBottomLeft": {
+    "message": "Inferior Esquerdo",
+    "description": "Opção de posição da janela"
+  },
+  "positionBottomRight": {
+    "message": "Inferior Direito",
+    "description": "Opção de posição da janela"
+  },
+  "positionCustom": {
+    "message": "Posição Personalizada",
+    "description": "Opção de posição da janela"
+  },
+  "customXLabel": {
+    "message": "Posição X (px)",
+    "description": "Rótulo para posição X personalizada"
+  },
+  "customYLabel": {
+    "message": "Posição Y (px)",
+    "description": "Rótulo para posição Y personalizada"
+  },
+  "customPositionHelp": {
+    "message": "Defina coordenadas exatas em pixels para o posicionamento da janela",
+    "description": "Texto de ajuda para posição personalizada"
+  },
+  "alwaysOnTopLabel": {
+    "message": "Sempre manter janela pop-up em primeiro plano",
+    "description": "Rótulo para configuração sempre em primeiro plano"
+  },
+  "alwaysOnTopHelp": {
+    "message": "A janela ficará acima de outras aplicações",
+    "description": "Texto de ajuda para sempre em primeiro plano"
+  },
+  "historySettingsTitle": {
+    "message": "Configurações do Histórico",
+    "description": "Título da seção para configuração do histórico"
+  },
+  "historyLimitLabel": {
+    "message": "Máximo de Vídeos no Histórico",
+    "description": "Rótulo para configuração do limite do histórico"
+  },
+  "historyLimitHelp": {
+    "message": "Padrão: 50 vídeos (mín: 10, máx: 200)",
+    "description": "Texto de ajuda para limite do histórico"
+  },
+  "historyDurationLabel": {
+    "message": "Manter Histórico Por",
+    "description": "Rótulo para configuração da duração do histórico"
+  },
+  "duration7Days": {
+    "message": "7 Dias",
+    "description": "Opção de duração do histórico"
+  },
+  "duration30Days": {
+    "message": "30 Dias",
+    "description": "Opção de duração do histórico"
+  },
+  "duration90Days": {
+    "message": "90 Dias",
+    "description": "Opção de duração do histórico"
+  },
+  "duration180Days": {
+    "message": "6 Meses",
+    "description": "Opção de duração do histórico"
+  },
+  "duration365Days": {
+    "message": "1 Ano",
+    "description": "Opção de duração do histórico"
+  },
+  "durationForever": {
+    "message": "Manter Para Sempre",
+    "description": "Opção de duração do histórico"
+  },
+  "historyDurationHelp": {
+    "message": "Remove automaticamente vídeos mais antigos que o tempo selecionado",
+    "description": "Texto de ajuda para duração do histórico"
+  },
+  "clearHistoryText": {
+    "message": "Limpar Todo o Histórico",
+    "description": "Texto do botão para limpar histórico"
+  },
+  "clearHistoryHelp": {
+    "message": "Deletar permanentemente todo o histórico de vídeos",
+    "description": "Texto de ajuda para botão limpar histórico"
+  },
+  "themeSettingsTitle": {
+    "message": "Aparência",
+    "description": "Título da seção para configurações de tema"
+  },
+  "themeModeLabel": {
+    "message": "Modo do Tema",
+    "description": "Rótulo para configuração do modo do tema"
+  },
+  "themeAuto": {
+    "message": "Padrão do Sistema",
+    "description": "Opção do modo do tema"
+  },
+  "themeLight": {
+    "message": "Modo Claro",
+    "description": "Opção do modo do tema"
+  },
+  "themeDark": {
+    "message": "Modo Escuro",
+    "description": "Opção do modo do tema"
+  },
+  "themeModeHelp": {
+    "message": "Escolha seu esquema de cores preferido",
+    "description": "Texto de ajuda para modo do tema"
+  },
+  "advancedSettingsTitle": {
+    "message": "Avançado",
+    "description": "Título da seção para configurações avançadas"
+  },
+  "autoFocusLabel": {
+    "message": "Focar automaticamente na janela pop-up ao abrir",
+    "description": "Rótulo para configuração de foco automático"
+  },
+  "autoFocusHelp": {
+    "message": "Trazer automaticamente a janela pop-up para primeiro plano",
+    "description": "Texto de ajuda para foco automático"
+  },
+  "rememberWindowStateLabel": {
+    "message": "Lembrar tamanho e posição da janela",
+    "description": "Rótulo para configuração de lembrar estado da janela"
+  },
+  "rememberWindowStateHelp": {
+    "message": "Salvar alterações da janela para a próxima vez",
+    "description": "Texto de ajuda para lembrar estado da janela"
+  },
+  "saveText": {
+    "message": "Salvar Configurações",
+    "description": "Texto do botão salvar"
+  },
+  "resetText": {
+    "message": "Restaurar Padrões",
+    "description": "Texto do botão resetar"
+  },
+  "settingsSaved": {
+    "message": "Configurações salvas com sucesso!",
+    "description": "Mensagem de sucesso quando configurações são salvas"
+  },
+  "settingsReset": {
+    "message": "Configurações restauradas para os padrões",
+    "description": "Mensagem quando configurações são resetadas"
+  },
+  "confirmReset": {
+    "message": "Tem certeza de que deseja restaurar todas as configurações para os valores padrão?",
+    "description": "Diálogo de confirmação para resetar configurações"
+  },
+  "confirmClearHistory": {
+    "message": "Tem certeza de que deseja limpar todo o histórico de vídeos? Isso não pode ser desfeito.",
+    "description": "Diálogo de confirmação para limpar histórico"
+  },
+  "historyClearedSuccess": {
+    "message": "Histórico de vídeos limpo com sucesso",
+    "description": "Mensagem de sucesso quando histórico é limpo"
+  },
+  "errorLoadingSettings": {
+    "message": "Erro ao carregar configurações",
+    "description": "Mensagem de erro quando configurações falham ao carregar"
+  },
+  "errorSavingSettings": {
+    "message": "Erro ao salvar configurações",
+    "description": "Mensagem de erro quando configurações falham ao salvar"
+  },
+  "errorClearingHistory": {
+    "message": "Erro ao limpar histórico",
+    "description": "Mensagem de erro quando limpeza do histórico falha"
+  },
+  "invalidWindowWidth": {
+    "message": "Largura da janela deve estar entre 400 e 2000 pixels",
+    "description": "Erro de validação para largura da janela"
+  },
+  "invalidWindowHeight": {
+    "message": "Altura da janela deve estar entre 300 e 1500 pixels",
+    "description": "Erro de validação para altura da janela"
+  },
+  "invalidHistoryLimit": {
+    "message": "Limite do histórico deve estar entre 10 e 200 vídeos",
+    "description": "Erro de validação para limite do histórico"
   }
 }

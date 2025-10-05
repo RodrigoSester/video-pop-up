@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize i18n texts
+    // Initialize theme and i18n texts
+    initializeTheme();
     initializeI18n();
     
     const videoList = document.getElementById('video-list');
@@ -21,6 +22,37 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Load video history
     loadVideoHistory();
+
+    async function initializeTheme() {
+        try {
+            // Load theme settings from storage
+            const result = await chrome.storage.local.get('extensionSettings');
+            const settings = result.extensionSettings || {};
+            const themeMode = settings.themeMode || 'auto';
+            
+            applyTheme(themeMode);
+        } catch (error) {
+            console.error('Failed to load theme settings:', error);
+            // Default to auto theme if loading fails
+            applyTheme('auto');
+        }
+    }
+
+    function applyTheme(themeMode) {
+        const body = document.body;
+        
+        // Remove existing theme classes
+        body.classList.remove('light-theme', 'dark-theme');
+        
+        if (themeMode === 'auto') {
+            // Use system preference
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            body.classList.add(prefersDark ? 'dark-theme' : 'light-theme');
+        } else {
+            // Use explicit theme
+            body.classList.add(`${themeMode}-theme`);
+        }
+    }
 
     function initializeI18n() {
         // Set static text elements
@@ -219,3 +251,44 @@ function getVideoData() {
     });
     return videos;
 }
+
+// Listen for settings changes (including theme changes)
+chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && changes.extensionSettings) {
+        const newSettings = changes.extensionSettings.newValue;
+        if (newSettings && newSettings.themeMode) {
+            // Apply theme function needs to be accessible globally
+            applyThemeGlobally(newSettings.themeMode);
+        }
+    }
+});
+
+// Global theme application function
+function applyThemeGlobally(themeMode) {
+    const body = document.body;
+    
+    // Remove existing theme classes
+    body.classList.remove('light-theme', 'dark-theme');
+    
+    if (themeMode === 'auto') {
+        // Use system preference
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        body.classList.add(prefersDark ? 'dark-theme' : 'light-theme');
+    } else {
+        // Use explicit theme
+        body.classList.add(`${themeMode}-theme`);
+    }
+}
+
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addListener(async (e) => {
+    try {
+        const result = await chrome.storage.local.get('extensionSettings');
+        const settings = result.extensionSettings || {};
+        if (settings.themeMode === 'auto') {
+            applyThemeGlobally('auto');
+        }
+    } catch (error) {
+        console.error('Failed to handle system theme change:', error);
+    }
+});

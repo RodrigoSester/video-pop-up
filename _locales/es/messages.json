@@ -92,5 +92,233 @@
   "errorGettingHistory": {
     "message": "Error al cargar el historial de videos.",
     "description": "Mensaje de error cuando el historial falla al cargar"
+  },
+  "optionsTitle": {
+    "message": "YouTube Pop-up Player - Opciones",
+    "description": "Título de la página de opciones"
+  },
+  "optionsPageTitle": {
+    "message": "Configuración de YouTube Pop-up Player",
+    "description": "Título principal de la página de opciones"
+  },
+  "themeToggleLabel": {
+    "message": "Modo Oscuro",
+    "description": "Etiqueta para el interruptor de tema"
+  },
+  "windowSettingsTitle": {
+    "message": "Configuración de Ventana",
+    "description": "Título de sección para configuración de ventana"
+  },
+  "windowWidthLabel": {
+    "message": "Ancho de Ventana (px)",
+    "description": "Etiqueta para configuración de ancho de ventana"
+  },
+  "windowWidthHelp": {
+    "message": "Por defecto: 854px (mín: 400px, máx: 2000px)",
+    "description": "Texto de ayuda para ancho de ventana"
+  },
+  "windowHeightLabel": {
+    "message": "Alto de Ventana (px)",
+    "description": "Etiqueta para configuración de alto de ventana"
+  },
+  "windowHeightHelp": {
+    "message": "Por defecto: 480px (mín: 300px, máx: 1500px)",
+    "description": "Texto de ayuda para alto de ventana"
+  },
+  "windowPositionLabel": {
+    "message": "Posición de Ventana",
+    "description": "Etiqueta para configuración de posición de ventana"
+  },
+  "positionCenter": {
+    "message": "Centro de Pantalla",
+    "description": "Opción de posición de ventana"
+  },
+  "positionTopLeft": {
+    "message": "Superior Izquierda",
+    "description": "Opción de posición de ventana"
+  },
+  "positionTopRight": {
+    "message": "Superior Derecha",
+    "description": "Opción de posición de ventana"
+  },
+  "positionBottomLeft": {
+    "message": "Inferior Izquierda",
+    "description": "Opción de posición de ventana"
+  },
+  "positionBottomRight": {
+    "message": "Inferior Derecha",
+    "description": "Opción de posición de ventana"
+  },
+  "positionCustom": {
+    "message": "Posición Personalizada",
+    "description": "Opción de posición de ventana"
+  },
+  "customXLabel": {
+    "message": "Posición X (px)",
+    "description": "Etiqueta para posición X personalizada"
+  },
+  "customYLabel": {
+    "message": "Posición Y (px)",
+    "description": "Etiqueta para posición Y personalizada"
+  },
+  "customPositionHelp": {
+    "message": "Establecer coordenadas exactas en píxeles para la ubicación de la ventana",
+    "description": "Texto de ayuda para posición personalizada"
+  },
+  "alwaysOnTopLabel": {
+    "message": "Siempre mantener ventana pop-up en primer plano",
+    "description": "Etiqueta para configuración siempre en primer plano"
+  },
+  "alwaysOnTopHelp": {
+    "message": "La ventana se mantendrá encima de otras aplicaciones",
+    "description": "Texto de ayuda para siempre en primer plano"
+  },
+  "historySettingsTitle": {
+    "message": "Configuración de Historial",
+    "description": "Título de sección para configuración de historial"
+  },
+  "historyLimitLabel": {
+    "message": "Máximo de Videos en Historial",
+    "description": "Etiqueta para configuración de límite de historial"
+  },
+  "historyLimitHelp": {
+    "message": "Por defecto: 50 videos (mín: 10, máx: 200)",
+    "description": "Texto de ayuda para límite de historial"
+  },
+  "historyDurationLabel": {
+    "message": "Mantener Historial Por",
+    "description": "Etiqueta para configuración de duración de historial"
+  },
+  "duration7Days": {
+    "message": "7 Días",
+    "description": "Opción de duración de historial"
+  },
+  "duration30Days": {
+    "message": "30 Días",
+    "description": "Opción de duración de historial"
+  },
+  "duration90Days": {
+    "message": "90 Días",
+    "description": "Opción de duración de historial"
+  },
+  "duration180Days": {
+    "message": "6 Meses",
+    "description": "Opción de duración de historial"
+  },
+  "duration365Days": {
+    "message": "1 Año",
+    "description": "Opción de duración de historial"
+  },
+  "durationForever": {
+    "message": "Mantener Para Siempre",
+    "description": "Opción de duración de historial"
+  },
+  "historyDurationHelp": {
+    "message": "Eliminar automáticamente videos más antiguos que el tiempo seleccionado",
+    "description": "Texto de ayuda para duración de historial"
+  },
+  "clearHistoryText": {
+    "message": "Limpiar Todo el Historial",
+    "description": "Texto del botón para limpiar historial"
+  },
+  "clearHistoryHelp": {
+    "message": "Eliminar permanentemente todo el historial de videos",
+    "description": "Texto de ayuda para botón limpiar historial"
+  },
+  "themeSettingsTitle": {
+    "message": "Apariencia",
+    "description": "Título de sección para configuración de tema"
+  },
+  "themeModeLabel": {
+    "message": "Modo de Tema",
+    "description": "Etiqueta para configuración de modo de tema"
+  },
+  "themeAuto": {
+    "message": "Por Defecto del Sistema",
+    "description": "Opción de modo de tema"
+  },
+  "themeLight": {
+    "message": "Modo Claro",
+    "description": "Opción de modo de tema"
+  },
+  "themeDark": {
+    "message": "Modo Oscuro",
+    "description": "Opción de modo de tema"
+  },
+  "themeModeHelp": {
+    "message": "Elige tu esquema de colores preferido",
+    "description": "Texto de ayuda para modo de tema"
+  },
+  "advancedSettingsTitle": {
+    "message": "Avanzado",
+    "description": "Título de sección para configuración avanzada"
+  },
+  "autoFocusLabel": {
+    "message": "Enfocar automáticamente ventana pop-up al abrir",
+    "description": "Etiqueta para configuración de enfoque automático"
+  },
+  "autoFocusHelp": {
+    "message": "Traer automáticamente la ventana pop-up al primer plano",
+    "description": "Texto de ayuda para enfoque automático"
+  },
+  "rememberWindowStateLabel": {
+    "message": "Recordar tamaño y posición de ventana",
+    "description": "Etiqueta para configuración de recordar estado de ventana"
+  },
+  "rememberWindowStateHelp": {
+    "message": "Guardar cambios de ventana para la próxima vez",
+    "description": "Texto de ayuda para recordar estado de ventana"
+  },
+  "saveText": {
+    "message": "Guardar Configuración",
+    "description": "Texto del botón guardar"
+  },
+  "resetText": {
+    "message": "Restaurar Por Defecto",
+    "description": "Texto del botón resetear"
+  },
+  "settingsSaved": {
+    "message": "¡Configuración guardada exitosamente!",
+    "description": "Mensaje de éxito cuando la configuración se guarda"
+  },
+  "settingsReset": {
+    "message": "Configuración restaurada a valores por defecto",
+    "description": "Mensaje cuando la configuración se resetea"
+  },
+  "confirmReset": {
+    "message": "¿Estás seguro de que quieres restaurar toda la configuración a los valores por defecto?",
+    "description": "Diálogo de confirmación para resetear configuración"
+  },
+  "confirmClearHistory": {
+    "message": "¿Estás seguro de que quieres limpiar todo el historial de videos? Esto no se puede deshacer.",
+    "description": "Diálogo de confirmación para limpiar historial"
+  },
+  "historyClearedSuccess": {
+    "message": "Historial de videos limpiado exitosamente",
+    "description": "Mensaje de éxito cuando el historial se limpia"
+  },
+  "errorLoadingSettings": {
+    "message": "Error al cargar configuración",
+    "description": "Mensaje de error cuando la configuración falla al cargar"
+  },
+  "errorSavingSettings": {
+    "message": "Error al guardar configuración",
+    "description": "Mensaje de error cuando la configuración falla al guardar"
+  },
+  "errorClearingHistory": {
+    "message": "Error al limpiar historial",
+    "description": "Mensaje de error cuando la limpieza del historial falla"
+  },
+  "invalidWindowWidth": {
+    "message": "El ancho de ventana debe estar entre 400 y 2000 píxeles",
+    "description": "Error de validación para ancho de ventana"
+  },
+  "invalidWindowHeight": {
+    "message": "El alto de ventana debe estar entre 300 y 1500 píxeles",
+    "description": "Error de validación para alto de ventana"
+  },
+  "invalidHistoryLimit": {
+    "message": "El límite de historial debe estar entre 10 y 200 videos",
+    "description": "Error de validación para límite de historial"
   }
 }

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="optionsTitle"></title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="options-container">
+        <header class="options-header">
+            <div class="header-content">
+                <img src="../images/icon48.png" alt="Extension Icon" class="header-icon">
+                <h1 id="optionsPageTitle"></h1>
+            </div>
+            <div class="theme-toggle">
+                <label for="themeSwitch" id="themeToggleLabel"></label>
+                <input type="checkbox" id="themeSwitch" class="theme-switch">
+                <span class="slider"></span>
+            </div>
+        </header>
+
+        <main class="options-main">
+            <form id="optionsForm" class="options-form">
+                
+                <!-- Window Settings Section -->
+                <section class="options-section">
+                    <h2 id="windowSettingsTitle"></h2>
+                    
+                    <div class="setting-group">
+                        <label for="windowWidth" id="windowWidthLabel"></label>
+                        <input type="number" id="windowWidth" min="400" max="2000" value="854" class="number-input">
+                        <small id="windowWidthHelp"></small>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="windowHeight" id="windowHeightLabel"></label>
+                        <input type="number" id="windowHeight" min="300" max="1500" value="480" class="number-input">
+                        <small id="windowHeightHelp"></small>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="windowPosition" id="windowPositionLabel"></label>
+                        <select id="windowPosition" class="select-input">
+                            <option value="center" id="positionCenter"></option>
+                            <option value="top-left" id="positionTopLeft"></option>
+                            <option value="top-right" id="positionTopRight"></option>
+                            <option value="bottom-left" id="positionBottomLeft"></option>
+                            <option value="bottom-right" id="positionBottomRight"></option>
+                            <option value="custom" id="positionCustom"></option>
+                        </select>
+                    </div>
+
+                    <div id="customPositionGroup" class="setting-group custom-position" style="display: none;">
+                        <div class="position-inputs">
+                            <div>
+                                <label for="customX" id="customXLabel"></label>
+                                <input type="number" id="customX" min="0" value="100" class="number-input">
+                            </div>
+                            <div>
+                                <label for="customY" id="customYLabel"></label>
+                                <input type="number" id="customY" min="0" value="100" class="number-input">
+                            </div>
+                        </div>
+                        <small id="customPositionHelp"></small>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="alwaysOnTop" class="checkbox-input">
+                            <span class="checkmark"></span>
+                            <span id="alwaysOnTopLabel"></span>
+                        </label>
+                        <small id="alwaysOnTopHelp"></small>
+                    </div>
+                </section>
+
+                <!-- History Settings Section -->
+                <section class="options-section">
+                    <h2 id="historySettingsTitle"></h2>
+                    
+                    <div class="setting-group">
+                        <label for="historyLimit" id="historyLimitLabel"></label>
+                        <input type="number" id="historyLimit" min="10" max="200" value="50" class="number-input">
+                        <small id="historyLimitHelp"></small>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="historyDuration" id="historyDurationLabel"></label>
+                        <select id="historyDuration" class="select-input">
+                            <option value="7" id="duration7Days"></option>
+                            <option value="30" id="duration30Days"></option>
+                            <option value="90" id="duration90Days"></option>
+                            <option value="180" id="duration180Days"></option>
+                            <option value="365" id="duration365Days"></option>
+                            <option value="0" id="durationForever"></option>
+                        </select>
+                        <small id="historyDurationHelp"></small>
+                    </div>
+
+                    <div class="setting-group">
+                        <button type="button" id="clearHistoryBtn" class="secondary-btn">
+                            <span id="clearHistoryText"></span>
+                        </button>
+                        <small id="clearHistoryHelp"></small>
+                    </div>
+                </section>
+
+                <!-- Theme Settings Section -->
+                <section class="options-section">
+                    <h2 id="themeSettingsTitle"></h2>
+                    
+                    <div class="setting-group">
+                        <label for="themeMode" id="themeModeLabel"></label>
+                        <select id="themeMode" class="select-input">
+                            <option value="auto" id="themeAuto"></option>
+                            <option value="light" id="themeLight"></option>
+                            <option value="dark" id="themeDark"></option>
+                        </select>
+                        <small id="themeModeHelp"></small>
+                    </div>
+                </section>
+
+                <!-- Advanced Settings Section -->
+                <section class="options-section">
+                    <h2 id="advancedSettingsTitle"></h2>
+                    
+                    <div class="setting-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="autoFocus" class="checkbox-input" checked>
+                            <span class="checkmark"></span>
+                            <span id="autoFocusLabel"></span>
+                        </label>
+                        <small id="autoFocusHelp"></small>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberWindowState" class="checkbox-input" checked>
+                            <span class="checkmark"></span>
+                            <span id="rememberWindowStateLabel"></span>
+                        </label>
+                        <small id="rememberWindowStateHelp"></small>
+                    </div>
+                </section>
+
+                <!-- Action Buttons -->
+                <div class="options-actions">
+                    <button type="submit" id="saveBtn" class="primary-btn">
+                        <span id="saveText"></span>
+                    </button>
+                    <button type="button" id="resetBtn" class="secondary-btn">
+                        <span id="resetText"></span>
+                    </button>
+                </div>
+            </form>
+        </main>
+
+        <!-- Status Messages -->
+        <div id="statusMessage" class="status-message" style="display: none;">
+            <span id="statusText"></span>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>
