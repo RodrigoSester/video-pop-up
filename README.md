@@ -12,16 +12,39 @@ A Chrome extension that allows you to watch YouTube videos in a dedicated pop-up
 ### 🎯 Smart Pop-up Management
 - **Window Reuse**: Opens new videos in the existing pop-up window instead of creating multiple windows
 - **Centered Positioning**: Pop-up windows are automatically centered relative to your main browser window
-- **Optimized Size**: Default 854x480 resolution for optimal video viewing
+- **Customizable Dimensions**: Configurable window size (default 854x480) through settings
+- **Auto-focus Options**: Choose whether pop-up windows automatically come to foreground
 
 ### 🎨 Enhanced Viewing Experience
 - **Fullscreen-style Layout**: Hides YouTube's header and navigation for distraction-free viewing
 - **Custom Styling**: Clean, minimalist interface optimized for the pop-up experience
 - **Responsive Design**: Video player adapts to the pop-up window dimensions
+- **Theme Support**: Light, dark, and system-based theme modes with seamless switching
 
-### 📱 Visual Indicators
-- **Badge Notification**: Extension icon shows "ON" badge when YouTube videos are detected on the page
-- **Hover Effects**: Interactive buttons with smooth opacity transitions
+### � Video History Management
+- **History Tracking**: Automatically saves opened videos with timestamps
+- **Easy Access**: Browse and reopen previously watched videos from extension popup
+- **History Controls**: Delete individual entries or clear entire history
+- **Configurable Retention**: Set how long to keep history (7 days to forever)
+- **Smart Limits**: Configurable maximum number of videos to remember
+
+### ⚙️ Comprehensive Settings
+- **Options Page**: Full-featured settings interface accessible from extension popup
+- **Window Configuration**: Customize default pop-up window dimensions
+- **History Management**: Configure retention policies and storage limits
+- **Appearance Options**: Choose between light, dark, or system-based themes
+- **Advanced Features**: Auto-focus, window state memory, and more
+
+### 🌍 Internationalization
+- **Multi-language Support**: Available in English, Portuguese, and Spanish
+- **Automatic Detection**: Uses browser language settings by default
+- **Complete Localization**: All UI elements and messages are translated
+
+### 📱 Enhanced Interface
+- **Tabbed Layout**: Separate tabs for current page videos and history
+- **Badge Notification**: Extension icon shows "ON" badge when YouTube videos are detected
+- **Interactive Elements**: Smooth hover effects and responsive design
+- **Accessibility**: Keyboard navigation and screen reader support
 
 ## 🏗️ Project Structure
 
@@ -29,11 +52,21 @@ A Chrome extension that allows you to watch YouTube videos in a dedicated pop-up
 video-pop-up/
 ├── manifest.json           # Extension configuration and permissions
 ├── src/
-│   ├── popup.html          # Extension popup interface
-│   ├── popup.js            # Popup functionality and video listing
+│   ├── popup.html          # Extension popup interface with tabbed layout
+│   ├── popup.js            # Popup functionality, video listing, and history
 │   ├── content.js          # YouTube page integration and button injection
-│   ├── background.js       # Service worker for window management
+│   ├── background.js       # Service worker for window and history management
+│   ├── options.html        # Settings/options page interface
+│   ├── options.js          # Settings management and configuration
+│   ├── options.css         # Styling for options page
 │   └── style.css           # Shared styles for popup and injected elements
+├── _locales/               # Internationalization files
+│   ├── en/
+│   │   └── messages.json   # English translations
+│   ├── es/
+│   │   └── messages.json   # Spanish translations
+│   └── pt_BR/
+│       └── messages.json   # Portuguese (Brazil) translations
 ├── images/
 │   ├── icon16.png          # 16x16 extension icon
 │   ├── icon48.png          # 48x48 extension icon
@@ -73,32 +106,49 @@ The extension will be available on the Chrome Web Store (coming soon).
 ### Method 1: Extension Popup
 1. Navigate to any YouTube page (homepage, channel, search results)
 2. Click the extension icon in your browser toolbar
-3. Browse the list of detected videos with thumbnails and titles
-4. Click any video to open it in a pop-up window
+3. **Current Page Tab**: Browse detected videos on the current page
+4. **History Tab**: Access your previously opened videos
+5. Click any video to open it in a pop-up window
 
 ### Method 2: In-Video Button
 1. Open any YouTube video
-2. Look for the new pop-up button in the video player controls (right side)
+2. Look for the pop-up button in the video player controls (right side)
 3. Click the button to open the current video in a pop-up window
+4. Video is automatically added to your history for future access
 
 ### Method 3: Direct Action
 1. Navigate to a specific YouTube video page
 2. Click the extension icon directly (no popup menu)
 3. The current video opens immediately in a pop-up window
 
+### Settings & Customization
+1. Click the extension icon to open the popup
+2. Click the settings/options button (⚙️) in the popup header
+3. Configure:
+   - **Window Settings**: Customize pop-up dimensions
+   - **History Settings**: Set retention policies and limits
+   - **Appearance**: Choose light, dark, or system theme
+   - **Advanced**: Auto-focus and window memory options
+4. Click "Save Settings" to apply changes
+
 ## 🔧 Technical Details
 
 ### Permissions Required
 - `activeTab`: Access current tab information
 - `scripting`: Inject CSS and JavaScript into YouTube pages
-- `storage`: Store extension preferences
+- `storage`: Store extension preferences, settings, and video history
 - `tabs`: Manage browser tabs
 - `windows`: Create and manage pop-up windows
-- `windowManagement`: Advanced window positioning
 
 ### Host Permissions
 - `*://www.youtube.com/*`: Full access to YouTube pages
 - `*://youtube.com/*`: Support for non-www YouTube URLs
+
+### Features Added
+- **Options UI**: Integrated settings page with `options_ui` configuration
+- **Internationalization**: Multi-language support using `default_locale` and `_locales`
+- **Enhanced Storage**: Persistent settings and video history management
+- **Improved UX**: Theme support and comprehensive customization options
 
 ### Browser Compatibility
 - ✅ Chrome (Manifest V3)
@@ -122,13 +172,14 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 🐛 Known Issues
 
-- Pop-up CSS injection requires proper host permissions
-- Some YouTube layout changes may affect button positioning
-- Extension requires page refresh after installation for full functionality
+- Some YouTube layout changes may occasionally affect button positioning (automatically adapts)
+- Pop-up CSS injection is scoped to popup windows only to prevent layout conflicts
+- Extension may require page refresh after installation for content script injection
+- History cleanup runs periodically based on retention settings
 
 ## 🔮 Future Enhancements
 
 - [ ] Keyboard shortcuts for quick pop-up creation
-- [ ] Customizable pop-up window sizes
-- [ ] Picture-in-picture mode support
-- [ ] Multiple video queue management
+- [ ] Multiple video queue management and playlists
+- [ ] Enhanced video metadata (thumbnails, channel info)
+- [ ] Advanced filtering and search in history
