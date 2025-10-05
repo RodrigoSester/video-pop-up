@@ -165,14 +165,6 @@
     "message": "Establecer coordenadas exactas en píxeles para la ubicación de la ventana",
     "description": "Texto de ayuda para posición personalizada"
   },
-  "alwaysOnTopLabel": {
-    "message": "Siempre mantener ventana pop-up en primer plano",
-    "description": "Etiqueta para configuración siempre en primer plano"
-  },
-  "alwaysOnTopHelp": {
-    "message": "La ventana se mantendrá encima de otras aplicaciones",
-    "description": "Texto de ayuda para siempre en primer plano"
-  },
   "historySettingsTitle": {
     "message": "Configuración de Historial",
     "description": "Título de sección para configuración de historial"

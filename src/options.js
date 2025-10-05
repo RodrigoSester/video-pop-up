@@ -6,8 +6,6 @@ const DEFAULT_SETTINGS = {
     windowPosition: 'center',
     customX: 100,
     customY: 100,
-    alwaysOnTop: false,
-    
     // History settings
     historyLimit: 50,
     historyDuration: 30, // days, 0 = forever
@@ -69,8 +67,6 @@ function initializeI18n() {
         'customXLabel',
         'customYLabel',
         'customPositionHelp',
-        'alwaysOnTopLabel',
-        'alwaysOnTopHelp',
         'historySettingsTitle',
         'historyLimitLabel',
         'historyLimitHelp',
@@ -154,7 +150,6 @@ function populateForm() {
     document.getElementById('windowPosition').value = currentSettings.windowPosition;
     document.getElementById('customX').value = currentSettings.customX;
     document.getElementById('customY').value = currentSettings.customY;
-    document.getElementById('alwaysOnTop').checked = currentSettings.alwaysOnTop;
     
     // History settings
     document.getElementById('historyLimit').value = currentSettings.historyLimit;
@@ -245,7 +240,6 @@ function updateSettingsFromForm() {
     currentSettings.windowPosition = document.getElementById('windowPosition').value;
     currentSettings.customX = parseInt(document.getElementById('customX').value);
     currentSettings.customY = parseInt(document.getElementById('customY').value);
-    currentSettings.alwaysOnTop = document.getElementById('alwaysOnTop').checked;
     
     // History settings
     currentSettings.historyLimit = parseInt(document.getElementById('historyLimit').value);

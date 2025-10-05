@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize tabs
     initializeTabs();
     
+    // Initialize buttons
+    initializeButtons();
+    
     // Load current page videos
     loadCurrentPageVideos();
     
@@ -61,11 +64,137 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('history-tab').textContent = chrome.i18n.getMessage('historyTab');
         document.getElementById('message').textContent = chrome.i18n.getMessage('clickVideoMessage');
         document.getElementById('history-message').textContent = chrome.i18n.getMessage('historyMessage');
+        
+        // Update clear history button text and tooltip
+        const clearHistoryPopupText = document.getElementById('clearHistoryPopupText');
+        const clearHistoryPopupBtn = document.getElementById('clearHistoryPopupBtn');
+        if (clearHistoryPopupText) {
+            clearHistoryPopupText.textContent = (chrome.i18n.getMessage('clearHistoryText') || 'Clear All');
+        }
+        if (clearHistoryPopupBtn) {
+            clearHistoryPopupBtn.title = chrome.i18n.getMessage('clearHistoryHelp') || 'Clear All History';
+        }
+        
+        // Update options button tooltip
+        const optionsBtn = document.getElementById('optionsBtn');
+        if (optionsBtn) {
+            optionsBtn.title = chrome.i18n.getMessage('optionsPageTitle') || 'Settings';
+        }
+
+        // Update theme toggle tooltip
+        const themeSwitch = document.querySelector('.switch');
+        if (themeSwitch) {
+            themeSwitch.title = chrome.i18n.getMessage('themeToggleLabel') || 'Toggle Theme';
+        }
     }
 
     function initializeTabs() {
         currentTab.addEventListener('click', () => switchTab('current'));
         historyTab.addEventListener('click', () => switchTab('history'));
+    }
+
+    // Initialize button event listeners
+    function initializeButtons() {
+        // Options button
+        const optionsBtn = document.getElementById('optionsBtn');
+        if (optionsBtn) {
+            optionsBtn.addEventListener('click', openOptionsPage);
+        }
+
+        // Clear history button in popup
+        const clearHistoryBtn = document.getElementById('clearHistoryPopupBtn');
+        if (clearHistoryBtn) {
+            clearHistoryBtn.addEventListener('click', handleClearHistoryPopup);
+        }
+
+        // Theme toggle switch
+        const themeSwitch = document.getElementById('popupThemeSwitch');
+        if (themeSwitch) {
+            themeSwitch.addEventListener('change', handleThemeToggle);
+            // Initialize switch state based on current theme
+            initializeThemeSwitch();
+        }
+    }
+
+    // Open options page
+    function openOptionsPage() {
+        chrome.runtime.openOptionsPage();
+        window.close(); // Close the popup
+    }
+
+    // Handle clear history from popup
+    async function handleClearHistoryPopup() {
+        const confirmMessage = chrome.i18n.getMessage('confirmClearHistory') || 
+            'Are you sure you want to clear all video history? This cannot be undone.';
+        
+        if (confirm(confirmMessage)) {
+            try {
+                await chrome.storage.local.set({ videoHistory: [] });
+                // Reload the history display
+                loadVideoHistory();
+                
+                // Show success message briefly
+                const historyMessage = document.getElementById('history-message');
+                const originalText = historyMessage.textContent;
+                historyMessage.textContent = chrome.i18n.getMessage('historyClearedSuccess') || 'History cleared successfully';
+                historyMessage.style.color = '#4caf50';
+                
+                setTimeout(() => {
+                    historyMessage.textContent = originalText;
+                    historyMessage.style.color = '';
+                }, 2000);
+            } catch (error) {
+                console.error('Failed to clear history:', error);
+                alert(chrome.i18n.getMessage('errorClearingHistory') || 'Error clearing history');
+            }
+        }
+    }
+
+    // Initialize theme switch state
+    async function initializeThemeSwitch() {
+        try {
+            const result = await chrome.storage.local.get('extensionSettings');
+            const settings = result.extensionSettings || {};
+            const themeMode = settings.themeMode || 'auto';
+            
+            const themeSwitch = document.getElementById('popupThemeSwitch');
+            
+            if (themeSwitch) {
+                // Set switch state based on current theme
+                if (themeMode === 'dark') {
+                    themeSwitch.checked = true;
+                } else if (themeMode === 'light') {
+                    themeSwitch.checked = false;
+                } else {
+                    // Auto mode - follow system preference
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    themeSwitch.checked = prefersDark;
+                }
+            }
+        } catch (error) {
+            console.error('Failed to initialize theme switch:', error);
+        }
+    }
+
+    // Handle theme toggle
+    async function handleThemeToggle(event) {
+        try {
+            const isDark = event.target.checked;
+            const newThemeMode = isDark ? 'dark' : 'light';
+            
+            // Update settings
+            const result = await chrome.storage.local.get('extensionSettings');
+            const settings = result.extensionSettings || {};
+            settings.themeMode = newThemeMode;
+            
+            await chrome.storage.local.set({ extensionSettings: settings });
+            
+            // Apply theme immediately
+            applyTheme(newThemeMode);
+            
+        } catch (error) {
+            console.error('Failed to toggle theme:', error);
+        }
     }
 
     function switchTab(tab) {

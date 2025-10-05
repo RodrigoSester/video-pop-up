@@ -165,14 +165,6 @@
     "message": "Set exact pixel coordinates for window placement",
     "description": "Help text for custom position"
   },
-  "alwaysOnTopLabel": {
-    "message": "Always keep pop-up window on top",
-    "description": "Label for always on top setting"
-  },
-  "alwaysOnTopHelp": {
-    "message": "Window will stay above other applications",
-    "description": "Help text for always on top"
-  },
   "historySettingsTitle": {
     "message": "History Settings",
     "description": "Section title for history configuration"

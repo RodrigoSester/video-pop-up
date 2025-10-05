@@ -8,8 +8,6 @@ const DEFAULT_SETTINGS = {
     windowPosition: 'center',
     customX: 100,
     customY: 100,
-    alwaysOnTop: false,
-    
     // History settings
     historyLimit: 50,
     historyDuration: 30, // days, 0 = forever

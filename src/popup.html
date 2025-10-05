@@ -7,9 +7,20 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body class="w-[500px] bg-gray-900 text-white p-4 font-sans">
-    <div class="flex-column items-center mb-4">
-        <img src="../images/icon48.png" alt="Logo" class="w-8 h-8 mr-2">
-        <h1 id="popup-title" class="text-lg font-bold"></h1>
+    <div class="popup-header mb-4">
+        <div class="flex items-center">
+            <img src="../images/icon48.png" alt="Logo" class="w-8 h-8 mr-2">
+            <h1 id="popup-title" class="text-lg font-bold"></h1>
+        </div>
+        <div class="header-controls">
+            <label class="switch" title="">
+                <input type="checkbox" id="popupThemeSwitch">
+                <span class="slider round"></span>
+            </label>
+            <button id="optionsBtn" class="options-btn" title="Settings">
+                ⚙️
+            </button>
+        </div>
     </div>
     
     <!-- Navigation Tabs -->
@@ -28,7 +39,12 @@
     
     <!-- History Section -->
     <div id="history-section" class="tab-content">
-        <p id="history-message" class="text-gray-400 text-sm mb-4"></p>
+        <div class="history-header mb-4">
+            <p id="history-message" class="text-gray-400 text-sm"></p>
+            <button id="clearHistoryPopupBtn" class="clear-history-btn" title="">
+                <span id="clearHistoryPopupText"></span>
+            </button>
+        </div>
         <ul id="history-list" class="space-y-2">
             <!-- History videos will be listed here -->
         </ul>

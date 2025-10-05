@@ -165,14 +165,6 @@
     "message": "Defina coordenadas exatas em pixels para o posicionamento da janela",
     "description": "Texto de ajuda para posição personalizada"
   },
-  "alwaysOnTopLabel": {
-    "message": "Sempre manter janela pop-up em primeiro plano",
-    "description": "Rótulo para configuração sempre em primeiro plano"
-  },
-  "alwaysOnTopHelp": {
-    "message": "A janela ficará acima de outras aplicações",
-    "description": "Texto de ajuda para sempre em primeiro plano"
-  },
   "historySettingsTitle": {
     "message": "Configurações do Histórico",
     "description": "Título da seção para configuração do histórico"

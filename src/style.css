@@ -225,3 +225,159 @@ div .ytp-chrome-bottom .ytp-chrome-controls .ytp-right-controls {
     text-align: -webkit-center !important;
     flex-direction: row !important;
 }
+
+/* Popup Header */
+.popup-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.header-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* W3Schools-style Toggle Switch */
+.switch {
+    position: relative !important;
+    display: inline-block !important;
+    width: 50px !important;
+    height: 24px !important;
+    margin-right: 8px !important;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* The slider */
+.slider {
+    position: absolute !important;
+    cursor: pointer !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background-color: var(--popup-border-color) !important;
+    transition: all 0.3s ease !important;
+    border: 1px solid var(--popup-border-color) !important;
+}
+
+.slider:before {
+    position: absolute !important;
+    content: "☀️" !important;
+    height: 18px !important;
+    width: 18px !important;
+    left: 2px !important;
+    bottom: 2px !important;
+    background-color: var(--popup-bg-color) !important;
+    transition: all 0.3s ease !important;
+    border: 1px solid var(--popup-text-muted) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 10px !important;
+}
+
+/* When checkbox is checked */
+input:checked + .slider {
+    background-color: var(--popup-accent-color) !important;
+    border-color: var(--popup-accent-color) !important;
+}
+
+/* Move slider when checked */
+input:checked + .slider:before {
+    transform: translateX(26px) !important;
+    content: "🌙" !important;
+}
+
+/* Hover effects */
+.slider:hover {
+    background-color: var(--popup-hover-bg) !important;
+    border-color: var(--popup-text-muted) !important;
+}
+
+input:checked + .slider:hover {
+    background-color: var(--popup-accent-color) !important;
+    opacity: 0.9 !important;
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 24px !important;
+}
+
+.slider.round:before {
+    border-radius: 50% !important;
+}
+
+/* Focus styles for accessibility */
+.switch input:focus + .slider {
+    box-shadow: 0 0 0 2px var(--popup-accent-color) !important;
+    outline: none !important;
+}
+
+/* Options Button */
+.options-btn {
+    background: none !important;
+    border: none !important;
+    color: var(--popup-text-muted) !important;
+    cursor: pointer !important;
+    font-size: 18px !important;
+    padding: 8px !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 36px !important;
+    height: 36px !important;
+}
+
+.options-btn:hover {
+    color: var(--popup-text-color) !important;
+    background-color: var(--popup-hover-bg) !important;
+    transform: scale(1.1) !important;
+}
+
+.options-btn:active {
+    transform: scale(0.95) !important;
+}
+
+/* History Header */
+.history-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+/* Clear History Button in Popup */
+.clear-history-btn {
+    background: none !important;
+    border: 1px solid var(--popup-border-color) !important;
+    color: var(--popup-text-muted) !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+
+.clear-history-btn:hover {
+    background-color: #ff4444 !important;
+    border-color: #ff4444 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+
+.clear-history-btn:active {
+    transform: translateY(0) !important;
+}
