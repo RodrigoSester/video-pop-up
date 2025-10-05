@@ -5,9 +5,6 @@ const DEFAULT_SETTINGS = {
     // Window settings
     windowWidth: 854,
     windowHeight: 480,
-    windowPosition: 'center',
-    customX: 100,
-    customY: 100,
     // History settings
     historyLimit: 50,
     historyDuration: 30, // days, 0 = forever
@@ -365,36 +362,9 @@ const css = `
  */
 function createPopupWindow(url, width, height) {
     chrome.windows.getLastFocused((lastWindow) => {
-        // Calculate position based on settings
-        let top, left;
-        
-        switch (currentSettings.windowPosition) {
-            case 'top-left':
-                top = lastWindow.top + 50;
-                left = lastWindow.left + 50;
-                break;
-            case 'top-right':
-                top = lastWindow.top + 50;
-                left = lastWindow.left + lastWindow.width - width - 50;
-                break;
-            case 'bottom-left':
-                top = lastWindow.top + lastWindow.height - height - 50;
-                left = lastWindow.left + 50;
-                break;
-            case 'bottom-right':
-                top = lastWindow.top + lastWindow.height - height - 50;
-                left = lastWindow.left + lastWindow.width - width - 50;
-                break;
-            case 'custom':
-                top = currentSettings.customY;
-                left = currentSettings.customX;
-                break;
-            case 'center':
-            default:
-                top = lastWindow.top + Math.round((lastWindow.height - height) / 2);
-                left = lastWindow.left + Math.round((lastWindow.width - width) / 2);
-                break;
-        }
+        // Calculate centered position
+        const top = lastWindow.top + Math.round((lastWindow.height - height) / 2);
+        const left = lastWindow.left + Math.round((lastWindow.width - width) / 2);
 
         const windowOptions = {
             url: url,

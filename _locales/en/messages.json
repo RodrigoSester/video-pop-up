@@ -125,46 +125,7 @@
     "message": "Default: 480px (min: 300px, max: 1500px)",
     "description": "Help text for window height"
   },
-  "windowPositionLabel": {
-    "message": "Window Position",
-    "description": "Label for window position setting"
-  },
-  "positionCenter": {
-    "message": "Center of Screen",
-    "description": "Window position option"
-  },
-  "positionTopLeft": {
-    "message": "Top Left",
-    "description": "Window position option"
-  },
-  "positionTopRight": {
-    "message": "Top Right",
-    "description": "Window position option"
-  },
-  "positionBottomLeft": {
-    "message": "Bottom Left",
-    "description": "Window position option"
-  },
-  "positionBottomRight": {
-    "message": "Bottom Right",
-    "description": "Window position option"
-  },
-  "positionCustom": {
-    "message": "Custom Position",
-    "description": "Window position option"
-  },
-  "customXLabel": {
-    "message": "X Position (px)",
-    "description": "Label for custom X position"
-  },
-  "customYLabel": {
-    "message": "Y Position (px)",
-    "description": "Label for custom Y position"
-  },
-  "customPositionHelp": {
-    "message": "Set exact pixel coordinates for window placement",
-    "description": "Help text for custom position"
-  },
+
   "historySettingsTitle": {
     "message": "History Settings",
     "description": "Section title for history configuration"

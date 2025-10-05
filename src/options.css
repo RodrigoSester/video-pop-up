@@ -99,37 +99,86 @@ body {
     gap: 12px;
 }
 
-.theme-switch {
+/* W3Schools-style Toggle Switch */
+.switch {
     position: relative;
+    display: inline-block;
     width: 50px;
     height: 24px;
-    background-color: var(--border-color);
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    appearance: none;
-    outline: none;
 }
 
-.theme-switch:checked {
-    background-color: var(--primary-color);
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
-.theme-switch::before {
-    content: '';
+/* The slider */
+.slider {
     position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border-radius: 50%;
-    transition: transform 0.3s ease;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border-color);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
 }
 
-.theme-switch:checked::before {
+.slider:before {
+    position: absolute;
+    content: "☀️";
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--surface-color);
+    transition: all 0.3s ease;
+    border: 1px solid var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+/* When checkbox is checked */
+input:checked + .slider {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Move slider when checked */
+input:checked + .slider:before {
     transform: translateX(26px);
+    content: "🌙";
+}
+
+/* Hover effects */
+.slider:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--text-secondary);
+}
+
+input:checked + .slider:hover {
+    background-color: var(--primary-hover);
+    opacity: 0.9;
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 24px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Focus styles for accessibility */
+.switch input:focus + .slider {
+    box-shadow: 0 0 0 2px var(--focus-color);
+    outline: none;
 }
 
 /* Main Content */
@@ -209,24 +258,7 @@ body {
     border-color: var(--error-color);
 }
 
-/* Custom Position Inputs */
-.custom-position {
-    background-color: var(--secondary-color);
-    border-radius: 4px;
-    padding: 16px;
-    margin-top: 8px;
-}
 
-.position-inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-.position-inputs > div {
-    display: flex;
-    flex-direction: column;
-}
 
 /* Checkbox Styles */
 .checkbox-label {
@@ -437,8 +469,7 @@ body {
 .select-input:focus,
 .checkbox-input:focus,
 .primary-btn:focus,
-.secondary-btn:focus,
-.theme-switch:focus {
+.secondary-btn:focus {
     outline: 2px solid var(--focus-color);
     outline-offset: 2px;
 }

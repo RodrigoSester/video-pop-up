@@ -125,46 +125,7 @@
     "message": "Padrão: 480px (mín: 300px, máx: 1500px)",
     "description": "Texto de ajuda para altura da janela"
   },
-  "windowPositionLabel": {
-    "message": "Posição da Janela",
-    "description": "Rótulo para configuração da posição da janela"
-  },
-  "positionCenter": {
-    "message": "Centro da Tela",
-    "description": "Opção de posição da janela"
-  },
-  "positionTopLeft": {
-    "message": "Superior Esquerdo",
-    "description": "Opção de posição da janela"
-  },
-  "positionTopRight": {
-    "message": "Superior Direito",
-    "description": "Opção de posição da janela"
-  },
-  "positionBottomLeft": {
-    "message": "Inferior Esquerdo",
-    "description": "Opção de posição da janela"
-  },
-  "positionBottomRight": {
-    "message": "Inferior Direito",
-    "description": "Opção de posição da janela"
-  },
-  "positionCustom": {
-    "message": "Posição Personalizada",
-    "description": "Opção de posição da janela"
-  },
-  "customXLabel": {
-    "message": "Posição X (px)",
-    "description": "Rótulo para posição X personalizada"
-  },
-  "customYLabel": {
-    "message": "Posição Y (px)",
-    "description": "Rótulo para posição Y personalizada"
-  },
-  "customPositionHelp": {
-    "message": "Defina coordenadas exatas em pixels para o posicionamento da janela",
-    "description": "Texto de ajuda para posição personalizada"
-  },
+  
   "historySettingsTitle": {
     "message": "Configurações do Histórico",
     "description": "Título da seção para configuração do histórico"

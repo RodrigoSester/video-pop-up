@@ -15,8 +15,10 @@
             </div>
             <div class="theme-toggle">
                 <label for="themeSwitch" id="themeToggleLabel"></label>
-                <input type="checkbox" id="themeSwitch" class="theme-switch">
-                <span class="slider"></span>
+                <label class="switch">
+                    <input type="checkbox" id="themeSwitch">
+                    <span class="slider round"></span>
+                </label>
             </div>
         </header>
 
@@ -39,31 +41,7 @@
                         <small id="windowHeightHelp"></small>
                     </div>
 
-                    <div class="setting-group">
-                        <label for="windowPosition" id="windowPositionLabel"></label>
-                        <select id="windowPosition" class="select-input">
-                            <option value="center" id="positionCenter"></option>
-                            <option value="top-left" id="positionTopLeft"></option>
-                            <option value="top-right" id="positionTopRight"></option>
-                            <option value="bottom-left" id="positionBottomLeft"></option>
-                            <option value="bottom-right" id="positionBottomRight"></option>
-                            <option value="custom" id="positionCustom"></option>
-                        </select>
-                    </div>
 
-                    <div id="customPositionGroup" class="setting-group custom-position" style="display: none;">
-                        <div class="position-inputs">
-                            <div>
-                                <label for="customX" id="customXLabel"></label>
-                                <input type="number" id="customX" min="0" value="100" class="number-input">
-                            </div>
-                            <div>
-                                <label for="customY" id="customYLabel"></label>
-                                <input type="number" id="customY" min="0" value="100" class="number-input">
-                            </div>
-                        </div>
-                        <small id="customPositionHelp"></small>
-                    </div>
                 </section>
 
                 <!-- History Settings Section -->

@@ -3,9 +3,6 @@ const DEFAULT_SETTINGS = {
     // Window settings
     windowWidth: 854,
     windowHeight: 480,
-    windowPosition: 'center',
-    customX: 100,
-    customY: 100,
     // History settings
     historyLimit: 50,
     historyDuration: 30, // days, 0 = forever
@@ -57,16 +54,7 @@ function initializeI18n() {
         'windowWidthHelp',
         'windowHeightLabel', 
         'windowHeightHelp',
-        'windowPositionLabel',
-        'positionCenter',
-        'positionTopLeft',
-        'positionTopRight', 
-        'positionBottomLeft',
-        'positionBottomRight',
-        'positionCustom',
-        'customXLabel',
-        'customYLabel',
-        'customPositionHelp',
+
         'historySettingsTitle',
         'historyLimitLabel',
         'historyLimitHelp',
@@ -147,9 +135,6 @@ function populateForm() {
     // Window settings
     document.getElementById('windowWidth').value = currentSettings.windowWidth;
     document.getElementById('windowHeight').value = currentSettings.windowHeight;
-    document.getElementById('windowPosition').value = currentSettings.windowPosition;
-    document.getElementById('customX').value = currentSettings.customX;
-    document.getElementById('customY').value = currentSettings.customY;
     
     // History settings
     document.getElementById('historyLimit').value = currentSettings.historyLimit;
@@ -157,14 +142,14 @@ function populateForm() {
     
     // Theme settings
     document.getElementById('themeMode').value = currentSettings.themeMode;
-    document.getElementById('themeSwitch').checked = currentSettings.themeMode === 'dark';
+    const themeSwitchElement = document.getElementById('themeSwitch');
+    if (themeSwitchElement) {
+        themeSwitchElement.checked = currentSettings.themeMode === 'dark';
+    }
     
     // Advanced settings
     document.getElementById('autoFocus').checked = currentSettings.autoFocus;
     document.getElementById('rememberWindowState').checked = currentSettings.rememberWindowState;
-    
-    // Show/hide custom position controls
-    toggleCustomPosition();
 }
 
 /**
@@ -174,7 +159,6 @@ function setupEventListeners() {
     const form = document.getElementById('optionsForm');
     const resetBtn = document.getElementById('resetBtn');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-    const windowPositionSelect = document.getElementById('windowPosition');
     const themeSwitch = document.getElementById('themeSwitch');
     const themeModeSelect = document.getElementById('themeMode');
     
@@ -187,14 +171,15 @@ function setupEventListeners() {
     // Clear history button
     clearHistoryBtn.addEventListener('click', handleClearHistory);
     
-    // Window position change
-    windowPositionSelect.addEventListener('change', toggleCustomPosition);
-    
     // Theme switch toggle
-    themeSwitch.addEventListener('change', handleThemeSwitch);
+    if (themeSwitch) {
+        themeSwitch.addEventListener('change', handleThemeSwitch);
+    }
     
     // Theme mode select
-    themeModeSelect.addEventListener('change', handleThemeModeChange);
+    if (themeModeSelect) {
+        themeModeSelect.addEventListener('change', handleThemeModeChange);
+    }
     
     // Input validation
     setupInputValidation();
@@ -237,9 +222,6 @@ function updateSettingsFromForm() {
     // Window settings
     currentSettings.windowWidth = parseInt(document.getElementById('windowWidth').value);
     currentSettings.windowHeight = parseInt(document.getElementById('windowHeight').value);
-    currentSettings.windowPosition = document.getElementById('windowPosition').value;
-    currentSettings.customX = parseInt(document.getElementById('customX').value);
-    currentSettings.customY = parseInt(document.getElementById('customY').value);
     
     // History settings
     currentSettings.historyLimit = parseInt(document.getElementById('historyLimit').value);
@@ -308,19 +290,7 @@ async function handleClearHistory() {
     }
 }
 
-/**
- * Toggle custom position controls visibility
- */
-function toggleCustomPosition() {
-    const position = document.getElementById('windowPosition').value;
-    const customGroup = document.getElementById('customPositionGroup');
-    
-    if (position === 'custom') {
-        customGroup.style.display = 'block';
-    } else {
-        customGroup.style.display = 'none';
-    }
-}
+
 
 /**
  * Handle theme switch toggle

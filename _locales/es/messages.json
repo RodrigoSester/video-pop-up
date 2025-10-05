@@ -125,46 +125,7 @@
     "message": "Por defecto: 480px (mín: 300px, máx: 1500px)",
     "description": "Texto de ayuda para alto de ventana"
   },
-  "windowPositionLabel": {
-    "message": "Posición de Ventana",
-    "description": "Etiqueta para configuración de posición de ventana"
-  },
-  "positionCenter": {
-    "message": "Centro de Pantalla",
-    "description": "Opción de posición de ventana"
-  },
-  "positionTopLeft": {
-    "message": "Superior Izquierda",
-    "description": "Opción de posición de ventana"
-  },
-  "positionTopRight": {
-    "message": "Superior Derecha",
-    "description": "Opción de posición de ventana"
-  },
-  "positionBottomLeft": {
-    "message": "Inferior Izquierda",
-    "description": "Opción de posición de ventana"
-  },
-  "positionBottomRight": {
-    "message": "Inferior Derecha",
-    "description": "Opción de posición de ventana"
-  },
-  "positionCustom": {
-    "message": "Posición Personalizada",
-    "description": "Opción de posición de ventana"
-  },
-  "customXLabel": {
-    "message": "Posición X (px)",
-    "description": "Etiqueta para posición X personalizada"
-  },
-  "customYLabel": {
-    "message": "Posición Y (px)",
-    "description": "Etiqueta para posición Y personalizada"
-  },
-  "customPositionHelp": {
-    "message": "Establecer coordenadas exactas en píxeles para la ubicación de la ventana",
-    "description": "Texto de ayuda para posición personalizada"
-  },
+  
   "historySettingsTitle": {
     "message": "Configuración de Historial",
     "description": "Título de sección para configuración de historial"
