@@ -504,12 +504,12 @@ document.addEventListener('DOMContentLoaded', () => {
             listItem.appendChild(deleteButton);
         }
 
-        videoContent.addEventListener('click', (e) => {
+        listItem.addEventListener('click', (e) => {
             chrome.runtime.sendMessage({ 
                 action: 'addVideoToHistory', 
                 videoId: video.videoId,
                 title: video.title,
-                channel: video.channel || 'Unknown Channel',
+                channel: video.channel,
                 thumbnail: video.thumbnail || `https://i.ytimg.com/vi/${video.videoId}/default.jpg`
             });
             

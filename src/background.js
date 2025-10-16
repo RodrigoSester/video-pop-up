@@ -122,7 +122,7 @@ function addVideoToHistory(videoData) {
             videoId: videoData.videoId,
             title: videoData.title,
             url: videoData.url,
-            channel: videoData.channel || 'Unknown Channel',
+            channel: videoData.channel,
             thumbnail: videoData.thumbnail || `https://i.ytimg.com/vi/${videoData.videoId}/default.jpg`,
             timestamp: Date.now(),
             dateAdded: new Date().toISOString()
@@ -272,8 +272,8 @@ chrome.action.onClicked.addListener((tab) => {
                 getVideoTitle(tab.id),
                 extractChannel(tab.id)
             ]).then(([title, channel]) => {
-                videoData.title = title || 'Unknown Video';
-                videoData.channel = channel || 'Unknown Channel';
+                videoData.title = title;
+                videoData.channel = channel;
             }).catch(error => {
                 console.error('Error fetching video metadata:', error);
             }).finally(() => {
@@ -292,18 +292,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     } else if (request.action === 'addVideoToHistory') {
         const videoData = {
             videoId: request.videoId,
-            title: '',
-            channel: '',
+            title: request.title,
+            channel: request.channel,
             url: `https://www.youtube.com/watch?v=${request.videoId}`
         };
 
-        if (sender.tab?.id && (!request.title || request.title === '')) {
+        if (sender.tab?.id && !request.title) {
             Promise.all([
                 getVideoTitle(sender.tab.id),
                 extractChannel(sender.tab.id)
             ]).then(([title, channel]) => {
-                videoData.title = title || 'Unknown Video';
-                videoData.channel = channel || 'Unknown Channel';
+                videoData.title = title;
+                videoData.channel = channel;
             }).catch(error => {
                 console.error('Error fetching video metadata:', error);
             }).finally(() => {
