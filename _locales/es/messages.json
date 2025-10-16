@@ -273,5 +273,17 @@
   "invalidHistoryLimit": {
     "message": "El límite de historial debe estar entre 10 y 200 videos",
     "description": "Error de validación para límite de historial"
+  },
+  "searchPlaceholder": {
+    "message": "Buscar videos...",
+    "description": "Texto del placeholder para campo de búsqueda"
+  },
+  "noSearchResults": {
+    "message": "Ningún video coincide con tu búsqueda.",
+    "description": "Mensaje cuando la búsqueda no retorna resultados"
+  },
+  "searching": {
+    "message": "Buscando...",
+    "description": "Mensaje de carga al filtrar videos"
   }
 }

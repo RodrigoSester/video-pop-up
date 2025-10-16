@@ -11,6 +11,10 @@
     --popup-shadow: rgba(0, 0, 0, 0.5);
 }
 
+.hidden {
+    display: none !important;
+}
+
 /* Light Theme Variables */
 .light-theme {
     --popup-bg-color: #ffffff;
@@ -94,6 +98,63 @@
     display: block !important;
 }
 
+/* Search Filter */
+.search-container {
+    margin-bottom: 12px !important;
+}
+
+.search-input {
+    width: 100% !important;
+    padding: 8px 12px !important;
+    background-color: var(--popup-surface-color) !important;
+    border: 1px solid var(--popup-border-color) !important;
+    border-radius: 6px !important;
+    color: var(--popup-text-color) !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+}
+
+.search-input:focus {
+    outline: none !important;
+    border-color: var(--popup-accent-color) !important;
+    background-color: var(--popup-active-bg) !important;
+}
+
+.search-input::placeholder {
+    color: var(--popup-text-muted) !important;
+}
+
+/* Loading State */
+.loading-state {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 16px !important;
+    color: var(--popup-text-muted) !important;
+    font-size: 13px !important;
+}
+
+.loading-spinner {
+    width: 16px !important;
+    height: 16px !important;
+    border: 2px solid var(--popup-border-color) !important;
+    border-top-color: var(--popup-accent-color) !important;
+    border-radius: 50% !important;
+    animation: spin 0.6s linear infinite !important;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-weight: 500 !important;
+}
+
 /* Video Items */
 .video-item {
     display: flex !important;
@@ -106,6 +167,7 @@
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     border: 1px solid transparent !important;
+    gap: 12px !important;
 }
 
 .video-item:hover {
@@ -114,9 +176,19 @@
     transform: translateY(-1px) !important;
 }
 
+.video-thumbnail {
+    width: 120px !important;
+    height: 68px !important;
+    object-fit: cover !important;
+    border-radius: 4px !important;
+    flex-shrink: 0 !important;
+    background-color: var(--popup-border-color) !important;
+}
+
 .video-content {
     flex: 1 !important;
     cursor: pointer !important;
+    min-width: 0 !important;
 }
 
 .video-title {
@@ -144,7 +216,6 @@
     font-size: 13px !important;
     margin-bottom: 16px !important;
     text-align: center !important;
-    padding: 8px !important;
 }
 
 /* Lists */

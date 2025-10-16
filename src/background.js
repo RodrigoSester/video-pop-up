@@ -112,6 +112,8 @@ function getVideoHistory() {
  * @param {string} videoData.videoId - YouTube video ID
  * @param {string} videoData.title - Video title
  * @param {string} videoData.url - Full YouTube URL
+ * @param {string} videoData.channel - Channel name (optional)
+ * @param {string} videoData.thumbnail - Thumbnail URL (optional)
  */
 function addVideoToHistory(videoData) {
     getVideoHistory().then(history => {
@@ -122,12 +124,14 @@ function addVideoToHistory(videoData) {
             videoId: videoData.videoId,
             title: videoData.title,
             url: videoData.url,
+            channel: videoData.channel || 'Unknown Channel',
+            thumbnail: videoData.thumbnail || `https://i.ytimg.com/vi/${videoData.videoId}/default.jpg`,
             timestamp: Date.now(),
             dateAdded: new Date().toISOString()
         };
         
         if (existingIndex !== -1) {
-            // Update existing entry timestamp
+            // Update existing entry timestamp and metadata
             history[existingIndex] = historyEntry;
         } else {
             // Add new entry at the beginning

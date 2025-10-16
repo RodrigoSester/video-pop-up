@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentSection = document.getElementById('current-section');
     const historySection = document.getElementById('history-section');
 
+    // Store videos arrays for reactive filtering
+    let currentVideos = [];
+    let historyVideos = [];
+
     // Initialize tabs
     initializeTabs();
     
@@ -86,6 +90,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (themeSwitch) {
             themeSwitch.title = chrome.i18n.getMessage('themeToggleLabel') || 'Toggle Theme';
         }
+
+        // Update search input placeholders
+        const currentSearchInput = document.getElementById('current-search');
+        const historySearchInput = document.getElementById('history-search');
+        if (currentSearchInput) {
+            currentSearchInput.placeholder = chrome.i18n.getMessage('searchPlaceholder') || 'Search videos...';
+        }
+        if (historySearchInput) {
+            historySearchInput.placeholder = chrome.i18n.getMessage('searchPlaceholder') || 'Search videos...';
+        }
     }
 
     function initializeTabs() {
@@ -111,9 +125,140 @@ document.addEventListener('DOMContentLoaded', () => {
         const themeSwitch = document.getElementById('popupThemeSwitch');
         if (themeSwitch) {
             themeSwitch.addEventListener('change', handleThemeToggle);
-            // Initialize switch state based on current theme
             initializeThemeSwitch();
         }
+
+                // Search filters
+        const currentSearchInput = document.getElementById('current-search');
+        const historySearchInput = document.getElementById('history-search');
+        
+        if (currentSearchInput) {
+            currentSearchInput.addEventListener('input', (e) => {
+                filterCurrentVideos(e.target.value);
+            });
+        }
+        
+        if (historySearchInput) {
+            historySearchInput.addEventListener('input', (e) => {
+                filterHistoryVideos(e.target.value);
+            });
+        }
+    }
+
+    function filterCurrentVideos(query) {
+        const searchLower = query.toLowerCase().trim();
+        
+        if (searchLower === '') {
+            renderCurrentVideos(currentVideos);
+            message.textContent = currentVideos.length > 0 
+                ? chrome.i18n.getMessage('clickToOpenPopup') 
+                : chrome.i18n.getMessage('noVideosOnPage');
+            return;
+        }
+
+        showLoadingState('current');
+
+        setTimeout(() => {
+            const filteredVideos = currentVideos.filter(video => {
+                const title = video.title.toLowerCase();
+                const channel = (video.channel || '').toLowerCase();
+                
+                return title.includes(searchLower) || channel.includes(searchLower);
+            });
+            
+            renderCurrentVideos(filteredVideos);
+            
+            if (filteredVideos.length === 0) {
+                message.textContent = chrome.i18n.getMessage('noSearchResults') || 'No videos match your search.';
+            } else {
+                message.textContent = chrome.i18n.getMessage('clickToOpenPopup');
+            }
+            
+            hideLoadingState('current');
+        }, 500);
+    }
+
+    // Filter history videos with loading state
+    function filterHistoryVideos(query) {
+        const searchLower = query.toLowerCase().trim();
+        
+        if (searchLower === '') {
+            // Show all videos
+            renderHistoryVideos(historyVideos);
+            historyMessage.textContent = historyVideos.length > 0
+                ? chrome.i18n.getMessage('historyCount', [historyVideos.length.toString()])
+                : chrome.i18n.getMessage('noHistoryYet');
+            return;
+        }
+
+        // Show loading state
+        showLoadingState('history');
+        
+        // Use setTimeout to allow UI to update with loading state
+        setTimeout(() => {
+            const filteredVideos = historyVideos.filter(video => {
+                const title = video.title.toLowerCase();
+                const channel = (video.channel || '').toLowerCase();
+                
+                return title.includes(searchLower) || channel.includes(searchLower);
+            });
+            
+            renderHistoryVideos(filteredVideos);
+            
+            if (filteredVideos.length === 0) {
+                historyMessage.textContent = chrome.i18n.getMessage('noSearchResults') || 'No videos match your search.';
+            } else {
+                historyMessage.textContent = chrome.i18n.getMessage('historyCount', [filteredVideos.length.toString()]);
+            }
+            
+            hideLoadingState('history');
+        }, 500);
+    }
+
+    // Show loading state
+    function showLoadingState(type) {
+        const loadingId = type === 'current' ? 'current-loading' : 'history-loading';
+        const listId = type === 'current' ? 'video-list' : 'history-list';
+        
+        let loadingEl = document.getElementById(loadingId);
+        if (!loadingEl) {
+            loadingEl = document.createElement('div');
+            loadingEl.id = loadingId;
+            loadingEl.className = 'loading-state';
+            const loadingText = chrome.i18n.getMessage('searching') || 'Searching...';
+            loadingEl.innerHTML = `<span class="loading-spinner"></span><span class="loading-text">${loadingText}</span>`;
+            
+            const list = document.getElementById(listId);
+            list.parentNode.insertBefore(loadingEl, list);
+        }
+        loadingEl.style.display = 'flex';
+    }
+
+    // Hide loading state
+    function hideLoadingState(type) {
+        const loadingId = type === 'current' ? 'current-loading' : 'history-loading';
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) {
+            loadingEl.remove();
+        }
+    }
+
+    // Render current videos
+    function renderCurrentVideos(videos) {
+        videoList.innerHTML = '';
+        videos.forEach(video => {
+            const listItem = createVideoListItem(video, 'current');
+            videoList.appendChild(listItem);
+        });
+    }
+
+    // Render history videos
+    function renderHistoryVideos(videos) {
+        historyList.innerHTML = '';
+        videos.forEach(video => {
+            const listItem = createVideoListItem(video, 'history');
+            historyList.appendChild(listItem);
+        });
     }
 
     // Open options page
@@ -130,6 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm(confirmMessage)) {
             try {
                 await chrome.storage.local.set({ videoHistory: [] });
+                // Clear the array
+                historyVideos = [];
                 // Reload the history display
                 loadVideoHistory();
                 
@@ -239,10 +386,9 @@ document.addEventListener('DOMContentLoaded', () => {
             message.textContent = chrome.i18n.getMessage('noVideosOnPage');
         } else {
             message.textContent = chrome.i18n.getMessage('clickToOpenPopup');
-            videos.forEach((video) => {
-                const listItem = createVideoListItem(video, 'current');
-                videoList.appendChild(listItem);
-            });
+            // Store videos in array for reactive filtering
+            currentVideos = videos;
+            renderCurrentVideos(videos);
         }
     }
 
@@ -266,10 +412,9 @@ document.addEventListener('DOMContentLoaded', () => {
             historyMessage.textContent = chrome.i18n.getMessage('noHistoryYet');
         } else {
             historyMessage.textContent = chrome.i18n.getMessage('historyCount', [history.length.toString()]);
-            history.forEach((video) => {
-                const listItem = createVideoListItem(video, 'history');
-                historyList.appendChild(listItem);
-            });
+            // Store videos in array for reactive filtering
+            historyVideos = history;
+            renderHistoryVideos(history);
         }
     }
 
@@ -277,6 +422,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const listItem = document.createElement('li');
         listItem.className = 'video-item';
         listItem.dataset.videoId = video.videoId;
+        listItem.dataset.title = video.title.toLowerCase();
+        listItem.dataset.channel = video.channel.toLowerCase();
+        listItem.dataset.duration = video.minutes?.toLowerCase();
+
+        const thumbnail = document.createElement('img');
+        thumbnail.className = 'video-thumbnail';
+        thumbnail.src = video.thumbnail || `https://i.ytimg.com/vi/${video.videoId}/default.jpg`;
+        thumbnail.alt = video.title;
+        thumbnail.onerror = function() {
+            this.src = `https://i.ytimg.com/vi/${video.videoId}/default.jpg`;
+        };
+        listItem.appendChild(thumbnail);
         
         const videoContent = document.createElement('div');
         videoContent.className = 'video-content';
@@ -288,42 +445,44 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoMeta = document.createElement('div');
         videoMeta.className = 'video-meta';
         
+        const metaParts = [];
+        
+        if (video.channel && video.channel !== 'Unknown Channel') {
+            metaParts.push(video.channel);
+        }
+        
         if (type === 'current') {
             if (video.minutes && video.minutes.trim()) {
-                videoMeta.textContent = chrome.i18n.getMessage('duration', [video.minutes]);
-            } else {
-                videoMeta.textContent = chrome.i18n.getMessage('durationUnknown');
+                metaParts.push(video.minutes);
             }
         } else {
             const date = new Date(video.timestamp || video.dateAdded);
             const dateString = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-            videoMeta.textContent = chrome.i18n.getMessage('opened', [dateString]);
+            metaParts.push(chrome.i18n.getMessage('opened', [dateString]));
         }
+        
+        videoMeta.textContent = metaParts.join(' • ');
         
         videoContent.appendChild(videoTitle);
         videoContent.appendChild(videoMeta);
         listItem.appendChild(videoContent);
 
-        // Add delete button for history items only
         if (type === 'history') {
             const deleteButton = document.createElement('button');
             deleteButton.className = 'delete-btn';
             deleteButton.title = chrome.i18n.getMessage('deleteFromHistory');
-            deleteButton.innerHTML = '🗑️'; // Trash can emoji
+            deleteButton.innerHTML = '🗑️';
             
             deleteButton.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent triggering the video click
-                
-                // Send delete message to background script
+                e.stopPropagation();
+
                 chrome.runtime.sendMessage({ 
                     action: 'deleteVideoFromHistory', 
                     videoId: video.videoId
                 });
                 
-                // Remove the item from UI immediately
                 listItem.remove();
                 
-                // Update the history message if no items left
                 const remainingItems = historyList.querySelectorAll('.video-item').length;
                 if (remainingItems === 0) {
                     historyMessage.textContent = chrome.i18n.getMessage('noHistoryYet');
@@ -336,14 +495,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         videoContent.addEventListener('click', (e) => {
-            // Send addVideoToHistory message first with video title if available
             chrome.runtime.sendMessage({ 
                 action: 'addVideoToHistory', 
                 videoId: video.videoId,
-                title: video.title
+                title: video.title,
+                channel: video.channel || 'Unknown Channel',
+                thumbnail: video.thumbnail || `https://i.ytimg.com/vi/${video.videoId}/default.jpg`
             });
             
-            // Then open the popup
             chrome.runtime.sendMessage({ action: 'openPopup', videoId: video.videoId });
             e.preventDefault();
             window.close();
@@ -356,7 +515,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function getVideoData() {
     const videos = [];
     
-    // Helper function to extract duration from a renderer element
     function extractDuration(renderer) {
         let duration = '';
         
@@ -407,7 +565,6 @@ function getVideoData() {
         return duration;
     }
 
-    // Helper function to extract video title with fallbacks
     function extractTitle(renderer) {
         // Try multiple title selectors
         const titleSelectors = [
@@ -429,7 +586,24 @@ function getVideoData() {
         return 'Untitled Video';
     }
 
-    // Process different types of video renderers on YouTube
+    function extractThumbnail(renderer) {
+        const imgElement = renderer.querySelector('ytd-thumbnail img');
+        if (imgElement && imgElement.src) {
+            return imgElement.src;
+        }
+        
+        return '';
+    }
+
+    function extractChannel(renderer) {
+        const channelElement = renderer.querySelector("#content > yt-lockup-view-model > div > div > yt-lockup-metadata-view-model > div.yt-lockup-metadata-view-model__text-container > div > yt-content-metadata-view-model > div > span > span > a");
+        if (channelElement) {
+            return channelElement.textContent.trim();
+        }
+        
+        return 'Unknown Channel';
+    }
+
     const rendererSelectors = [
         'ytd-rich-item-renderer',           // Home page grid
         'ytd-video-renderer',               // Search results, sidebar
@@ -448,18 +622,17 @@ function getVideoData() {
                     if (videoId && !videos.some(v => v.videoId === videoId)) {
                         const title = extractTitle(renderer);
                         const minutes = extractDuration(renderer);
+                        const thumbnail = extractThumbnail(renderer);
+                        const channel = extractChannel(renderer);
                         
                         videos.push({
                             videoId,
                             title,
-                            minutes: minutes || '', // Ensure minutes is always a string
+                            minutes: minutes || '',
+                            thumbnail: thumbnail || '',
+                            channel: channel || '',
                             url: anchor.href
                         });
-                        
-                        // Debug logging for duration extraction
-                        if (console && console.log) {
-                            console.log(`Video found: ${title}, Duration: ${minutes || 'Not found'}, ID: ${videoId}`);
-                        }
                     }
                 } catch (error) {
                     console.warn('Error processing video link:', error);

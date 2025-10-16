@@ -31,8 +31,11 @@
     
     <!-- Current Videos Section -->
     <div id="current-section" class="tab-content active">
-        <p id="message" class="text-gray-400 text-sm mb-4"></p>
-        <ul id="video-list" class="space-y-2">
+        <p id="message" class="text-gray-400 text-sm"></p>
+        <div class="search-container">
+            <input type="text" id="current-search" class="search-input" placeholder="">
+        </div>
+        <ul id="video-list">
             <!-- Current videos will be listed here -->
         </ul>
     </div>
@@ -44,6 +47,9 @@
             <button id="clearHistoryPopupBtn" class="clear-history-btn" title="">
                 <span id="clearHistoryPopupText"></span>
             </button>
+        </div>
+        <div class="search-container">
+            <input type="text" id="history-search" class="search-input" placeholder="">
         </div>
         <ul id="history-list" class="space-y-2">
             <!-- History videos will be listed here -->

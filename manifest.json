@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "permissions": ["activeTab", "scripting", "storage", "tabs", "windows"],
@@ -10,7 +10,7 @@
     "*://youtube.com/*"
   ],
   "options_ui": {
-    "page": "src/options.html",
+    "page": "src/popup.html",
     "open_in_tab": true
   },
   "action": {

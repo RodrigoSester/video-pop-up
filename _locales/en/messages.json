@@ -273,5 +273,17 @@
   "invalidHistoryLimit": {
     "message": "History limit must be between 10 and 200 videos",
     "description": "Validation error for history limit"
+  },
+  "searchPlaceholder": {
+    "message": "Search videos...",
+    "description": "Placeholder text for search input"
+  },
+  "noSearchResults": {
+    "message": "No videos match your search.",
+    "description": "Message when search returns no results"
+  },
+  "searching": {
+    "message": "Searching...",
+    "description": "Loading message when filtering videos"
   }
 }
