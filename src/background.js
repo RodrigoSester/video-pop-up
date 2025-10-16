@@ -94,7 +94,6 @@ function initializeVideoHistory() {
 function getVideoHistory() {
     return chrome.storage.local.get('videoHistory').then(result => {
         const history = result.videoHistory || [];
-        // Sort by dateAdded in descending order (most recent first)
         return history.sort((a, b) => {
             const dateA = new Date(a.dateAdded || a.timestamp || 0);
             const dateB = new Date(b.dateAdded || b.timestamp || 0);
@@ -117,7 +116,6 @@ function getVideoHistory() {
  */
 function addVideoToHistory(videoData) {
     getVideoHistory().then(history => {
-        // Check if video already exists in history
         const existingIndex = history.findIndex(item => item.videoId === videoData.videoId);
         
         const historyEntry = {
@@ -131,14 +129,11 @@ function addVideoToHistory(videoData) {
         };
         
         if (existingIndex !== -1) {
-            // Update existing entry timestamp and metadata
             history[existingIndex] = historyEntry;
         } else {
-            // Add new entry at the beginning
             history.unshift(historyEntry);
         }
-        
-        // Keep only last N videos based on settings
+
         const trimmedHistory = history.slice(0, currentSettings.historyLimit);
         
         return chrome.storage.local.set({ videoHistory: trimmedHistory });
@@ -176,16 +171,13 @@ function getVideoTitle(tabId) {
         target: { tabId },
         func: () => {
             const element = document.querySelector('h1 yt-formatted-string.ytd-watch-metadata');
-            console.log('Extracted title element:', element);
             if (element) {
                 return element.textContent || element.getAttribute('content') || '';
             }
-            
-            // Fallback to document title
+
             return document.title.replace(' - YouTube', '');
         }
     }).then(results => {
-        console.log('Video title extraction results:', results);
         return results[0]?.result?.trim() || 'Unknown Video';
     }).catch(error => {
         console.error('Failed to get video title:', error);
@@ -193,7 +185,25 @@ function getVideoTitle(tabId) {
     });
 }
 
-// Initialize storage when extension starts
+function extractChannel(tabId) {
+    return chrome.scripting.executeScript({
+        target: { tabId },
+        func: () => {
+            document.querySelector("#text-container")
+            const element = document.querySelector('ytd-channel-name > div > div > yt-formatted-string');
+            if (element) {
+                return element.textContent || element.getAttribute('content') || '';
+            }
+
+            return '';
+        }
+    }).then(results => {
+        return results[0]?.result?.trim() || 'Unknown Channel';
+    }).catch(error => {
+        return error.message || '';
+    });
+}
+
 initializeVideoHistory();
 loadSettings();
 
@@ -247,33 +257,31 @@ function extractVideoId(url) {
     }
 }
 
-// Listen for when the user clicks the extension's icon in the toolbar.
 chrome.action.onClicked.addListener((tab) => {
-    // Check if the current tab is a YouTube video page.
     if (tab.url && tab.url.includes("youtube.com/watch")) {
         const videoId = extractVideoId(tab.url);
         if (videoId) {
-            // Add video to history directly since we're in the background script
             const videoData = {
                 videoId: videoId,
                 title: 'Unknown Video',
+                channel: 'Unknown Channel',
                 url: tab.url
             };
-            
-            // Try to get the video title from the current tab
-            getVideoTitle(tab.id).then(title => {
-                videoData.title = title;
-                addVideoToHistory(videoData);
+
+            Promise.all([
+                getVideoTitle(tab.id),
+                extractChannel(tab.id)
+            ]).then(([title, channel]) => {
+                videoData.title = title || 'Unknown Video';
+                videoData.channel = channel || 'Unknown Channel';
             }).catch(error => {
-                console.error('Error getting video title:', error);
+                console.error('Error fetching video metadata:', error);
+            }).finally(() => {
                 addVideoToHistory(videoData);
+                openOrUpdatePopup(tab.url);
             });
-            
-            // Open the popup
-            openOrUpdatePopup(tab.url);
         }
     }
-    // If it's not a YouTube video page, clicking the icon will do nothing.
 });
 
 // This listener handles messages from the content script (for the in-video button and the badge).
@@ -282,20 +290,23 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const popupUrl = `https://www.youtube.com/watch?v=${request.videoId}`;
         openOrUpdatePopup(popupUrl);
     } else if (request.action === 'addVideoToHistory') {
-        // Handle video history tracking
         const videoData = {
             videoId: request.videoId,
-            title: request.title || 'Unknown Video',
+            title: '',
+            channel: '',
             url: `https://www.youtube.com/watch?v=${request.videoId}`
         };
-        
-        // If we have a source tab, try to get the video title
-        if (sender.tab?.id && (!request.title || request.title === 'Unknown Video')) {
-            getVideoTitle(sender.tab.id).then(title => {
-                videoData.title = title;
-                addVideoToHistory(videoData);
+
+        if (sender.tab?.id && (!request.title || request.title === '')) {
+            Promise.all([
+                getVideoTitle(sender.tab.id),
+                extractChannel(sender.tab.id)
+            ]).then(([title, channel]) => {
+                videoData.title = title || 'Unknown Video';
+                videoData.channel = channel || 'Unknown Channel';
             }).catch(error => {
-                console.error('Error getting video title:', error);
+                console.error('Error fetching video metadata:', error);
+            }).finally(() => {
                 addVideoToHistory(videoData);
             });
         } else {

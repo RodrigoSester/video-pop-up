@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayVideoHistory(history) {
-        historyList.innerHTML = ''; // Clear existing items
+        historyList.innerHTML = '';
         
         if (history.length === 0) {
             historyMessage.textContent = chrome.i18n.getMessage('noHistoryYet');
@@ -423,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
         listItem.className = 'video-item';
         listItem.dataset.videoId = video.videoId;
         listItem.dataset.title = video.title.toLowerCase();
-        listItem.dataset.channel = video.channel.toLowerCase();
+        listItem.dataset.channel = video.channel?.toLowerCase();
         listItem.dataset.duration = video.minutes?.toLowerCase();
 
         const thumbnail = document.createElement('img');
@@ -457,7 +457,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else {
             const date = new Date(video.timestamp || video.dateAdded);
-            const dateString = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+            const locale = chrome.i18n.getUILanguage();
+            let dateOptions = { month: '2-digit', day: '2-digit' };
+            let timeOptions;
+            
+            if (locale.startsWith('pt') || locale.startsWith('es')) {
+                timeOptions = { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            } else {
+                timeOptions = { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            }
+            
+            const dateString = `${date.toLocaleDateString(locale, dateOptions)} ${date.toLocaleTimeString(locale, timeOptions)}`;
             metaParts.push(chrome.i18n.getMessage('opened', [dateString]));
         }
         
@@ -644,35 +654,28 @@ function getVideoData() {
     return videos;
 }
 
-// Listen for settings changes (including theme changes)
 chrome.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes.extensionSettings) {
         const newSettings = changes.extensionSettings.newValue;
         if (newSettings && newSettings.themeMode) {
-            // Apply theme function needs to be accessible globally
             applyThemeGlobally(newSettings.themeMode);
         }
     }
 });
 
-// Global theme application function
 function applyThemeGlobally(themeMode) {
     const body = document.body;
     
-    // Remove existing theme classes
     body.classList.remove('light-theme', 'dark-theme');
     
     if (themeMode === 'auto') {
-        // Use system preference
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         body.classList.add(prefersDark ? 'dark-theme' : 'light-theme');
     } else {
-        // Use explicit theme
         body.classList.add(`${themeMode}-theme`);
     }
 }
 
-// Listen for system theme changes
 window.matchMedia('(prefers-color-scheme: dark)').addListener(async (e) => {
     try {
         const result = await chrome.storage.local.get('extensionSettings');
