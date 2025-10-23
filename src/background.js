@@ -1,4 +1,5 @@
 let popupWindowId = null;
+let musicPopupWindowId = null;
 
 // Default configuration settings (shared with options.js)
 const DEFAULT_SETTINGS = {
@@ -243,6 +244,33 @@ function openOrUpdatePopup(url) {
 }
 
 /**
+ * Open or update YouTube Music popup window
+ */
+function openOrUpdateMusicPopup(url) {
+    const windowWidth = 500;
+    const windowHeight = 500;
+
+    // Check if the music popup window already exists.
+    if (musicPopupWindowId !== null) {
+        chrome.windows.get(musicPopupWindowId, {}, (existingWindow) => {
+            if (chrome.runtime.lastError || !existingWindow) {
+                // If the window was closed, clear the old ID and create a new one.
+                musicPopupWindowId = null;
+                createMusicPopupWindow(url, windowWidth, windowHeight);
+            } else {
+                // If the window exists, bring it to the front.
+                chrome.windows.update(musicPopupWindowId, {
+                    focused: true
+                });
+            }
+        });
+    } else {
+        // If no window ID is stored, create a new one.
+        createMusicPopupWindow(url, windowWidth, windowHeight);
+    }
+}
+
+/**
  * Extract video ID from YouTube URL
  * @param {string} url - YouTube URL
  * @returns {string|null} Video ID or null if not found
@@ -258,7 +286,10 @@ function extractVideoId(url) {
 }
 
 chrome.action.onClicked.addListener((tab) => {
-    if (tab.url && tab.url.includes("youtube.com/watch")) {
+    // Check if on YouTube Music
+    if (tab.url && tab.url.includes("music.youtube.com")) {
+        openOrUpdateMusicPopup(tab.url);
+    } else if (tab.url && tab.url.includes("youtube.com/watch")) {
         const videoId = extractVideoId(tab.url);
         if (videoId) {
             const videoData = {
@@ -289,6 +320,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'openPopup') {
         const popupUrl = `https://www.youtube.com/watch?v=${request.videoId}`;
         openOrUpdatePopup(popupUrl);
+    } else if (request.action === 'openMusicPopup') {
+        const popupMusicUrl = `https://music.youtube.com/watch?v=${request.musicId}`;
+        openOrUpdateMusicPopup(popupMusicUrl);
     } else if (request.action === 'addVideoToHistory') {
         const videoData = {
             videoId: request.videoId,
@@ -335,6 +369,47 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 });
 
+const musicCss = `
+    ytmusic-player-page div#main-panel yt-icon-button {
+        button.yt-icon-button {
+            cursor-pointer: default !important;
+        }
+        
+        button.yt-icon-button > yt-icon > span > div >  svg {
+            display: none !important;
+        }
+    }
+`;
+
+
+/**
+ * Creates a new YouTube Music popup window and stores its ID.
+ * @param {number} width The width of the new window.
+ * @param {number} height The height of the new window.
+ */
+function createMusicPopupWindow(url, width, height) {
+    chrome.windows.getLastFocused((lastWindow) => {
+        // Calculate centered position
+        const top = lastWindow.top + Math.round((lastWindow.height - height) / 2);
+        const left = lastWindow.left + Math.round((lastWindow.width - width) / 2);
+
+        const windowOptions = {
+            url,
+            top,
+            left,
+            width,
+            height,
+            type: 'popup',
+            focused: currentSettings.autoFocus
+        };
+
+        chrome.windows.create(windowOptions, (newWindow) => {
+            musicPopupWindowId = newWindow.id;
+            console.log('Created music popup window with ID:', musicPopupWindowId);
+        });
+    });
+}
+
 const css = `
     /* For the popup.html */
     body {
@@ -375,7 +450,6 @@ const css = `
         display: none !important;
     }
 `;
-
 
 
 /**
@@ -433,6 +507,8 @@ function createPopupWindow(url, width, height) {
 chrome.windows.onRemoved.addListener((windowId) => {
     if (windowId === popupWindowId) {
         popupWindowId = null;
+    } else if (windowId === musicPopupWindowId) {
+        musicPopupWindowId = null;
     }
 });
 

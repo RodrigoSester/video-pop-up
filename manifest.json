@@ -1,16 +1,17 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "permissions": ["activeTab", "scripting", "storage", "tabs", "windows"],
   "host_permissions": [
     "*://www.youtube.com/*",
-    "*://youtube.com/*"
+    "*://youtube.com/*",
+    "*://music.youtube.com/*"
   ],
   "options_ui": {
-    "page": "src/popup.html",
+    "page": "src/options.html",
     "open_in_tab": true
   },
   "action": {
@@ -29,6 +30,10 @@
       "matches": ["*://www.youtube.com/*", "*://youtube.com/*"],
       "js": ["src/content.js"],
       "css": ["src/style.css"]
+    },
+    {
+      "matches": ["*://music.youtube.com/*"],
+      "js": ["src/content-music.js"]
     }
   ],
   "icons": {
