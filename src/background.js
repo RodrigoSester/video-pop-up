@@ -247,8 +247,8 @@ function openOrUpdatePopup(url) {
  * Open or update YouTube Music popup window
  */
 function openOrUpdateMusicPopup(url) {
-    const windowWidth = 500;
-    const windowHeight = 500;
+    const windowWidth = 400;
+    const windowHeight = 600;
 
     // Check if the music popup window already exists.
     if (musicPopupWindowId !== null) {
@@ -370,14 +370,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 const musicCss = `
-    ytmusic-player-page div#main-panel yt-icon-button {
-        button.yt-icon-button {
-            cursor-pointer: default !important;
-        }
-        
-        button.yt-icon-button > yt-icon > span > div >  svg {
-            display: none !important;
-        }
+    body ytmusic-app ytmusic-app-layout ytmusic-player-page div#main-panel yt-icon-button#collapse-button {
+        display: none !important;
+    }
+
+    .popup-player-btn-music {
+        display: none !important;
     }
 `;
 
@@ -389,7 +387,6 @@ const musicCss = `
  */
 function createMusicPopupWindow(url, width, height) {
     chrome.windows.getLastFocused((lastWindow) => {
-        // Calculate centered position
         const top = lastWindow.top + Math.round((lastWindow.height - height) / 2);
         const left = lastWindow.left + Math.round((lastWindow.width - width) / 2);
 
@@ -405,7 +402,23 @@ function createMusicPopupWindow(url, width, height) {
 
         chrome.windows.create(windowOptions, (newWindow) => {
             musicPopupWindowId = newWindow.id;
-            console.log('Created music popup window with ID:', musicPopupWindowId);
+
+            const tabId = newWindow.tabs && newWindow.tabs.length > 0 ? newWindow.tabs[0].id : null;
+            if (tabId) {
+                chrome.tabs.onUpdated.addListener(function listener(updatedTabId, changeInfo, tab) {
+                    if (updatedTabId === tabId && changeInfo.status === 'complete') {
+                        chrome.tabs.onUpdated.removeListener(listener);
+                        
+                        chrome.scripting.insertCSS({
+                            target: { tabId: tabId },
+                            css: musicCss
+                        })
+                        .catch((error) => {
+                            console.error('Failed to inject CSS into music popup window:', error);
+                        });
+                    }
+                });
+            }
         });
     });
 }
