@@ -4,6 +4,13 @@ A Chrome extension that allows you to watch YouTube videos in a dedicated pop-up
 
 ## ✨ Features
 
+### 🤖 AI Assistant Integration (NEW!)
+- **Google Gemini AI**: Built-in AI assistant powered by Google's Gemini model
+- **Side Panel Chat**: Interactive chat interface accessible from the extension toolbar
+- **Contextual Help**: Ask questions about YouTube videos, get summaries, and more
+- **Secure API Key Management**: Personal API key stored locally with easy configuration
+- **Real-time Responses**: Fast AI-powered responses with loading states and error handling
+
 ### 🎮 Multiple Ways to Open Pop-ups
 - **Extension Popup**: Click the extension icon to browse and select from all videos on the current YouTube page
 - **In-Video Button**: A dedicated button is automatically added to YouTube's video player controls
@@ -103,6 +110,20 @@ The extension will be available on the Chrome Web Store (coming soon).
 
 ## 🎯 How to Use
 
+### AI Assistant
+1. **Setup Your API Key**:
+   - Right-click the extension icon → Options
+   - Navigate to the "AI Integration" section
+   - Follow the step-by-step instructions to get your free API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+   - Paste your API key and save settings
+
+2. **Using the AI Assistant**:
+   - Click the extension icon to open the side panel
+   - Type your questions or prompts in the text area
+   - Press Enter or click "Send" to get AI responses
+   - Ask about YouTube videos, get summaries, or general assistance
+   - Use the "Clear Chat" button to start a new conversation
+
 ### Method 1: Extension Popup
 1. Navigate to any YouTube page (homepage, channel, search results)
 2. Click the extension icon in your browser toolbar
@@ -128,6 +149,7 @@ The extension will be available on the Chrome Web Store (coming soon).
    - **Window Settings**: Customize pop-up dimensions
    - **History Settings**: Set retention policies and limits
    - **Appearance**: Choose light, dark, or system theme
+   - **AI Integration**: Set up your Gemini API key for AI features
    - **Advanced**: Auto-focus and window memory options
 4. Click "Save Settings" to apply changes
 
@@ -136,19 +158,21 @@ The extension will be available on the Chrome Web Store (coming soon).
 ### Permissions Required
 - `activeTab`: Access current tab information
 - `scripting`: Inject CSS and JavaScript into YouTube pages
-- `storage`: Store extension preferences, settings, and video history
+- `storage`: Store extension preferences, settings, video history, and API keys
 - `tabs`: Manage browser tabs
 - `windows`: Create and manage pop-up windows
+- `sidePanel`: Enable AI assistant side panel interface
 
 ### Host Permissions
 - `*://www.youtube.com/*`: Full access to YouTube pages
 - `*://youtube.com/*`: Support for non-www YouTube URLs
 
 ### Features Added
+- **AI Integration**: Google Gemini AI assistant with side panel interface
 - **Options UI**: Integrated settings page with `options_ui` configuration
 - **Internationalization**: Multi-language support using `default_locale` and `_locales`
-- **Enhanced Storage**: Persistent settings and video history management
-- **Improved UX**: Theme support and comprehensive customization options
+- **Enhanced Storage**: Persistent settings, video history, and secure API key management
+- **Improved UX**: Theme support, AI chat interface, and comprehensive customization options
 
 ### Browser Compatibility
 - ✅ Chrome (Manifest V3)
@@ -176,10 +200,16 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 - Pop-up CSS injection is scoped to popup windows only to prevent layout conflicts
 - Extension may require page refresh after installation for content script injection
 - History cleanup runs periodically based on retention settings
+- AI features require a personal Google Gemini API key (free tier available)
+- Side panel AI chat requires active internet connection for responses
 
 ## 🔮 Future Enhancements
 
-- [ ] Keyboard shortcuts for quick pop-up creation
+- [ ] Keyboard shortcuts for quick pop-up creation and AI assistant
 - [ ] Multiple video queue management and playlists
 - [ ] Enhanced video metadata (thumbnails, channel info)
 - [ ] Advanced filtering and search in history
+- [ ] Video context awareness in AI assistant (pass current video info)
+- [ ] Chat history persistence across sessions
+- [ ] Export AI conversations
+- [ ] Multi-model support (different Gemini variants)

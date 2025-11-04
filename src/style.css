@@ -420,6 +420,34 @@ input:checked + .slider:hover {
     transform: scale(0.95) !important;
 }
 
+/* AI Assistant Button */
+.ai-assistant-btn {
+    background: none !important;
+    border: none !important;
+    color: var(--popup-text-muted) !important;
+    cursor: pointer !important;
+    font-size: 18px !important;
+    padding: 8px !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    margin-right: 4px !important;
+}
+
+.ai-assistant-btn:hover {
+    color: var(--popup-text-color) !important;
+    background-color: var(--popup-hover-bg) !important;
+    transform: scale(1.1) !important;
+}
+
+.ai-assistant-btn:active {
+    transform: scale(0.95) !important;
+}
+
 /* History Header */
 .history-header {
     display: flex !important;

@@ -12,7 +12,10 @@ const DEFAULT_SETTINGS = {
     
     // Advanced settings
     autoFocus: true,
-    rememberWindowState: true
+    rememberWindowState: true,
+    
+    // AI Integration settings
+    geminiApiKey: ''
 };
 
 let currentSettings = { ...DEFAULT_SETTINGS };
@@ -79,9 +82,25 @@ function initializeI18n() {
         'autoFocusHelp',
         'rememberWindowStateLabel',
         'rememberWindowStateHelp',
+        'aiIntegrationTitle',
+        'geminiApiKeyLabel',
+        'geminiApiKeyHelp',
+        'apiKeyInstructionsTitle',
+        'apiKeyStep1',
+        'apiKeyStep2',
+        'apiKeyStep3',
+        'apiKeyStep4',
+        'apiKeyStep5',
+        'getApiKeyLink',
         'saveText',
         'resetText'
     ];
+    
+    // Set placeholder for API key input
+    const apiKeyInput = document.getElementById('geminiApiKey');
+    if (apiKeyInput) {
+        apiKeyInput.placeholder = chrome.i18n.getMessage('apiKeyPlaceholder');
+    }
 
     elementsToTranslate.forEach(id => {
         const element = document.getElementById(id);
@@ -150,6 +169,9 @@ function populateForm() {
     // Advanced settings
     document.getElementById('autoFocus').checked = currentSettings.autoFocus;
     document.getElementById('rememberWindowState').checked = currentSettings.rememberWindowState;
+    
+    // AI Integration settings
+    document.getElementById('geminiApiKey').value = currentSettings.geminiApiKey || '';
 }
 
 /**
@@ -161,6 +183,7 @@ function setupEventListeners() {
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
     const themeSwitch = document.getElementById('themeSwitch');
     const themeModeSelect = document.getElementById('themeMode');
+    const toggleApiKeyBtn = document.getElementById('toggleApiKeyVisibility');
     
     // Form submission
     form.addEventListener('submit', handleFormSubmit);
@@ -179,6 +202,11 @@ function setupEventListeners() {
     // Theme mode select
     if (themeModeSelect) {
         themeModeSelect.addEventListener('change', handleThemeModeChange);
+    }
+    
+    // Toggle API key visibility
+    if (toggleApiKeyBtn) {
+        toggleApiKeyBtn.addEventListener('click', toggleApiKeyVisibility);
     }
     
     // Input validation
@@ -233,6 +261,9 @@ function updateSettingsFromForm() {
     // Advanced settings
     currentSettings.autoFocus = document.getElementById('autoFocus').checked;
     currentSettings.rememberWindowState = document.getElementById('rememberWindowState').checked;
+    
+    // AI Integration settings
+    currentSettings.geminiApiKey = document.getElementById('geminiApiKey').value.trim();
 }
 
 /**
@@ -420,17 +451,18 @@ function importSettings(file) {
     
     reader.onload = async function(e) {
         try {
-            const importedSettings = JSON.parse(e.target.result);
+            const settings = JSON.parse(e.target.result);
             
-            // Validate imported settings
-            const validatedSettings = { ...DEFAULT_SETTINGS, ...importedSettings };
-            
-            currentSettings = validatedSettings;
-            populateForm();
-            await saveSettings();
-            applyTheme();
-            
-            showStatus('settingsImported', 'success');
+            // Validate settings structure
+            if (typeof settings === 'object') {
+                currentSettings = { ...DEFAULT_SETTINGS, ...settings };
+                await saveSettings();
+                populateForm();
+                applyTheme();
+                showStatus('settingsImported', 'success');
+            } else {
+                showStatus('invalidSettingsFile', 'error');
+            }
         } catch (error) {
             console.error('Failed to import settings:', error);
             showStatus('errorImportingSettings', 'error');
@@ -438,6 +470,24 @@ function importSettings(file) {
     };
     
     reader.readAsText(file);
+}
+
+/**
+ * Toggle API key visibility
+ */
+function toggleApiKeyVisibility() {
+    const apiKeyInput = document.getElementById('geminiApiKey');
+    const toggleBtn = document.getElementById('toggleApiKeyVisibility');
+    
+    if (apiKeyInput.type === 'password') {
+        apiKeyInput.type = 'text';
+        toggleBtn.textContent = '🙈';
+        toggleBtn.title = 'Hide API key';
+    } else {
+        apiKeyInput.type = 'password';
+        toggleBtn.textContent = '👁️';
+        toggleBtn.title = 'Show API key';
+    }
 }
 
 // Initialize when DOM is loaded

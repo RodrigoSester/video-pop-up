@@ -285,5 +285,97 @@
   "searching": {
     "message": "Searching...",
     "description": "Loading message when filtering videos"
+  },
+  "aiIntegrationTitle": {
+    "message": "AI Integration",
+    "description": "Section title for AI settings"
+  },
+  "geminiApiKeyLabel": {
+    "message": "Google Gemini API Key",
+    "description": "Label for API key input"
+  },
+  "geminiApiKeyHelp": {
+    "message": "Enter your personal Gemini API key to enable AI assistant features",
+    "description": "Help text for API key input"
+  },
+  "apiKeyPlaceholder": {
+    "message": "Enter your Gemini API key here...",
+    "description": "Placeholder for API key input"
+  },
+  "apiKeyInstructionsTitle": {
+    "message": "How to get your API key:",
+    "description": "Title for API key instructions"
+  },
+  "apiKeyStep1": {
+    "message": "Visit Google AI Studio (link below)",
+    "description": "Step 1 for getting API key"
+  },
+  "apiKeyStep2": {
+    "message": "Sign in with your Google account",
+    "description": "Step 2 for getting API key"
+  },
+  "apiKeyStep3": {
+    "message": "Click 'Create API Key' or 'Get API Key'",
+    "description": "Step 3 for getting API key"
+  },
+  "apiKeyStep4": {
+    "message": "Copy the generated API key",
+    "description": "Step 4 for getting API key"
+  },
+  "apiKeyStep5": {
+    "message": "Paste it in the field above and save settings",
+    "description": "Step 5 for getting API key"
+  },
+  "getApiKeyLink": {
+    "message": "🔗 Get your API key from Google AI Studio",
+    "description": "Link text to AI Studio"
+  },
+  "aiAssistantTitle": {
+    "message": "AI Assistant",
+    "description": "Side panel title"
+  },
+  "noApiKeyMessage": {
+    "message": "Please set your Google Gemini API Key to use AI features.",
+    "description": "Message when API key is not set"
+  },
+  "goToSettings": {
+    "message": "Open Settings",
+    "description": "Button text to open settings"
+  },
+  "promptPlaceholder": {
+    "message": "Ask me anything about YouTube videos...",
+    "description": "Placeholder for chat input"
+  },
+  "sendButton": {
+    "message": "Send",
+    "description": "Send button text"
+  },
+  "thinkingMessage": {
+    "message": "Thinking...",
+    "description": "Loading state message"
+  },
+  "aiErrorMessage": {
+    "message": "Failed to get response. Please check your API key and try again.",
+    "description": "Error message for AI failures"
+  },
+  "aiWelcomeMessage": {
+    "message": "Hello! I'm your AI assistant. Ask me anything!",
+    "description": "Welcome message in AI chat"
+  },
+  "settingsButton": {
+    "message": "Settings",
+    "description": "Settings button text"
+  },
+  "clearChatButton": {
+    "message": "Clear Chat",
+    "description": "Clear chat button text"
+  },
+  "youLabel": {
+    "message": "You",
+    "description": "Label for user messages"
+  },
+  "aiLabel": {
+    "message": "AI",
+    "description": "Label for AI messages"
   }
 }

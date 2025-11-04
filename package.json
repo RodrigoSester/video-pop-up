@@ -1,11 +1,12 @@
 {
-  "dependencies": {
-    "yarn": "^1.22.22"
-  },
   "name": "video-pop-up",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:RodrigoSester/video-pop-up.git",
   "author": "wigo <rodrigows09@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "yarn": "^1.22.22"
+  }
 }

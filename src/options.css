@@ -258,6 +258,89 @@ input:checked + .slider:hover {
     border-color: var(--error-color);
 }
 
+/* API Key Input Styles */
+.api-key-input-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    max-width: 500px;
+}
+
+.api-key-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: 'Courier New', monospace;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.api-key-input:focus {
+    outline: none;
+    border-color: var(--focus-color);
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.toggle-visibility-btn {
+    padding: 8px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.toggle-visibility-btn:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--text-secondary);
+}
+
+.toggle-visibility-btn:active {
+    transform: scale(0.95);
+}
+
+.api-key-instructions {
+    margin-top: 16px;
+    padding: 16px;
+    background-color: var(--secondary-color);
+    border-left: 4px solid var(--info-color);
+    border-radius: 4px;
+}
+
+.api-key-instructions p {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.api-key-instructions ol {
+    margin-left: 20px;
+    margin-bottom: 12px;
+}
+
+.api-key-instructions li {
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.api-key-instructions a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.api-key-instructions a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
 
 
 /* Checkbox Styles */

@@ -14,7 +14,10 @@ const DEFAULT_SETTINGS = {
     
     // Advanced settings
     autoFocus: true,
-    rememberWindowState: true
+    rememberWindowState: true,
+    
+    // AI Integration settings
+    geminiApiKey: ''
 };
 
 let currentSettings = { ...DEFAULT_SETTINGS };

@@ -79,6 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
             clearHistoryPopupBtn.title = chrome.i18n.getMessage('clearHistoryHelp') || 'Clear All History';
         }
         
+        // Update AI Assistant button tooltip
+        const aiAssistantBtn = document.getElementById('aiAssistantBtn');
+        if (aiAssistantBtn) {
+            aiAssistantBtn.title = chrome.i18n.getMessage('aiAssistantTitle') || 'AI Assistant';
+        }
+
         // Update options button tooltip
         const optionsBtn = document.getElementById('optionsBtn');
         if (optionsBtn) {
@@ -113,6 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const optionsBtn = document.getElementById('optionsBtn');
         if (optionsBtn) {
             optionsBtn.addEventListener('click', openOptionsPage);
+        }
+
+        // AI Assistant button
+        const aiAssistantBtn = document.getElementById('aiAssistantBtn');
+        if (aiAssistantBtn) {
+            aiAssistantBtn.addEventListener('click', openSidePanel);
         }
 
         // Clear history button in popup
@@ -265,6 +277,26 @@ document.addEventListener('DOMContentLoaded', () => {
     function openOptionsPage() {
         chrome.runtime.openOptionsPage();
         window.close(); // Close the popup
+    }
+
+    // Open side panel (AI Assistant)
+    function openSidePanel() {
+        chrome.sidePanel.open({ windowId: chrome.windows.WINDOW_ID_CURRENT })
+            .then(() => {
+                window.close(); // Close the popup
+            })
+            .catch(error => {
+                console.error('Failed to open side panel:', error);
+                // Fallback: try opening via chrome.sidePanel.setOptions
+                chrome.sidePanel.setOptions({ 
+                    enabled: true 
+                }).then(() => {
+                    chrome.sidePanel.open({ windowId: chrome.windows.WINDOW_ID_CURRENT });
+                    window.close();
+                }).catch(err => {
+                    console.error('Failed to open side panel (fallback):', err);
+                });
+            });
     }
 
     // Handle clear history from popup

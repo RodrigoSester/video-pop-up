@@ -1,16 +1,16 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
-  "permissions": ["activeTab", "scripting", "storage", "tabs", "windows"],
+  "permissions": ["activeTab", "scripting", "storage", "tabs", "windows", "sidePanel"],
   "host_permissions": [
     "*://www.youtube.com/*",
     "*://youtube.com/*"
   ],
   "options_ui": {
-    "page": "src/popup.html",
+    "page": "src/options.html",
     "open_in_tab": true
   },
   "action": {
@@ -20,6 +20,9 @@
       "48": "images/icon48.png",
       "128": "images/icon128.png"
     }
+  },
+  "side_panel": {
+    "default_path": "src/sidepanel.html"
   },
   "background": {
     "service_worker": "src/background.js"

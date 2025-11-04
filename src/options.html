@@ -113,6 +113,42 @@
                     </div>
                 </section>
 
+                <!-- AI Integration Settings Section -->
+                <section class="options-section">
+                    <h2 id="aiIntegrationTitle"></h2>
+                    
+                    <div class="setting-group">
+                        <label for="geminiApiKey" id="geminiApiKeyLabel"></label>
+                        <div class="api-key-input-container">
+                            <input 
+                                type="password" 
+                                id="geminiApiKey" 
+                                class="api-key-input" 
+                                placeholder=""
+                                autocomplete="off"
+                            >
+                            <button type="button" id="toggleApiKeyVisibility" class="toggle-visibility-btn" title="Toggle visibility">
+                                👁️
+                            </button>
+                        </div>
+                        <small id="geminiApiKeyHelp"></small>
+                        
+                        <div class="api-key-instructions">
+                            <p id="apiKeyInstructionsTitle"><strong></strong></p>
+                            <ol>
+                                <li id="apiKeyStep1"></li>
+                                <li id="apiKeyStep2"></li>
+                                <li id="apiKeyStep3"></li>
+                                <li id="apiKeyStep4"></li>
+                                <li id="apiKeyStep5"></li>
+                            </ol>
+                            <p>
+                                <a href="https://aistudio.google.com/app/apikey" target="_blank" id="getApiKeyLink"></a>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Action Buttons -->
                 <div class="options-actions">
                     <button type="submit" id="saveBtn" class="primary-btn">

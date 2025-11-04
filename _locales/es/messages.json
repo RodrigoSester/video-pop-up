@@ -285,5 +285,97 @@
   "searching": {
     "message": "Buscando...",
     "description": "Mensaje de carga al filtrar videos"
+  },
+  "aiIntegrationTitle": {
+    "message": "Integración de IA",
+    "description": "Título de sección para configuración de IA"
+  },
+  "geminiApiKeyLabel": {
+    "message": "Clave API de Google Gemini",
+    "description": "Etiqueta para entrada de clave API"
+  },
+  "geminiApiKeyHelp": {
+    "message": "Ingresa tu clave API personal de Gemini para habilitar funciones de asistente IA",
+    "description": "Texto de ayuda para entrada de clave API"
+  },
+  "apiKeyPlaceholder": {
+    "message": "Ingresa tu clave API de Gemini aquí...",
+    "description": "Placeholder para entrada de clave API"
+  },
+  "apiKeyInstructionsTitle": {
+    "message": "Cómo obtener tu clave API:",
+    "description": "Título para instrucciones de clave API"
+  },
+  "apiKeyStep1": {
+    "message": "Visita Google AI Studio (enlace abajo)",
+    "description": "Paso 1 para obtener clave API"
+  },
+  "apiKeyStep2": {
+    "message": "Inicia sesión con tu cuenta de Google",
+    "description": "Paso 2 para obtener clave API"
+  },
+  "apiKeyStep3": {
+    "message": "Haz clic en 'Crear Clave API' u 'Obtener Clave API'",
+    "description": "Paso 3 para obtener clave API"
+  },
+  "apiKeyStep4": {
+    "message": "Copia la clave API generada",
+    "description": "Paso 4 para obtener clave API"
+  },
+  "apiKeyStep5": {
+    "message": "Pégala en el campo de arriba y guarda la configuración",
+    "description": "Paso 5 para obtener clave API"
+  },
+  "getApiKeyLink": {
+    "message": "🔗 Obtén tu clave API de Google AI Studio",
+    "description": "Texto del enlace a AI Studio"
+  },
+  "aiAssistantTitle": {
+    "message": "Asistente IA",
+    "description": "Título del panel lateral"
+  },
+  "noApiKeyMessage": {
+    "message": "Por favor configura tu Clave API de Google Gemini para usar funciones de IA.",
+    "description": "Mensaje cuando no hay clave API configurada"
+  },
+  "goToSettings": {
+    "message": "Abrir Configuración",
+    "description": "Texto del botón para abrir configuración"
+  },
+  "promptPlaceholder": {
+    "message": "Pregúntame cualquier cosa sobre videos de YouTube...",
+    "description": "Placeholder para entrada de chat"
+  },
+  "sendButton": {
+    "message": "Enviar",
+    "description": "Texto del botón enviar"
+  },
+  "thinkingMessage": {
+    "message": "Pensando...",
+    "description": "Mensaje de estado de carga"
+  },
+  "aiErrorMessage": {
+    "message": "Error al obtener respuesta. Por favor verifica tu clave API e intenta de nuevo.",
+    "description": "Mensaje de error para fallos de IA"
+  },
+  "aiWelcomeMessage": {
+    "message": "¡Hola! Soy tu asistente IA. ¡Pregúntame lo que quieras!",
+    "description": "Mensaje de bienvenida en chat de IA"
+  },
+  "settingsButton": {
+    "message": "Configuración",
+    "description": "Texto del botón de configuración"
+  },
+  "clearChatButton": {
+    "message": "Limpiar Chat",
+    "description": "Texto del botón limpiar chat"
+  },
+  "youLabel": {
+    "message": "Tú",
+    "description": "Etiqueta para mensajes del usuario"
+  },
+  "aiLabel": {
+    "message": "IA",
+    "description": "Etiqueta para mensajes de IA"
   }
 }

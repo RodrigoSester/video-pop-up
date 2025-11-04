@@ -285,5 +285,97 @@
   "searching": {
     "message": "Buscando...",
     "description": "Mensagem de carregamento ao filtrar vídeos"
+  },
+  "aiIntegrationTitle": {
+    "message": "Integração de IA",
+    "description": "Título da seção para configurações de IA"
+  },
+  "geminiApiKeyLabel": {
+    "message": "Chave API do Google Gemini",
+    "description": "Rótulo para entrada de chave API"
+  },
+  "geminiApiKeyHelp": {
+    "message": "Digite sua chave API pessoal do Gemini para habilitar recursos de assistente IA",
+    "description": "Texto de ajuda para entrada de chave API"
+  },
+  "apiKeyPlaceholder": {
+    "message": "Digite sua chave API do Gemini aqui...",
+    "description": "Placeholder para entrada de chave API"
+  },
+  "apiKeyInstructionsTitle": {
+    "message": "Como obter sua chave API:",
+    "description": "Título para instruções de chave API"
+  },
+  "apiKeyStep1": {
+    "message": "Visite o Google AI Studio (link abaixo)",
+    "description": "Passo 1 para obter chave API"
+  },
+  "apiKeyStep2": {
+    "message": "Faça login com sua conta Google",
+    "description": "Passo 2 para obter chave API"
+  },
+  "apiKeyStep3": {
+    "message": "Clique em 'Criar Chave API' ou 'Obter Chave API'",
+    "description": "Passo 3 para obter chave API"
+  },
+  "apiKeyStep4": {
+    "message": "Copie a chave API gerada",
+    "description": "Passo 4 para obter chave API"
+  },
+  "apiKeyStep5": {
+    "message": "Cole no campo acima e salve as configurações",
+    "description": "Passo 5 para obter chave API"
+  },
+  "getApiKeyLink": {
+    "message": "🔗 Obtenha sua chave API do Google AI Studio",
+    "description": "Texto do link para AI Studio"
+  },
+  "aiAssistantTitle": {
+    "message": "Assistente IA",
+    "description": "Título do painel lateral"
+  },
+  "noApiKeyMessage": {
+    "message": "Por favor, configure sua Chave API do Google Gemini para usar recursos de IA.",
+    "description": "Mensagem quando não há chave API configurada"
+  },
+  "goToSettings": {
+    "message": "Abrir Configurações",
+    "description": "Texto do botão para abrir configurações"
+  },
+  "promptPlaceholder": {
+    "message": "Pergunte-me qualquer coisa sobre vídeos do YouTube...",
+    "description": "Placeholder para entrada de chat"
+  },
+  "sendButton": {
+    "message": "Enviar",
+    "description": "Texto do botão enviar"
+  },
+  "thinkingMessage": {
+    "message": "Pensando...",
+    "description": "Mensagem de estado de carregamento"
+  },
+  "aiErrorMessage": {
+    "message": "Falha ao obter resposta. Por favor, verifique sua chave API e tente novamente.",
+    "description": "Mensagem de erro para falhas de IA"
+  },
+  "aiWelcomeMessage": {
+    "message": "Olá! Sou seu assistente IA. Pergunte-me qualquer coisa!",
+    "description": "Mensagem de boas-vindas no chat de IA"
+  },
+  "settingsButton": {
+    "message": "Configurações",
+    "description": "Texto do botão de configurações"
+  },
+  "clearChatButton": {
+    "message": "Limpar Chat",
+    "description": "Texto do botão limpar chat"
+  },
+  "youLabel": {
+    "message": "Você",
+    "description": "Rótulo para mensagens do usuário"
+  },
+  "aiLabel": {
+    "message": "IA",
+    "description": "Rótulo para mensagens de IA"
   }
 }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="aiAssistantTitle"></title>
+    <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+    <div class="sidepanel-container">
+        <!-- Header -->
+        <header class="sidepanel-header">
+            <div class="header-content">
+                <img src="../images/icon48.png" alt="Extension Icon" class="header-icon">
+                <h1 id="headerTitle"></h1>
+            </div>
+            <button id="openSettingsBtn" class="settings-btn" title="">
+                ⚙️
+            </button>
+        </header>
+
+        <!-- API Key Missing State -->
+        <div id="noApiKeyState" class="state-container hidden">
+            <div class="empty-state">
+                <div class="empty-state-icon">🔑</div>
+                <h2 id="noApiKeyTitle"></h2>
+                <p id="noApiKeyDescription"></p>
+                <button id="goToSettingsBtn" class="primary-btn">
+                    <span id="goToSettingsBtnText"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Interface -->
+        <div id="chatState" class="state-container hidden">
+            <!-- Messages Container -->
+            <div id="messagesContainer" class="messages-container">
+                <div class="welcome-message">
+                    <div class="ai-avatar">🤖</div>
+                    <div class="message-content">
+                        <p id="welcomeMessageText"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="loading-indicator hidden">
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span id="loadingText"></span>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <textarea 
+                    id="promptInput" 
+                    placeholder=""
+                    rows="3"
+                    maxlength="2000"
+                ></textarea>
+                <div class="input-actions">
+                    <button id="clearChatBtn" class="secondary-btn small-btn" title="">
+                        🗑️ <span id="clearChatBtnText"></span>
+                    </button>
+                    <button id="sendBtn" class="primary-btn">
+                        <span id="sendBtnText"></span> ➤
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="sidepanel.js"></script>
+</body>
+</html>
