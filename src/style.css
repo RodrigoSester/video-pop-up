@@ -480,3 +480,18 @@ input:checked + .slider:hover {
 .clear-history-btn:active {
     transform: translateY(0) !important;
 }
+
+
+ytmusic-player-page div#main-panel yt-icon-button {
+    button.yt-icon-button {
+        cursor-pointer: default !important;
+    }
+
+    button.yt-icon-button > yt-icon > span > div >  svg {
+        display: none !important;
+    }
+}
+
+button.yt-icon-button {
+    display: none !important;
+}
