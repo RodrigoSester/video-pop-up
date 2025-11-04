@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "permissions": ["activeTab", "scripting", "storage", "tabs", "windows", "sidePanel"],
@@ -15,7 +15,6 @@
     "open_in_tab": true
   },
   "action": {
-    "default_popup": "src/popup.html",
     "default_icon": {
       "16": "images/icon16.png",
       "48": "images/icon48.png",

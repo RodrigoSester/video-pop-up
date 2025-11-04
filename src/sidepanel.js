@@ -14,25 +14,37 @@ let chat = null;
 let apiKey = null;
 let chatHistory = [];
 
+// Video state
+let currentVideos = [];
+let historyVideos = [];
+
 /**
  * Initialize the side panel
  */
 async function initializeSidePanel() {
     try {
-        // Initialize internationalization
+        // Initialize internationalization and theme
         initializeI18n();
+        initializeTheme();
+        
+        // Initialize tabs
+        initializeTabs();
         
         // Load API key from storage
         const settings = await chrome.storage.local.get('extensionSettings');
         apiKey = settings.extensionSettings?.geminiApiKey;
 
-        // Check API key and show appropriate UI
+        // Check API key and show appropriate UI for AI chat
         if (!apiKey || apiKey.trim() === '') {
             showNoApiKeyState();
         } else {
             initializeAI();
             showChatState();
         }
+
+        // Load videos for current page and history
+        loadCurrentPageVideos();
+        loadVideoHistory();
 
         setupEventListeners();
     } catch (error) {
@@ -57,7 +69,10 @@ function initializeI18n() {
         'welcomeMessageText': 'aiWelcomeMessage',
         'loadingText': 'thinkingMessage',
         'clearChatBtnText': 'clearChatButton',
-        'sendBtnText': 'sendButton'
+        'sendBtnText': 'sendButton',
+        'message': 'clickVideoMessage',
+        'history-message': 'historyMessage',
+        'clearHistoryText': 'clearHistoryText'
     };
 
     Object.entries(translations).forEach(([elementId, messageKey]) => {
@@ -67,10 +82,25 @@ function initializeI18n() {
         }
     });
 
+    // Set tab labels
+    document.getElementById('current-tab').textContent = chrome.i18n.getMessage('currentPageTab');
+    document.getElementById('history-tab').textContent = chrome.i18n.getMessage('historyTab');
+    document.getElementById('ai-chat-tab').textContent = chrome.i18n.getMessage('aiAssistantTitle');
+
     // Set placeholders and titles
     const promptInput = document.getElementById('promptInput');
     if (promptInput) {
         promptInput.placeholder = chrome.i18n.getMessage('promptPlaceholder');
+    }
+
+    const currentSearchInput = document.getElementById('current-search');
+    if (currentSearchInput) {
+        currentSearchInput.placeholder = chrome.i18n.getMessage('searchCurrentVideos');
+    }
+
+    const historySearchInput = document.getElementById('history-search');
+    if (historySearchInput) {
+        historySearchInput.placeholder = chrome.i18n.getMessage('searchHistoryVideos');
     }
 
     const settingsBtn = document.getElementById('openSettingsBtn');
@@ -82,6 +112,210 @@ function initializeI18n() {
     if (clearBtn) {
         clearBtn.title = chrome.i18n.getMessage('clearChatButton');
     }
+
+    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    if (clearHistoryBtn) {
+        clearHistoryBtn.title = chrome.i18n.getMessage('clearHistoryHelp');
+    }
+}
+
+/**
+ * Initialize theme
+ */
+async function initializeTheme() {
+    try {
+        const result = await chrome.storage.local.get('extensionSettings');
+        const settings = result.extensionSettings || {};
+        const themeMode = settings.themeMode || 'auto';
+        applyTheme(themeMode);
+    } catch (error) {
+        console.error('Failed to load theme settings:', error);
+        applyTheme('auto');
+    }
+}
+
+/**
+ * Apply theme
+ */
+function applyTheme(themeMode) {
+    const body = document.body;
+    body.classList.remove('light-theme', 'dark-theme');
+    
+    if (themeMode === 'auto') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        body.classList.add(prefersDark ? 'dark-theme' : 'light-theme');
+    } else {
+        body.classList.add(`${themeMode}-theme`);
+    }
+}
+
+/**
+ * Initialize tabs
+ */
+function initializeTabs() {
+    const currentTab = document.getElementById('current-tab');
+    const historyTab = document.getElementById('history-tab');
+    const aiChatTab = document.getElementById('ai-chat-tab');
+
+    currentTab.addEventListener('click', () => switchTab('current'));
+    historyTab.addEventListener('click', () => switchTab('history'));
+    aiChatTab.addEventListener('click', () => switchTab('ai-chat'));
+}
+
+/**
+ * Switch between tabs
+ */
+function switchTab(tab) {
+    // Update tab buttons
+    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+    // Activate selected tab
+    document.getElementById(`${tab}-tab`).classList.add('active');
+    document.getElementById(`${tab}-section`).classList.add('active');
+}
+
+/**
+ * Load current page videos
+ */
+function loadCurrentPageVideos() {
+    chrome.tabs.query({active: true, currentWindow: true}).then(tabs => {
+        if (tabs[0] && (tabs[0].url.includes('youtube.com') || tabs[0].url.includes('youtu.be'))) {
+            chrome.scripting.executeScript({
+                target: {tabId: tabs[0].id},
+                func: getVideoData
+            }).then(results => {
+                if (results && results[0] && results[0].result) {
+                    currentVideos = results[0].result;
+                    displayCurrentVideos(currentVideos);
+                } else {
+                    displayCurrentVideos([]);
+                }
+            }).catch(error => {
+                console.error('Error loading current page videos:', error);
+                displayCurrentVideos([]);
+            });
+        } else {
+            displayCurrentVideos([]);
+        }
+    }).catch(error => {
+        console.error('Error querying tabs:', error);
+        displayCurrentVideos([]);
+    });
+}
+
+/**
+ * Load video history
+ */
+function loadVideoHistory() {
+    chrome.runtime.sendMessage({action: 'getVideoHistory'}).then(response => {
+        historyVideos = response || [];
+        displayVideoHistory(historyVideos);
+    }).catch(error => {
+        console.error('Error loading video history:', error);
+        displayVideoHistory([]);
+    });
+}
+
+/**
+ * Display current videos
+ */
+function displayCurrentVideos(videos) {
+    const videoList = document.getElementById('video-list');
+    const message = document.getElementById('message');
+    
+    videoList.innerHTML = '';
+    
+    if (videos.length === 0) {
+        message.textContent = chrome.i18n.getMessage('noVideosOnPage');
+    } else {
+        message.textContent = chrome.i18n.getMessage('clickToOpenPopup');
+        videos.forEach(video => {
+            const listItem = createVideoListItem(video, 'current');
+            videoList.appendChild(listItem);
+        });
+    }
+}
+
+/**
+ * Display video history
+ */
+function displayVideoHistory(history) {
+    const historyList = document.getElementById('history-list');
+    const historyMessage = document.getElementById('history-message');
+    
+    historyList.innerHTML = '';
+    
+    if (history.length === 0) {
+        historyMessage.textContent = chrome.i18n.getMessage('noHistoryYet');
+    } else {
+        historyMessage.textContent = chrome.i18n.getMessage('historyMessage');
+        history.forEach(video => {
+            const listItem = createVideoListItem(video, 'history');
+            historyList.appendChild(listItem);
+        });
+    }
+}
+
+/**
+ * Create video list item
+ */
+function createVideoListItem(video, type) {
+    const listItem = document.createElement('li');
+    listItem.className = 'video-item';
+    
+    const thumbnail = document.createElement('img');
+    thumbnail.className = 'video-thumbnail';
+    thumbnail.src = video.thumbnail || `https://i.ytimg.com/vi/${video.videoId}/default.jpg`;
+    thumbnail.alt = 'Video thumbnail';
+    
+    const videoContent = document.createElement('div');
+    videoContent.className = 'video-content';
+    
+    const title = document.createElement('div');
+    title.className = 'video-title';
+    title.textContent = video.title;
+    
+    const meta = document.createElement('div');
+    meta.className = 'video-meta';
+    meta.textContent = video.channel || 'Unknown Channel';
+    
+    videoContent.appendChild(title);
+    videoContent.appendChild(meta);
+    
+    videoContent.addEventListener('click', () => {
+        if (type === 'current') {
+            chrome.runtime.sendMessage({
+                action: 'addVideoToHistory',
+                videoId: video.videoId
+            });
+        }
+        chrome.runtime.sendMessage({
+            action: 'openPopup',
+            videoId: video.videoId
+        });
+    });
+    
+    listItem.appendChild(thumbnail);
+    listItem.appendChild(videoContent);
+    
+    if (type === 'history') {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.title = 'Delete from history';
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            chrome.runtime.sendMessage({
+                action: 'deleteVideoFromHistory',
+                videoId: video.videoId
+            });
+            listItem.remove();
+        });
+        listItem.appendChild(deleteBtn);
+    }
+    
+    return listItem;
 }
 
 /**
@@ -315,56 +549,261 @@ function setupEventListeners() {
     const clearChatBtn = document.getElementById('clearChatBtn');
     const openSettingsBtn = document.getElementById('openSettingsBtn');
     const goToSettingsBtn = document.getElementById('goToSettingsBtn');
+    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    const currentSearchInput = document.getElementById('current-search');
+    const historySearchInput = document.getElementById('history-search');
 
-    // Send button click
-    sendBtn.addEventListener('click', () => {
-        const prompt = promptInput.value;
-        sendMessage(prompt);
-    });
-
-    // Enter key to send (Shift+Enter for new line)
-    promptInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
+    // AI Chat event listeners
+    if (sendBtn) {
+        sendBtn.addEventListener('click', () => {
             const prompt = promptInput.value;
             sendMessage(prompt);
-        }
-    });
+        });
+    }
 
-    // Auto-resize textarea
-    promptInput.addEventListener('input', autoResize);
+    if (promptInput) {
+        // Enter key to send (Shift+Enter for new line)
+        promptInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage(promptInput.value);
+            }
+        });
 
-    // Clear chat button
-    clearChatBtn.addEventListener('click', () => {
-        if (confirm('Clear all chat messages?')) {
-            clearChat();
-        }
-    });
+        // Auto-resize textarea
+        promptInput.addEventListener('input', autoResize);
+    }
 
-    // Open settings button
-    openSettingsBtn.addEventListener('click', () => {
-        chrome.runtime.openOptionsPage();
-    });
+    if (clearChatBtn) {
+        clearChatBtn.addEventListener('click', () => {
+            if (confirm('Clear all chat messages?')) {
+                clearChat();
+            }
+        });
+    }
 
-    // Go to settings button (from no API key state)
-    goToSettingsBtn.addEventListener('click', () => {
-        chrome.runtime.openOptionsPage();
-    });
+    // Settings buttons
+    if (openSettingsBtn) {
+        openSettingsBtn.addEventListener('click', () => {
+            chrome.runtime.openOptionsPage();
+        });
+    }
+
+    if (goToSettingsBtn) {
+        goToSettingsBtn.addEventListener('click', () => {
+            chrome.runtime.openOptionsPage();
+        });
+    }
+
+    // Clear history button
+    if (clearHistoryBtn) {
+        clearHistoryBtn.addEventListener('click', () => {
+            const confirmMessage = chrome.i18n.getMessage('confirmClearHistory') || 
+                'Are you sure you want to clear all video history? This cannot be undone.';
+            
+            if (confirm(confirmMessage)) {
+                chrome.storage.local.set({ videoHistory: [] });
+                displayVideoHistory([]);
+            }
+        });
+    }
+
+    // Search filters
+    if (currentSearchInput) {
+        currentSearchInput.addEventListener('input', (e) => {
+            filterCurrentVideos(e.target.value);
+        });
+    }
+
+    if (historySearchInput) {
+        historySearchInput.addEventListener('input', (e) => {
+            filterHistoryVideos(e.target.value);
+        });
+    }
 
     // Listen for settings changes
     chrome.storage.onChanged.addListener((changes, areaName) => {
-        if (areaName === 'local' && changes.extensionSettings) {
-            const newApiKey = changes.extensionSettings.newValue?.geminiApiKey;
-            if (newApiKey && newApiKey !== apiKey) {
-                apiKey = newApiKey;
-                initializeAI();
-                showChatState();
-            } else if (!newApiKey && apiKey) {
-                apiKey = null;
-                showNoApiKeyState();
+        if (areaName === 'local') {
+            if (changes.extensionSettings) {
+                const newSettings = changes.extensionSettings.newValue;
+                const newApiKey = newSettings?.geminiApiKey;
+                
+                if (newApiKey !== apiKey) {
+                    apiKey = newApiKey;
+                    if (apiKey && apiKey.trim() !== '') {
+                        initializeAI();
+                        showChatState();
+                    } else {
+                        showNoApiKeyState();
+                    }
+                }
+
+                // Update theme
+                const themeMode = newSettings?.themeMode || 'auto';
+                applyTheme(themeMode);
+            }
+
+            if (changes.videoHistory) {
+                historyVideos = changes.videoHistory.newValue || [];
+                displayVideoHistory(historyVideos);
             }
         }
     });
+}
+
+/**
+ * Filter current videos
+ */
+function filterCurrentVideos(query) {
+    const searchLower = query.toLowerCase().trim();
+    
+    if (searchLower === '') {
+        displayCurrentVideos(currentVideos);
+        return;
+    }
+
+    const filteredVideos = currentVideos.filter(video =>
+        video.title.toLowerCase().includes(searchLower) ||
+        (video.channel && video.channel.toLowerCase().includes(searchLower))
+    );
+    
+    displayCurrentVideos(filteredVideos);
+}
+
+/**
+ * Filter history videos
+ */
+function filterHistoryVideos(query) {
+    const searchLower = query.toLowerCase().trim();
+    
+    if (searchLower === '') {
+        displayVideoHistory(historyVideos);
+        return;
+    }
+
+    const filteredVideos = historyVideos.filter(video =>
+        video.title.toLowerCase().includes(searchLower) ||
+        (video.channel && video.channel.toLowerCase().includes(searchLower))
+    );
+    
+    displayVideoHistory(filteredVideos);
+}
+
+/**
+ * Get video data from current page (executed in content script context)
+ */
+function getVideoData() {
+    const videos = [];
+    
+    function extractDuration(renderer) {
+        try {
+            const durationElement = renderer.querySelector('ytd-thumbnail-overlay-time-status-renderer span');
+            if (durationElement && durationElement.textContent) {
+                return durationElement.textContent.trim();
+            }
+            
+            const overlayElement = renderer.querySelector('.ytd-thumbnail-overlay-time-status-renderer');
+            if (overlayElement && overlayElement.textContent) {
+                return overlayElement.textContent.trim();
+            }
+            
+            const timeElement = renderer.querySelector('[class*="time"], [class*="duration"]');
+            if (timeElement && timeElement.textContent) {
+                return timeElement.textContent.trim();
+            }
+        } catch (error) {
+            console.warn('Error extracting duration:', error);
+        }
+        
+        return null;
+    }
+
+    function extractTitle(renderer) {
+        try {
+            const titleSelectors = [
+                'h3 a[id="video-title"]',
+                'h3 a',
+                '[id="video-title"]',
+                '.ytd-video-meta-block h3 a',
+                'a[aria-label][title]'
+            ];
+            
+            for (const selector of titleSelectors) {
+                const titleElement = renderer.querySelector(selector);
+                if (titleElement) {
+                    return titleElement.getAttribute('title') || titleElement.textContent || titleElement.getAttribute('aria-label') || '';
+                }
+            }
+        } catch (error) {
+            console.warn('Error extracting title:', error);
+        }
+        return 'Unknown Title';
+    }
+
+    function extractThumbnail(renderer) {
+        try {
+            const thumbnailElement = renderer.querySelector('img[src*="i.ytimg.com"], img[src*="ggpht.com"]');
+            if (thumbnailElement) {
+                return thumbnailElement.src;
+            }
+        } catch (error) {
+            console.warn('Error extracting thumbnail:', error);
+        }
+        return null;
+    }
+
+    function extractChannel(renderer) {
+        try {
+            const channelElement = renderer.querySelector('[class*="channel"] a, ytd-channel-name a');
+            if (channelElement && channelElement.textContent) {
+                return channelElement.textContent.trim();
+            }
+        } catch (error) {
+            console.warn('Error extracting channel:', error);
+        }
+        return 'Unknown Channel';
+    }
+
+    const rendererSelectors = [
+        'ytd-rich-item-renderer',
+        'ytd-video-renderer',
+        'ytd-grid-video-renderer',
+        'ytd-compact-video-renderer',
+        'ytd-movie-renderer'
+    ];
+
+    rendererSelectors.forEach(selector => {
+        const renderers = document.querySelectorAll(selector);
+        
+        renderers.forEach(renderer => {
+            try {
+                const linkElement = renderer.querySelector('a[href*="/watch?v="]');
+                if (linkElement && linkElement.href) {
+                    const url = new URL(linkElement.href);
+                    const videoId = url.searchParams.get('v');
+                    
+                    if (videoId) {
+                        const video = {
+                            videoId: videoId,
+                            title: extractTitle(renderer),
+                            url: linkElement.href,
+                            thumbnail: extractThumbnail(renderer),
+                            channel: extractChannel(renderer),
+                            duration: extractDuration(renderer)
+                        };
+                        
+                        if (!videos.find(v => v.videoId === videoId)) {
+                            videos.push(video);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn('Error processing video renderer:', error);
+            }
+        });
+    });
+
+    return videos;
 }
 
 // Initialize when DOM is loaded

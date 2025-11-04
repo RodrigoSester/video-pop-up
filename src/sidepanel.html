@@ -19,55 +19,92 @@
             </button>
         </header>
 
-        <!-- API Key Missing State -->
-        <div id="noApiKeyState" class="state-container hidden">
-            <div class="empty-state">
-                <div class="empty-state-icon">🔑</div>
-                <h2 id="noApiKeyTitle"></h2>
-                <p id="noApiKeyDescription"></p>
-                <button id="goToSettingsBtn" class="primary-btn">
-                    <span id="goToSettingsBtnText"></span>
+        <!-- Navigation Tabs -->
+        <div class="tab-navigation">
+            <button id="current-tab" class="tab-button active" data-tab="current"></button>
+            <button id="history-tab" class="tab-button" data-tab="history"></button>
+            <button id="ai-chat-tab" class="tab-button" data-tab="ai-chat"></button>
+        </div>
+        
+        <!-- Current Videos Section -->
+        <div id="current-section" class="tab-content active">
+            <p id="message" class="tab-message"></p>
+            <div class="search-container">
+                <input type="text" id="current-search" class="search-input" placeholder="">
+            </div>
+            <ul id="video-list" class="video-list">
+                <!-- Current videos will be listed here -->
+            </ul>
+        </div>
+        
+        <!-- History Section -->
+        <div id="history-section" class="tab-content">
+            <div class="history-header">
+                <p id="history-message" class="tab-message"></p>
+                <button id="clearHistoryBtn" class="clear-history-btn" title="">
+                    <span id="clearHistoryText"></span>
                 </button>
             </div>
+            <div class="search-container">
+                <input type="text" id="history-search" class="search-input" placeholder="">
+            </div>
+            <ul id="history-list" class="video-list">
+                <!-- History videos will be listed here -->
+            </ul>
         </div>
 
-        <!-- Chat Interface -->
-        <div id="chatState" class="state-container hidden">
-            <!-- Messages Container -->
-            <div id="messagesContainer" class="messages-container">
-                <div class="welcome-message">
-                    <div class="ai-avatar">🤖</div>
-                    <div class="message-content">
-                        <p id="welcomeMessageText"></p>
+        <!-- AI Chat Section -->
+        <div id="ai-chat-section" class="tab-content">
+            <!-- API Key Missing State -->
+            <div id="noApiKeyState" class="state-container hidden">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔑</div>
+                    <h2 id="noApiKeyTitle"></h2>
+                    <p id="noApiKeyDescription"></p>
+                    <button id="goToSettingsBtn" class="primary-btn">
+                        <span id="goToSettingsBtnText"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Interface -->
+            <div id="chatState" class="state-container hidden">
+                <!-- Messages Container -->
+                <div id="messagesContainer" class="messages-container">
+                    <div class="welcome-message">
+                        <div class="ai-avatar">🤖</div>
+                        <div class="message-content">
+                            <p id="welcomeMessageText"></p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Loading Indicator -->
-            <div id="loadingIndicator" class="loading-indicator hidden">
-                <div class="loading-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <!-- Loading Indicator -->
+                <div id="loadingIndicator" class="loading-indicator hidden">
+                    <div class="loading-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span id="loadingText"></span>
                 </div>
-                <span id="loadingText"></span>
-            </div>
 
-            <!-- Input Area -->
-            <div class="input-area">
-                <textarea 
-                    id="promptInput" 
-                    placeholder=""
-                    rows="3"
-                    maxlength="2000"
-                ></textarea>
-                <div class="input-actions">
-                    <button id="clearChatBtn" class="secondary-btn small-btn" title="">
-                        🗑️ <span id="clearChatBtnText"></span>
-                    </button>
-                    <button id="sendBtn" class="primary-btn">
-                        <span id="sendBtnText"></span> ➤
-                    </button>
+                <!-- Input Area -->
+                <div class="input-area">
+                    <textarea 
+                        id="promptInput" 
+                        placeholder=""
+                        rows="3"
+                        maxlength="2000"
+                    ></textarea>
+                    <div class="input-actions">
+                        <button id="clearChatBtn" class="secondary-btn small-btn" title="">
+                            🗑️ <span id="clearChatBtnText"></span>
+                        </button>
+                        <button id="sendBtn" class="primary-btn">
+                            <span id="sendBtnText"></span> ➤
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

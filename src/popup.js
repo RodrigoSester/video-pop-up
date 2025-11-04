@@ -123,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // AI Assistant button
         const aiAssistantBtn = document.getElementById('aiAssistantBtn');
+        console.log("🚀 ~ initializeButtons ~ aiAssistantBtn:", aiAssistantBtn)
         if (aiAssistantBtn) {
             aiAssistantBtn.addEventListener('click', openSidePanel);
         }

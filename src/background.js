@@ -288,33 +288,13 @@ function extractVideoId(url) {
     }
 }
 
-chrome.action.onClicked.addListener((tab) => {
-    // Check if on YouTube Music
-    if (tab.url && tab.url.includes("music.youtube.com")) {
-        openOrUpdateMusicPopup(tab.url);
-    } else if (tab.url && tab.url.includes("youtube.com/watch")) {
-        const videoId = extractVideoId(tab.url);
-        if (videoId) {
-            const videoData = {
-                videoId: videoId,
-                title: 'Unknown Video',
-                channel: 'Unknown Channel',
-                url: tab.url
-            };
-
-            Promise.all([
-                getVideoTitle(tab.id),
-                extractChannel(tab.id)
-            ]).then(([title, channel]) => {
-                videoData.title = title;
-                videoData.channel = channel;
-            }).catch(error => {
-                console.error('Error fetching video metadata:', error);
-            }).finally(() => {
-                addVideoToHistory(videoData);
-                openOrUpdatePopup(tab.url);
-            });
-        }
+chrome.action.onClicked.addListener(async (tab) => {
+    // Open the sidepanel when extension icon is clicked
+    try {
+        await chrome.sidePanel.open({ windowId: tab.windowId });
+        console.log('Sidepanel opened successfully');
+    } catch (error) {
+        console.error('Failed to open sidepanel:', error);
     }
 });
 
